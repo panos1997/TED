@@ -1,0 +1,11 @@
+body, html {
+  height: 100%;
+}
+
+body {
+  background-image: url("https://cdn.pixabay.com/photo/2017/07/10/23/49/club-2492011__340.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
