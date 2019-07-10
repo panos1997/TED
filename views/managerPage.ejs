@@ -1,0 +1,18 @@
+<% include partials/header.ejs %>
+
+<h1> Here is the Manager Page!!! </h1>
+
+
+<h3> Users: </h3>
+<ul>
+	
+	<%  foundUsers.forEach( function(user) {    %>
+		<li> 
+			<%= user %>
+		</li>
+	<%  });  %>
+
+</ul>
+
+
+<% include partials/footer.ejs %>

@@ -43,6 +43,13 @@ app.get("/secret", isLoggedIn, function(req ,res) {
 	res.render("secret.ejs", {currentUser:req.user} );
 });
 
+app.get("/managerPage", isLoggedIn, function(req, res) {
+	console.log("inside managerPage route");
+	User.find({}, function(error, foundUsers) { 
+		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
+	}); 
+});
+
 // sign up routes
 app.get("/register", function(req, res) {
 	res.render("register.ejs", );
@@ -59,8 +66,7 @@ app.post("/register", function(req, res) {
 			res.render("register.ejs");
 		}																// if the registration of the user is done correctly 
 		passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
-			console.log(req.body.category);
-			res.redirect("/secret" );												// but there are 300 strategies (px twitter, facebook klp)
+			res.redirect("/secret");												// but there are 300 strategies (px twitter, facebook klp)
 		});
 	});
 });
@@ -71,10 +77,21 @@ app.get("/login", function(req, res) {
 	res.render("login.ejs", {currentUser: req.user});
 });
 
-app.post("/login", passport.authenticate("local", {
-	successRedirect: "/secret",
-	failureRedirect: "/login"
-}));
+app.post("/login", function(req, res, next) {
+	passport.authenticate("local", function(error, user){
+		req.logIn(user, function(err) {
+      		if (err) { 
+      			return next(err); 
+      		}
+      		if(user.role == "manager") {
+      			return res.redirect('/managerPage');
+      		}
+      		else  
+      			return res.redirect('/secret');
+    	});
+	})(req, res, next);
+}
+);
 
 // logout route
 app.get("/logout", function(req ,res) {
