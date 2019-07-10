@@ -9,3 +9,8 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+#logged {
+	margin-left: 85%;
+	font-size: medium;
+}

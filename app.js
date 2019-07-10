@@ -31,40 +31,44 @@ passport.deserializeUser(User.deserializeUser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));  // tell express to serve the public dir
 
+var roles = ["manager", "seller", "bidder", "visitor"];
 
 // ROUTES
 app.get("/", function(req, res) {
-	res.render("home.ejs");
+	console.log(User.username);
+	res.render("home.ejs", {currentUser : req.user});
 });
 
 app.get("/secret", isLoggedIn, function(req ,res) {
-	res.render("secret.ejs");
+	res.render("secret.ejs", {currentUser:req.user} );
 });
 
 // sign up routes
 app.get("/register", function(req, res) {
-	res.render("register.ejs");
+	res.render("register.ejs", );
 });
 
 app.post("/register", function(req, res) {
-	User.register(new User({ username: req.body.username , category: req.body.category }), req.body.password, function(err, user) {
+	if(!roles.includes(req.body.role)) {
+		res.send('<h1> Sorry, this role does not exist </h1> <h3>  <a href = "/register">  Go back to register form </a> </h3>');
+		return;
+	}
+	User.register(new User({ username: req.body.username , role: req.body.role }), req.body.password, function(err, user) {
 		if(err) {
-			console.log(err);
+			console.log("error is: " + err);
 			res.render("register.ejs");
-		}
-		else {														// if the registration of the user is done correctly 
-			passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
-				console.log(req.body.category);
-				res.redirect("/secret" );												// but there are 300 strategies (px twitter, facebook klp)
-			});
-		}
+		}																// if the registration of the user is done correctly 
+		passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
+			console.log(req.body.category);
+			res.redirect("/secret" );												// but there are 300 strategies (px twitter, facebook klp)
+		});
 	});
 });
 
 
 // login routes
 app.get("/login", function(req, res) {
-	res.render("login.ejs");
+	res.render("login.ejs", {currentUser: req.user});
 });
 
 app.post("/login", passport.authenticate("local", {
