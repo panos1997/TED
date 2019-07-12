@@ -33,7 +33,7 @@
 		    </div>
 		    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
 		        <ul class="navbar-nav ml-auto">
-		        	<% if(typeof currentUser !== "undefined") {    %>
+		        	<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {    %>
 			            <li class="nav-item">
 			                <a class="nav-link" href="/logout">Logout</a>
 			            </li>
@@ -43,7 +43,7 @@
 		</nav>
 <!-- NAVBAR END -->
 
-		<% if(typeof currentUser !== "undefined") {    %>
+		<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {    %>
 			<h1 id="logged"> Welcome  <%=  currentUser.username  %>    </h1>
 	    <% }   %>
 

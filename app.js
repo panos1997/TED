@@ -39,8 +39,8 @@ app.get("/", function(req, res) {
 	res.render("home.ejs", {currentUser : req.user});
 });
 
-app.get("/secret", isLoggedIn, function(req ,res) {
-	res.render("secret.ejs", {currentUser:req.user} );
+app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
+	res.render("pendingRequestMessage.ejs", {currentUser:req.user} );
 });
 
 app.get("/managerPage", isLoggedIn, function(req, res) {
@@ -48,6 +48,37 @@ app.get("/managerPage", isLoggedIn, function(req, res) {
 	User.find({}, function(error, foundUsers) { 
 		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
 	}); 
+});
+
+app.get("/managerPage/:id", function(req, res) {
+	User.findById({
+		_id: req.params.id
+	}, function(error, foundUser) {
+	  		res.render("userInfo.ejs", {user:foundUser});
+	});
+});
+
+app.get("/managerPage/:id/approve", function(req, res) {
+	User.findById({
+		_id: req.params.id
+	}, function(error, foundUser) {
+			console.log(foundUser);
+			foundUser.request = "approved";
+			foundUser.save(function(error) {
+				if(error) {
+					console.log(error);
+				}
+			});
+			res.send("ok");
+	});
+});
+
+app.get("/managerPage/:id/disapprove", function(req, res) {
+	User.findOneAndRemove({
+		_id: req.params.id
+	}, function(error, foundUser) {
+			res.redirect("/managerPage");
+	});
 });
 
 // sign up routes
@@ -60,13 +91,14 @@ app.post("/register", function(req, res) {
 		res.send('<h1> Sorry, this role does not exist </h1> <h3>  <a href = "/register">  Go back to register form </a> </h3>');
 		return;
 	}
-	User.register(new User({ username: req.body.username , role: req.body.role }), req.body.password, function(err, user) {
+
+	User.register(new User({ username: req.body.username , role: req.body.role, request: "pending" }), req.body.password, function(err, user) {
 		if(err) {
 			console.log("error is: " + err);
 			res.render("register.ejs");
 		}																// if the registration of the user is done correctly 
 		passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
-			res.redirect("/secret");												// but there are 300 strategies (px twitter, facebook klp)
+			res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
 		});
 	});
 });
@@ -78,6 +110,15 @@ app.get("/login", function(req, res) {
 });
 
 app.post("/login", function(req, res, next) {
+	User.find({username: req.body.username}, function(error, foundUsers) {
+		if(error) {
+			console.log(error);
+		} 
+		if(foundUsers[0].request === "pending") {
+			res.send("your request has not been approved yet,sorry");
+			return;
+		}
+	});
 	passport.authenticate("local", function(error, user){
 		req.logIn(user, function(err) {
       		if (err) { 
@@ -87,7 +128,7 @@ app.post("/login", function(req, res, next) {
       			return res.redirect('/managerPage');
       		}
       		else  
-      			return res.redirect('/secret');
+      			return res.redirect('/');
     	});
 	})(req, res, next);
 }
