@@ -83,7 +83,6 @@ app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, isMan
 	});
 });
 
-
 // SELLER ROUTES
 app.get("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 	res.render("auctions.ejs", {currentUser:req.user});
@@ -121,6 +120,18 @@ app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 			});
 	});
 	res.redirect("/auctions/" + req.params.id);
+});
+
+
+// BIDDER ROUTES
+app.get("/allAuctions/:bidderId", isLoggedIn, isBidder,  function(req, res) {
+	Auction.find({}, function(error, foundAuctions) {
+		if(error) {
+			console.log(error);
+		}
+		console.log(foundAuctions);
+		res.render("allAuctions.ejs", {auctions: foundAuctions});
+	});
 });
 
 
@@ -199,6 +210,19 @@ function isSeller(req, res, next) {
 		console.log(foundUser);
 		if(foundUser.role === "seller") {
 			console.log("He is a seller");
+			return next();
+		}
+	});
+}
+
+function isBidder(req, res, next) {
+	console.log("req.user is:" + req.user);
+	User.findById({
+		_id : req.user._id
+	}, function(error, foundUser) {
+		console.log(foundUser);
+		if(foundUser.role === "bidder") {
+			console.log("He is a bidder");
 			return next();
 		}
 	});
