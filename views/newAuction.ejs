@@ -1,0 +1,14 @@
+<% include partials/header.ejs %>
+
+<h1> START NEW AUCTION HERE </h1>
+
+<%= currentUser   %>
+
+<form action = "/auctions/<%= currentUser._id %>" method = "POST">
+	<input type="text" name="name" placeholder = "name">
+	<input type="text" name="category" placeholder = "category">
+	<button> Start </button>
+</form>
+
+
+<% include partials/footer.ejs %>

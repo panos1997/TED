@@ -6,7 +6,11 @@ var userSchema = new mongoose.Schema({
 	username: String,
 	password: String,
 	role: String,
-	request: String
+	request: String,
+	auctions : [
+		type = mongoose.Schema.Types.ObjectId,
+		ref = "Auction"
+	]
 });
 
 userSchema.plugin(passportLocalMongoose);

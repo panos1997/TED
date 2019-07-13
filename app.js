@@ -2,6 +2,7 @@ var express = require("express");
 var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("./models/user.js");
+var Auction = require("./models/auction.js")
 var LocalStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
@@ -35,7 +36,6 @@ var roles = ["manager", "seller", "bidder", "visitor"];
 
 // ROUTES
 app.get("/", function(req, res) {
-	console.log(User.username);
 	res.render("home.ejs", {currentUser : req.user});
 });
 
@@ -43,24 +43,26 @@ app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
 	res.render("pendingRequestMessage.ejs", {currentUser:req.user} );
 });
 
-app.get("/managerPage", isLoggedIn, function(req, res) {
+
+// MANAGER ROUTES
+app.get("/managerPage/:managerId", isLoggedIn, isManager, function(req, res) {
 	console.log("inside managerPage route");
 	User.find({}, function(error, foundUsers) { 
 		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
 	}); 
 });
 
-app.get("/managerPage/:id", function(req, res) {
+app.get("/managerPage/:managerId/userInfo/:userId", isLoggedIn, isManager, function(req, res) {
 	User.findById({
-		_id: req.params.id
+		_id: req.params.userId
 	}, function(error, foundUser) {
-	  		res.render("userInfo.ejs", {user:foundUser});
+	  		res.render("userInfo.ejs", {user:foundUser, currentUser:req.user});
 	});
 });
 
-app.get("/managerPage/:id/approve", function(req, res) {
+app.get("/managerPage/:managerId/userInfo/:userId/approve", isLoggedIn, isManager, function(req, res) {
 	User.findById({
-		_id: req.params.id
+		_id: req.params.userId
 	}, function(error, foundUser) {
 			console.log(foundUser);
 			foundUser.request = "approved";
@@ -73,13 +75,54 @@ app.get("/managerPage/:id/approve", function(req, res) {
 	});
 });
 
-app.get("/managerPage/:id/disapprove", function(req, res) {
+app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, isManager, function(req, res) {
 	User.findOneAndRemove({
-		_id: req.params.id
+		_id: req.params.userId
 	}, function(error, foundUser) {
 			res.redirect("/managerPage");
 	});
 });
+
+
+// SELLER ROUTES
+app.get("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
+	res.render("auctions.ejs", {currentUser:req.user});
+});
+
+app.get("/auctions/:id/new", isLoggedIn, isSeller , function(req, res) {
+	User.findById({
+		_id : req.params.id
+	}, function(error, foundUser) {
+		res.render("newAuction.ejs", {currentUser: foundUser});
+	});
+});
+
+app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
+	Auction.create({
+		name: req.body.name,
+		category: req.body.category
+	}, function(error, newAuction) {
+			if(error) {
+				console.log(error);
+			}
+			User.findById({ 
+				_id: req.user._id
+			}, function(error, foundUser) {
+				console.log("found user is :" + foundUser);
+				foundUser.auctions.push(newAuction);
+				foundUser.save( function(error, data) {
+									console.log("data is : " + data);
+				});
+
+				newAuction.user.push(foundUser);
+				newAuction.save( function(error, data) {
+									console.log("data is : " + data);
+				});
+			});
+	});
+	res.redirect("/auctions/" + req.params.id);
+});
+
 
 // sign up routes
 app.get("/register", function(req, res) {
@@ -124,8 +167,9 @@ app.post("/login", function(req, res, next) {
       		if (err) { 
       			return next(err); 
       		}
+      		console.log(user);
       		if(user.role == "manager") {
-      			return res.redirect('/managerPage');
+      			return res.redirect('/managerPage/' + user._id);
       		}
       		else  
       			return res.redirect('/');
@@ -145,6 +189,33 @@ function isLoggedIn(req, res, next) {
 		return next();
 	}
 	res.redirect("/login");
+}
+
+function isSeller(req, res, next) {
+	console.log("req.user is:" + req.user);
+	User.findById({
+		_id : req.user._id
+	}, function(error, foundUser) {
+		console.log(foundUser);
+		if(foundUser.role === "seller") {
+			console.log("He is a seller");
+			return next();
+		}
+	});
+}
+
+
+function isManager(req, res, next) {
+	console.log("req.user is:" + req.user);
+	User.findById({
+		_id : req.user._id
+	}, function(error, foundUser) {
+		console.log(foundUser);
+		if(foundUser.role === "manager") {
+			console.log("He is a manager");
+			return next();
+		}
+	});
 }
 
 app.listen(3000, function() {

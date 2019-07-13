@@ -5,11 +5,12 @@
 
 <h3> Users: </h3>
 <ul>
-	
+	<%= foundUsers  %>
+	<%= currentUser  %>
 	<%  foundUsers.forEach( function(user) {    %>
 		<li> 
 			<%= user.username %>
-			<a href="/managerPage/<%=  user._id  %>"  > show user details </a>
+			<a href="/managerPage/<%= currentUser._id %>/userInfo/<%=  user._id  %>"  > show user details </a>
 		</li>
 	<%  });  %>
 
