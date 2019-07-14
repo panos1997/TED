@@ -6,10 +6,6 @@ var auctionSchema = new mongoose.Schema({
 	category: String,
 	Currently: Number,
 	First_Bid: Number,
-	user: [ 
-			type = mongoose.Schema.Types.ObjectId,
-			ref = "User"
-	],
 	bids: [
 		type = mongoose.Schema.Types.ObjectId,
 		ref = "Bid"

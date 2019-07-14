@@ -101,8 +101,11 @@ app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 	Auction.create({
 		name: req.body.name,
 		category: req.body.category,
-		First_bid: req.body.First_bid,
-		Currently: req.body.First_bid
+		First_Bid: req.body.First_Bid,
+		Currently: req.body.First_Bid,
+		Buy_Price: req.body.Buy_Price,
+		Number_of_bids: 0,
+		Started: new Date()
 	}, function(error, newAuction) {
 			if(error) {
 				console.log(error);
@@ -156,7 +159,8 @@ app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, r
 
 app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, res) {
 	Bid.create({
-		amount: req.body.amount
+		amount: req.body.amount,
+		time: new Date()
 	}, function(error, createdBid) {
 		if(error) {
 			console.log(error);
@@ -182,11 +186,13 @@ app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, 
 							}
 						});
 						foundAuction.bids.push(createdBid);
+						foundAuction.Number_of_bids = foundAuction.Number_of_bids + 1;
 						foundAuction.save( function(error, data) {
 							if(error) {
 								console.log(error);
 							}
 						});
+
 				})
 
 		})

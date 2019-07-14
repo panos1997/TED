@@ -10,7 +10,11 @@ var userSchema = new mongoose.Schema({
 	auctions : [
 		type = mongoose.Schema.Types.ObjectId,
 		ref = "Auction"
-	]
+	],
+	Bidder_Rating: Number,
+	Seller_Rating: Number,
+	Location: String,
+	Country: String
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -9,7 +9,8 @@ var bidSchema = new mongoose.Schema({
 	bidder: [
 		type = mongoose.Schema.Types.ObjectId,
 		ref = "User"
-	]
+	],
+	time: Date
 });
 
 
