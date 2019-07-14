@@ -86,7 +86,23 @@ app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, isMan
 
 // SELLER ROUTES
 app.get("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
-	res.render("auctions.ejs", {currentUser:req.user});
+	Auction.find({
+		seller: req.user._id
+	}, function(error, foundAuctions) {
+			res.render("auctions.ejs", {currentUser:req.user, auctions:foundAuctions});
+	});
+});
+
+app.get("/auctions/:id/showBids", isLoggedIn, isSeller, function(req, res) {
+	Auction.findById({
+		_id: req.params.id
+	}, function(error, foundAuction) {
+			Bid.find({
+				auction: foundAuction
+			}, function(error, foundBids) {
+				res.render("showBids.ejs", {currentUser:req.user, bids:foundBids});
+			});
+	});	
 });
 
 app.get("/auctions/:id/new", isLoggedIn, isSeller , function(req, res) {

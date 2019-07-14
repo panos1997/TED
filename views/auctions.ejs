@@ -1,5 +1,10 @@
 <h1> HERE ARE MY AUCTIONS</h1>
 
 
-	<%=  currentUser.auctions   %>
+	<% auctions.forEach(function(auction) {  %>
+		<%=  auction   %>
+		<a href="/auctions/<%= auction._id %>/showBids"> show bids </a>
+		<br>
+		<br>
+	<% })  %>
 
