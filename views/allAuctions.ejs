@@ -2,6 +2,12 @@
 
 
 
-	<%= auctions  %>
+	<%   auctions.forEach( function(auction) {   %>
+			<%= auction %>
+			<a href="/allAuctions/<%= auction._id %>"> more info </a>	
+			<br>
+	<%   })   %>
+
+
 
 

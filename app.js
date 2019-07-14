@@ -2,7 +2,8 @@ var express = require("express");
 var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("./models/user.js");
-var Auction = require("./models/auction.js")
+var Auction = require("./models/auction.js");
+var Bid = require("./models/bid.js");
 var LocalStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
@@ -99,7 +100,9 @@ app.get("/auctions/:id/new", isLoggedIn, isSeller , function(req, res) {
 app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 	Auction.create({
 		name: req.body.name,
-		category: req.body.category
+		category: req.body.category,
+		First_bid: req.body.First_bid,
+		Currently: req.body.First_bid
 	}, function(error, newAuction) {
 			if(error) {
 				console.log(error);
@@ -124,7 +127,7 @@ app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 
 
 // BIDDER ROUTES
-app.get("/allAuctions/:bidderId", isLoggedIn, isBidder,  function(req, res) {
+app.get("/allAuctions", isLoggedIn, isBidder,  function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
@@ -133,6 +136,59 @@ app.get("/allAuctions/:bidderId", isLoggedIn, isBidder,  function(req, res) {
 		res.render("allAuctions.ejs", {auctions: foundAuctions});
 	});
 });
+
+app.get("/allAuctions/:auctionId", isLoggedIn, isBidder,  function(req, res) {
+	Auction.findById({
+		_id: req.params.auctionId
+	}, function(error, foundAuction) {
+			res.render("auctionInfo.ejs", {auction: foundAuction});
+	})
+});
+
+
+app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, res) {
+	Auction.findById({
+		_id: req.params.auctionId
+	}, function(error, foundAuction) {
+			res.render("makeBid.ejs", {auction: foundAuction});
+	})
+});
+
+app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, res) {
+	Bid.create({
+		amount: req.body.amount
+	}, function(error, createdBid) {
+		if(error) {
+			console.log(error);
+		}
+		User.findById({
+			_id: req.user._id
+		}, function(error, foundUser) {
+				if(error) {
+					console.log(error);
+				}
+				createdBid.user.push(foundUser);
+				Auction.findById({
+					_id: req.params.auctionId
+				}, function( error, foundAuction) {
+						if(error) {
+							console.log(error)
+						}
+						console.log("found AUCTION IS: " + foundAuction);
+						createdBid.auction.push(foundAuction);
+						createdBid.save( function(error, data) {
+							if(error) {
+								console.log(error);
+							}
+						});
+				})
+
+		})
+
+	})	
+	res.send("perfect, you made a bid");
+});
+
 
 
 // sign up routes
