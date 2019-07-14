@@ -229,12 +229,24 @@ app.post("/register", function(req, res) {
 		res.send('<h1> Sorry, this role does not exist </h1> <h3>  <a href = "/register">  Go back to register form </a> </h3>');
 		return;
 	}
-
+	if(req.body.role === "manager") {
+		User.register(new User({ username: req.body.username , role: req.body.role, request: "approved" }), req.body.password, function(err, user) {
+			if(err) {
+				console.log("error is: " + err);
+				res.render("register.ejs");
+			}
+																			// if the registration of the user is done correctly 
+			passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
+				return res.redirect('/managerPage/' + req.user._id);												// but there are 300 strategies (px twitter, facebook klp)
+			});
+		});		
+	}
 	User.register(new User({ username: req.body.username , role: req.body.role, request: "pending" }), req.body.password, function(err, user) {
 		if(err) {
 			console.log("error is: " + err);
 			res.render("register.ejs");
-		}																// if the registration of the user is done correctly 
+		}
+																		// if the registration of the user is done correctly 
 		passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
 			res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
 		});
