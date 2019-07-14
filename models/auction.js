@@ -9,7 +9,20 @@ var auctionSchema = new mongoose.Schema({
 	user: [ 
 			type = mongoose.Schema.Types.ObjectId,
 			ref = "User"
-	]
+	],
+	bids: [
+		type = mongoose.Schema.Types.ObjectId,
+		ref = "Bid"
+	],
+	seller: [
+		type = mongoose.Schema.Types.ObjectId,
+		ref = "User"
+	],
+	Buy_Price: Number,
+	Number_of_bids: Number,
+	Started: Date,
+	Ends: Date,
+	Description: String
 });
 
 

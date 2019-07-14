@@ -6,7 +6,7 @@ var bidSchema = new mongoose.Schema({
 		type = mongoose.Schema.Types.ObjectId,
 		ref = "Auction"
 	],
-	user: [
+	bidder: [
 		type = mongoose.Schema.Types.ObjectId,
 		ref = "User"
 	]

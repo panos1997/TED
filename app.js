@@ -116,7 +116,7 @@ app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 									console.log("data is : " + data);
 				});
 
-				newAuction.user.push(foundUser);
+				newAuction.seller.push(foundUser);
 				newAuction.save( function(error, data) {
 									console.log("data is : " + data);
 				});
@@ -167,7 +167,7 @@ app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, 
 				if(error) {
 					console.log(error);
 				}
-				createdBid.user.push(foundUser);
+				createdBid.bidder.push(foundUser);
 				Auction.findById({
 					_id: req.params.auctionId
 				}, function( error, foundAuction) {
@@ -177,6 +177,12 @@ app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, 
 						console.log("found AUCTION IS: " + foundAuction);
 						createdBid.auction.push(foundAuction);
 						createdBid.save( function(error, data) {
+							if(error) {
+								console.log(error);
+							}
+						});
+						foundAuction.bids.push(createdBid);
+						foundAuction.save( function(error, data) {
 							if(error) {
 								console.log(error);
 							}
