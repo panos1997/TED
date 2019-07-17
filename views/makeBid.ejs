@@ -1,7 +1,13 @@
+<% include partials/header.ejs %>
+
+
 <h1> My bid is: </h1>
 
-<form action = "/allAuctions/<%= auction._id %>/makeBid" method = "POST">
+<form action = "/allAuctions/<%= auction._id %>/confirmBid" method = "GET">
 	<input type="text" name="amount" placeholder = "make a bid please">	
 	<button> Submit </button>
 </form>
+
+
+<% include partials/footer.ejs %>
 

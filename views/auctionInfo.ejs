@@ -1,5 +1,10 @@
-<h1> more info about this auction: </h1>
+<% include partials/header.ejs %>
 
-<%= auction %>
+	<h1> more info about this auction: </h1>
 
-<a href="/allAuctions/<%= auction._id %>/makeBid"> make a bid </a>
+	<%= auction %>
+
+	<a href="/allAuctions/<%= auction._id %>/makeBid"> make a bid </a>
+
+
+<% include partials/footer.ejs %>

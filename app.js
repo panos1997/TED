@@ -47,6 +47,10 @@ app.get("/", function(req, res) {
 	res.render("home.ejs", {currentUser : req.user});
 });
 
+app.get("/back", function(req, res) {
+	res.redirect("back");
+});
+
 app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
 	res.render("pendingRequestMessage.ejs", {currentUser:req.user} );
 });
@@ -80,7 +84,7 @@ app.get("/managerPage/:userId/approve", isLoggedIn, managerIsAuthorised , functi
 					console.log(error);
 				}
 			});
-			res.send("ok");
+			res.redirect("back");
 	});
 });
 
@@ -88,7 +92,7 @@ app.get("/managerPage/:userId/disapprove", isLoggedIn, managerIsAuthorised , fun
 	User.findOneAndRemove({
 		_id: req.params.userId
 	}, function(error, foundUser) {
-			res.redirect("/managerPage");
+			res.redirect("back");
 	});
 });
 
@@ -154,7 +158,7 @@ app.post("/auctions/:id", isLoggedIn, userIsAuthorised, function(req, res) {
 
 
 // BIDDER ROUTES
-app.get("/allAuctions", isLoggedIn, userIsAuthorised, function(req, res) {
+app.get("/allAuctions", isLoggedIn, function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
@@ -164,7 +168,7 @@ app.get("/allAuctions", isLoggedIn, userIsAuthorised, function(req, res) {
 	});
 });
 
-app.get("/allAuctions/:auctionId", isLoggedIn, userIsAuthorised, function(req, res) {
+app.get("/allAuctions/:auctionId", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
@@ -173,17 +177,25 @@ app.get("/allAuctions/:auctionId", isLoggedIn, userIsAuthorised, function(req, r
 });
 
 
-app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, userIsAuthorised, function(req, res) {
+app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
 			res.render("makeBid.ejs", {auction: foundAuction});
-	})
+	});
 });
 
-app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, userIsAuthorised, function(req, res) {
+app.get("/allAuctions/:auctionId/confirmBid", isLoggedIn, function(req, res) {
+	Auction.findById({
+		_id: req.params.auctionId
+	}, function(error, foundAuction) {
+			res.render("confirmBid.ejs", {auction: foundAuction, amount: req.query.amount});
+	});	
+});
+
+app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	Bid.create({
-		amount: req.body.amount,
+		amount: req.query.amount,
 		time: new Date()
 	}, function(error, createdBid) {
 		if(error) {
@@ -229,12 +241,20 @@ app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, userIsAuthorised, functi
 
 // sign up routes
 app.get("/register", function(req, res) {
-	res.render("register.ejs", );
+	res.render("register.ejs");
 });
 
 app.post("/register", function(req, res) {
+	User.find({
+		username: req.body.username
+	}, function(error, foundUser) {
+			if(error) {
+				res.render("error.ejs", {error: "user already exists, please choose a different username"});
+				return;
+			}
+	});
 	if(!roles.includes(req.body.role)) {
-		res.send('<h1> Sorry, this role does not exist </h1> <h3>  <a href = "/register">  Go back to register form </a> </h3>');
+		res.render("error.ejs", {error: "Sorry, this role does not exist"});
 		return;
 	}
 	if(req.body.role === "manager") {
@@ -339,9 +359,8 @@ function userIsAuthorised(req, res, next) {
 		if(error) {
 			console.log(error);
 			res.redirect("/login");
+			return;
 		}
-/*		console.log("foundUser:" + foundUser._id);
-		console.log("currentUser:" + req.user._id);*/
 		if(foundUser._id.equals(req.user._id)) {
 			return next();
 		}
