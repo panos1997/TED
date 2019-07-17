@@ -15,11 +15,14 @@ mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
+
+
 app.use(require("express-session")({
 	secret: "i worth a lot!!!",
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -29,9 +32,13 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 //============================================
-
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));  // tell express to serve the public dir
+
+// clearing browser cache (pushing the back button after logout will now redirect to login page)
+app.use(function(req, res, next) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  next();
+});
 
 var roles = ["manager", "seller", "bidder", "visitor"];
 
@@ -46,14 +53,14 @@ app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
 
 
 // MANAGER ROUTES
-app.get("/managerPage/:managerId", isLoggedIn, isManager, function(req, res) {
+app.get("/managerPage/:managerId", isLoggedIn, function(req, res) {
 	console.log("inside managerPage route");
 	User.find({}, function(error, foundUsers) { 
 		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
 	}); 
 });
 
-app.get("/managerPage/:managerId/userInfo/:userId", isLoggedIn, isManager, function(req, res) {
+app.get("/managerPage/:managerId/userInfo/:userId", isLoggedIn, function(req, res) {
 	User.findById({
 		_id: req.params.userId
 	}, function(error, foundUser) {
@@ -61,7 +68,7 @@ app.get("/managerPage/:managerId/userInfo/:userId", isLoggedIn, isManager, funct
 	});
 });
 
-app.get("/managerPage/:managerId/userInfo/:userId/approve", isLoggedIn, isManager, function(req, res) {
+app.get("/managerPage/:managerId/userInfo/:userId/approve", isLoggedIn, function(req, res) {
 	User.findById({
 		_id: req.params.userId
 	}, function(error, foundUser) {
@@ -76,7 +83,7 @@ app.get("/managerPage/:managerId/userInfo/:userId/approve", isLoggedIn, isManage
 	});
 });
 
-app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, isManager, function(req, res) {
+app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, function(req, res) {
 	User.findOneAndRemove({
 		_id: req.params.userId
 	}, function(error, foundUser) {
@@ -85,7 +92,7 @@ app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, isMan
 });
 
 // SELLER ROUTES
-app.get("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
+app.get("/auctions/:id", isLoggedIn, function(req, res) {
 	Auction.find({
 		seller: req.user._id
 	}, function(error, foundAuctions) {
@@ -93,7 +100,7 @@ app.get("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 	});
 });
 
-app.get("/auctions/:id/showBids", isLoggedIn, isSeller, function(req, res) {
+app.get("/auctions/:id/showBids", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.id
 	}, function(error, foundAuction) {
@@ -105,7 +112,7 @@ app.get("/auctions/:id/showBids", isLoggedIn, isSeller, function(req, res) {
 	});	
 });
 
-app.get("/auctions/:id/new", isLoggedIn, isSeller , function(req, res) {
+app.get("/auctions/:id/new", isLoggedIn, function(req, res) {
 	User.findById({
 		_id : req.params.id
 	}, function(error, foundUser) {
@@ -113,7 +120,7 @@ app.get("/auctions/:id/new", isLoggedIn, isSeller , function(req, res) {
 	});
 });
 
-app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
+app.post("/auctions/:id", isLoggedIn,  function(req, res) {
 	Auction.create({
 		name: req.body.name,
 		category: req.body.category,
@@ -146,7 +153,7 @@ app.post("/auctions/:id", isLoggedIn, isSeller, function(req, res) {
 
 
 // BIDDER ROUTES
-app.get("/allAuctions", isLoggedIn, isBidder,  function(req, res) {
+app.get("/allAuctions", isLoggedIn, function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
@@ -156,7 +163,7 @@ app.get("/allAuctions", isLoggedIn, isBidder,  function(req, res) {
 	});
 });
 
-app.get("/allAuctions/:auctionId", isLoggedIn, isBidder,  function(req, res) {
+app.get("/allAuctions/:auctionId", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
@@ -165,7 +172,7 @@ app.get("/allAuctions/:auctionId", isLoggedIn, isBidder,  function(req, res) {
 });
 
 
-app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, res) {
+app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
@@ -173,7 +180,7 @@ app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, r
 	})
 });
 
-app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, isBidder, function(req, res) {
+app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	Bid.create({
 		amount: req.body.amount,
 		time: new Date()
@@ -241,22 +248,24 @@ app.post("/register", function(req, res) {
 			});
 		});		
 	}
-	User.register(new User({ username: req.body.username , role: req.body.role, request: "pending" }), req.body.password, function(err, user) {
-		if(err) {
-			console.log("error is: " + err);
-			res.render("register.ejs");
-		}
-																		// if the registration of the user is done correctly 
-		passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
-			res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
+	else {
+		User.register(new User({ username: req.body.username , role: req.body.role, request: "pending" }), req.body.password, function(err, user) {
+			if(err) {
+				console.log("error is: " + err);
+				res.render("register.ejs");
+			}
+																			// if the registration of the user is done correctly 
+			passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
+				res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
+			});
 		});
-	});
+	}
 });
 
 
 // login routes
 app.get("/login", function(req, res) {
-	res.render("login.ejs", {currentUser: req.user});
+	res.render("login.ejs", { currentUser: req.user });
 });
 
 app.post("/login", function(req, res, next) {
@@ -291,12 +300,16 @@ app.get("/logout", function(req ,res) {
 	res.redirect("/");
 });
 
+
+
+//MIDDLEWARES
 function isLoggedIn(req, res, next) {
 	if(req.isAuthenticated()) {
 		return next();
 	}
 	res.redirect("/login");
 }
+
 
 function isSeller(req, res, next) {
 	console.log("req.user is:" + req.user);
@@ -309,6 +322,7 @@ function isSeller(req, res, next) {
 			return next();
 		}
 	});
+	res.send("you do not have access to this page");
 }
 
 function isBidder(req, res, next) {
@@ -322,6 +336,7 @@ function isBidder(req, res, next) {
 			return next();
 		}
 	});
+	res.send("you do not have access to this page");
 }
 
 
@@ -336,7 +351,9 @@ function isManager(req, res, next) {
 			return next();
 		}
 	});
+	res.send("you do not have access to this page");
 }
+
 
 app.listen(3000, function() {
 	console.log("auctions app server has started!!!");

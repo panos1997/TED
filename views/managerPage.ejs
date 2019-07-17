@@ -5,13 +5,13 @@
 
 <h3> Users: </h3>
 <ul>
-	<%= foundUsers  %>
-	<%= currentUser  %>
 	<%  foundUsers.forEach( function(user) {    %>
-		<li> 
-			<%= user.username %>
-			<a href="/managerPage/<%= currentUser._id %>/userInfo/<%=  user._id  %>"  > show user details </a>
-		</li>
+			<% if(user.role !== "manager") {  %>
+				<li> 
+					<%= user.username %>
+					<a href="/managerPage/<%= currentUser._id %>/userInfo/<%=  user._id  %>"  > show user details </a>
+				</li>
+			<% } %>
 	<%  });  %>
 
 </ul>
