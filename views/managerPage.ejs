@@ -9,7 +9,7 @@
 			<% if(user.role !== "manager") {  %>
 				<li> 
 					<%= user.username %>
-					<a href="/managerPage/<%= currentUser._id %>/userInfo/<%=  user._id  %>"  > show user details </a>
+					<a href="/managerPage/<%=  user._id  %>"  > show user details </a>
 				</li>
 			<% } %>
 	<%  });  %>

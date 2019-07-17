@@ -53,14 +53,15 @@ app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
 
 
 // MANAGER ROUTES
-app.get("/managerPage/:managerId", isLoggedIn, function(req, res) {
+app.get("/managerPage", isLoggedIn, managerIsAuthorised , function(req, res) {
+	console.log(req.user._id);
 	console.log("inside managerPage route");
 	User.find({}, function(error, foundUsers) { 
 		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
 	}); 
 });
 
-app.get("/managerPage/:managerId/userInfo/:userId", isLoggedIn, function(req, res) {
+app.get("/managerPage/:userId", isLoggedIn, managerIsAuthorised , function(req, res) {
 	User.findById({
 		_id: req.params.userId
 	}, function(error, foundUser) {
@@ -68,7 +69,7 @@ app.get("/managerPage/:managerId/userInfo/:userId", isLoggedIn, function(req, re
 	});
 });
 
-app.get("/managerPage/:managerId/userInfo/:userId/approve", isLoggedIn, function(req, res) {
+app.get("/managerPage/:userId/approve", isLoggedIn, managerIsAuthorised , function(req, res) {
 	User.findById({
 		_id: req.params.userId
 	}, function(error, foundUser) {
@@ -83,7 +84,7 @@ app.get("/managerPage/:managerId/userInfo/:userId/approve", isLoggedIn, function
 	});
 });
 
-app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, function(req, res) {
+app.get("/managerPage/:userId/disapprove", isLoggedIn, managerIsAuthorised , function(req, res) {
 	User.findOneAndRemove({
 		_id: req.params.userId
 	}, function(error, foundUser) {
@@ -92,7 +93,7 @@ app.get("/managerPage/:managerId/userInfo/:userId/disapprove", isLoggedIn, funct
 });
 
 // SELLER ROUTES
-app.get("/auctions/:id", isLoggedIn, function(req, res) {
+app.get("/auctions/:id", isLoggedIn, userIsAuthorised, function(req, res) {
 	Auction.find({
 		seller: req.user._id
 	}, function(error, foundAuctions) {
@@ -100,7 +101,7 @@ app.get("/auctions/:id", isLoggedIn, function(req, res) {
 	});
 });
 
-app.get("/auctions/:id/showBids", isLoggedIn, function(req, res) {
+app.get("/auctions/:id/showBids", isLoggedIn, userIsAuthorised, function(req, res) {
 	Auction.findById({
 		_id: req.params.id
 	}, function(error, foundAuction) {
@@ -112,7 +113,7 @@ app.get("/auctions/:id/showBids", isLoggedIn, function(req, res) {
 	});	
 });
 
-app.get("/auctions/:id/new", isLoggedIn, function(req, res) {
+app.get("/auctions/:id/new", isLoggedIn, userIsAuthorised, function(req, res) {
 	User.findById({
 		_id : req.params.id
 	}, function(error, foundUser) {
@@ -120,7 +121,7 @@ app.get("/auctions/:id/new", isLoggedIn, function(req, res) {
 	});
 });
 
-app.post("/auctions/:id", isLoggedIn,  function(req, res) {
+app.post("/auctions/:id", isLoggedIn, userIsAuthorised, function(req, res) {
 	Auction.create({
 		name: req.body.name,
 		category: req.body.category,
@@ -153,7 +154,7 @@ app.post("/auctions/:id", isLoggedIn,  function(req, res) {
 
 
 // BIDDER ROUTES
-app.get("/allAuctions", isLoggedIn, function(req, res) {
+app.get("/allAuctions", isLoggedIn, userIsAuthorised, function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
@@ -163,7 +164,7 @@ app.get("/allAuctions", isLoggedIn, function(req, res) {
 	});
 });
 
-app.get("/allAuctions/:auctionId", isLoggedIn, function(req, res) {
+app.get("/allAuctions/:auctionId", isLoggedIn, userIsAuthorised, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
@@ -172,7 +173,7 @@ app.get("/allAuctions/:auctionId", isLoggedIn, function(req, res) {
 });
 
 
-app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
+app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, userIsAuthorised, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
@@ -180,7 +181,7 @@ app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	})
 });
 
-app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
+app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, userIsAuthorised, function(req, res) {
 	Bid.create({
 		amount: req.body.amount,
 		time: new Date()
@@ -244,7 +245,7 @@ app.post("/register", function(req, res) {
 			}
 																			// if the registration of the user is done correctly 
 			passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
-				return res.redirect('/managerPage/' + req.user._id);												// but there are 300 strategies (px twitter, facebook klp)
+				return res.redirect('/managerPage');												// but there are 300 strategies (px twitter, facebook klp)
 			});
 		});		
 	}
@@ -285,7 +286,7 @@ app.post("/login", function(req, res, next) {
       		}
       		console.log(user);
       		if(user.role == "manager") {
-      			return res.redirect('/managerPage/' + user._id);
+      			return res.redirect('/managerPage');
       		}
       		else  
       			return res.redirect('/');
@@ -311,47 +312,43 @@ function isLoggedIn(req, res, next) {
 }
 
 
-function isSeller(req, res, next) {
+function managerIsAuthorised (req, res, next) {
 	console.log("req.user is:" + req.user);
 	User.findById({
 		_id : req.user._id
 	}, function(error, foundUser) {
-		console.log(foundUser);
-		if(foundUser.role === "seller") {
-			console.log("He is a seller");
-			return next();
+		if(error) {
+			console.log(error);
+			res.redirect("/login");
 		}
-	});
-	res.send("you do not have access to this page");
-}
-
-function isBidder(req, res, next) {
-	console.log("req.user is:" + req.user);
-	User.findById({
-		_id : req.user._id
-	}, function(error, foundUser) {
-		console.log(foundUser);
-		if(foundUser.role === "bidder") {
-			console.log("He is a bidder");
-			return next();
-		}
-	});
-	res.send("you do not have access to this page");
-}
-
-
-function isManager(req, res, next) {
-	console.log("req.user is:" + req.user);
-	User.findById({
-		_id : req.user._id
-	}, function(error, foundUser) {
-		console.log(foundUser);
 		if(foundUser.role === "manager") {
 			console.log("He is a manager");
 			return next();
 		}
+		else {
+			res.redirect("/login");
+		}
 	});
-	res.send("you do not have access to this page");
+}
+
+function userIsAuthorised(req, res, next) {
+	console.log("req.user is:" + req.user);
+	User.findById({
+		_id : req.params.id
+	}, function(error, foundUser) {
+		if(error) {
+			console.log(error);
+			res.redirect("/login");
+		}
+/*		console.log("foundUser:" + foundUser._id);
+		console.log("currentUser:" + req.user._id);*/
+		if(foundUser._id.equals(req.user._id)) {
+			return next();
+		}
+		else {
+			res.redirect("/login");
+		}
+	});	
 }
 
 
