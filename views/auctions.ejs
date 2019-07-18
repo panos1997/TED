@@ -1,0 +1,18 @@
+<% include partials/header.ejs %>
+
+
+
+
+<h1> HERE ARE MY AUCTIONS</h1>
+
+
+	<% auctions.forEach(function(auction) {  %>
+		<%=  auction   %>
+		<a href="/auctions/<%= auction._id %>/showBids"> show bids </a>
+		<br>
+		<br>
+	<% })  %>
+
+
+
+<% include partials/footer.ejs %>

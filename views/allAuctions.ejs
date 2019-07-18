@@ -1,0 +1,18 @@
+<% include partials/header.ejs %>
+
+
+	<h1> Here is the bidder home page </h1>
+
+
+	<% if(auctions) { %>
+		<%  auctions.forEach( function(auction) {   %>
+				<%= auction %>
+				<a href="/allAuctions/<%= auction._id %>"> more info </a>	
+				<br>
+		<%   })   %>
+	<% } %>
+
+
+
+
+<% include partials/footer.ejs %>

@@ -1,0 +1,11 @@
+<% include partials/header.ejs %>
+
+
+<h3>USER INFO</h3>
+<%=    user    %>
+<% if(user.request === "pending") {  %>
+		<a href="/managerPage/<%= currentUser._id %>/userInfo/<%=  user._id  %>/approve"> approve</a>
+		<a href="/managerPage/<%= currentUser._id %>/userInfo/<%=  user._id  %>/disapprove"> disapprove</a>
+<% } %>
+
+<% include partials/footer.ejs %>

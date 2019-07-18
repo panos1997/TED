@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> auctions app </title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="/app.css">
+		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/html" href="<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	</head>
+
+	<body>
+
+<!-- NAVBAR    -->
+	    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ccccff;">
+	    	<div class="container">
+
+
+	    		<a class="navbar-brand" href="/">
+    				<font color="red">e</font><font color="blue">b</font><font color="yellow">a</font><font color="green">y</font> Team
+  				</a>
+  				<a class="nav-link" href="/"><font color="red">Home</font></a>
+
+		     	<ul class="navbar-nav">
+
+      				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  
+			            <li class="nav-item">
+			            	<div class="row">
+			            		<a class="nav-link" href="#"><font color="black">Signed as </font><font color="blue"><b><%= currentUser.username %></b> </font></a>
+			               		<a class="nav-link" href="/logout"><font color="red">Logout</font></a>
+			               </div>			  
+			           	</li>
+		            <% }else{ %>	<!--      -------------------------------------   -->
+		            	<li class="nav-item">
+        					<a class="nav-link" href="/login"><font color="black">Sign in</font></a>
+     					</li>
+      					<li class="nav-item">
+       						<a class="nav-link" href="/register"><font color="black">Sign up</font></a>
+      					</li>
+      				<% } %>
+
+		     	</ul>
+			</div>
+		</nav>
+<!-- NAVBAR END -->
+
+
+
+
+
+	    
