@@ -239,49 +239,77 @@ app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 
 
 
+app.get("/register/user_exist", function(req, res){
+	res.render("user_exist.ejs");
+});
+
 // sign up routes
 app.get("/register", function(req, res) {
-	res.render("register.ejs");
+	res.render("register.ejs", );
 });
 
 app.post("/register", function(req, res) {
-	User.find({
-		username: req.body.username
-	}, function(error, foundUser) {
-			if(error) {
-				res.render("error.ejs", {error: "user already exists, please choose a different username"});
-				return;
-			}
-	});
-	if(!roles.includes(req.body.role)) {
-		res.render("error.ejs", {error: "Sorry, this role does not exist"});
-		return;
+	/////////////////////// edw prosthes auto to if////// an oi kwdikoi password kai password_again einai diaforetikoi tote se petaei se selida sfalmatos
+	if(req.body.password !== req.body.password_again){
+		console.log("Ta password me to password_again einai diaforetika");
+		return res.render("user_exist.ejs");
 	}
+	////////////////////////////////////////
+	
+	
 	if(req.body.role === "manager") {
-		User.register(new User({ username: req.body.username , role: req.body.role, request: "approved" }), req.body.password, function(err, user) {
+		var newUser = new User({username: req.body.username, 
+								password_again: req.body.password_again,
+								role: req.body.role,
+								request: "approved",
+								 
+								firstname: req.body.firstname,
+								lastname: req.body.lastname,
+								email: req.body.email,
+								phone: req.body.phone,
+								address: req.body.address,
+								location: req.body.location
+							});
+		User.register(newUser , req.body.password, function(err, user) {
 			if(err) {
 				console.log("error is: " + err);
+				//return res.render("user_exist.ejs");///// mallon auto xreiazetai kai oxi to apo katw
 				res.render("register.ejs");
 			}
 																			// if the registration of the user is done correctly 
 			passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
-				return res.redirect('/managerPage');												// but there are 300 strategies (px twitter, facebook klp)
+				return res.redirect('/managerPage/' + req.user._id);												// but there are 300 strategies (px twitter, facebook klp)
 			});
 		});		
 	}
-	else {
-		User.register(new User({ username: req.body.username , role: req.body.role, request: "pending" }), req.body.password, function(err, user) {
-			if(err) {
-				console.log("error is: " + err);
-				res.render("register.ejs");
-			}
-																			// if the registration of the user is done correctly 
-			passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
-				res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
-			});
+	
+	
+	var newUser = new User({username: req.body.username,
+							password_again: req.body.password_again,
+							role: req.body.role,
+							request: "pending",
+									 
+							firstname: req.body.firstname,
+							lastname: req.body.lastname,
+							email: req.body.email,
+							phone: req.body.phone,
+							address: req.body.address,
+							location: req.body.location
+						});
+	
+	User.register(newUser, req.body.password, function(err, user) {
+		if(err) {
+			console.log("error is: " + err);
+			return res.render("user_exist.ejs");
+			//res.render("register.ejs");
+		}
+																		// if the registration of the user is done correctly 
+		passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
+			res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
 		});
-	}
+	});
 });
+
 
 
 // login routes
