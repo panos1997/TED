@@ -7,6 +7,16 @@ var userSchema = new mongoose.Schema({
 	password: String,
 	role: String,
 	request: String,
+	
+	password_again: String,
+	firstName: String,
+	lastName: String,
+	email: String,
+	phone: Number,
+	address: String,
+	location: String,
+	
+	
 	auctions : [
 		type = mongoose.Schema.Types.ObjectId,
 		ref = "Auction"
