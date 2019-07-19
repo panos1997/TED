@@ -245,7 +245,7 @@ app.get("/register/user_exist", function(req, res){
 
 // sign up routes
 app.get("/register", function(req, res) {
-	res.render("register.ejs", );
+	res.render("register.ejs");
 });
 
 app.post("/register", function(req, res) {
