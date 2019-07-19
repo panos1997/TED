@@ -1,21 +1,60 @@
-
 <% include partials/header.ejs %>
 
 <%  if(currentUser !== undefined)  {        %>
 <%		if(currentUser.role === "seller") {   %>
-			<h1> I am a seller! </h1>
-			<a href="/auctions/<%= currentUser._id  %>"> My auctions </a>
-			<a href="/auctions/<%= currentUser._id  %>/new"> Start new Auction </a>
+
+
+			<h2><font color="black">I am a seller!</font></h2>
+			<div class="row">
+				<nav class="col-sm-2" id="myScrollspy">
+							
+					<li><a class="btn btn-primary list-group-item-action" href="/auctions/<%= currentUser._id  %>"><font color="black">My auctions</font></a></li>
+					<li><a class="btn btn-primary list-group-item-action" href="/auctions/<%= currentUser._id  %>/new"><font color="black">Start new Auction</font></a></li>
+		
+				</nav>
+			</div>
+			
+			
 <%		} %>
 <%		if(currentUser.role === "bidder") {   %>
-			<h1> I am a bidder! </h1>
-			<a href="/allAuctions"> List of all auctions </a>
+
+
+			<h2><font color="black">I am a bidder!</font></h2>
+			<div class="row">
+				<nav class="col-sm-2" id="myScrollspy">
+							
+					<li><a class="btn btn-primary list-group-item-action" href="/allAuctions"><font color="black">List of all auctions</font></a></li>
+		
+				</nav>
+			</div>
+			
+			
 <%		} %>
 <%		if(currentUser.role === "visitor") {   %>
 			<h1> I am a visitor! </h1>
 <%		} %>
 
-<%  }   %>
+<%  } else { %>
+
+
+	<div class="container">
+		<header class="jumbotron jumbotron-fluid" id="jumbHome">
+			<div class="container">
+			
+				<h1><b><font color="black">Welcome to <font color="red">e</font><font color="blue">b</font><font color="yellow">a</font><font color="green">y</font> Team.</font></b></h1>
+				<p><font color="black">Ebay team is the best site for markets in the world.<br>
+				Τhe site was created by the best developers to help you make quick and easy markets.</font></p>
+				
+				
+				<div class="form-group">
+					<a class="btn btn-secondary btn-sm" href="#">Continue as a guest</a>
+				</div>
+				
+			<div>
+		</div>
+	</div>
+	
+<% } %>
 
 
 
