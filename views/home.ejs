@@ -4,8 +4,8 @@
 <%  if(currentUser !== undefined)  {        %>
 <%		if(currentUser.role === "seller") {   %>
 			<h1> I am a seller! </h1>
-			<a href="/auctions/<%= currentUser._id  %>"> My auctions </a>
-			<a href="/auctions/<%= currentUser._id  %>/new"> Start new Auction </a>
+			<a href="/auctions"> My auctions </a>
+			<a href="/auctions/new"> Start new Auction </a>
 <%		} %>
 <%		if(currentUser.role === "bidder") {   %>
 			<h1> I am a bidder! </h1>

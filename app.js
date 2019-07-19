@@ -97,35 +97,54 @@ app.get("/managerPage/:userId/disapprove", isLoggedIn, managerIsAuthorised , fun
 });
 
 // SELLER ROUTES
-app.get("/auctions/:id", isLoggedIn, userIsAuthorised, function(req, res) {
+app.get("/auctions", isLoggedIn, function(req, res) {
 	Auction.find({
-		seller: req.user._id
+		seller: req.user._id,
 	}, function(error, foundAuctions) {
-			res.render("auctions.ejs", {currentUser:req.user, auctions:foundAuctions});
+		    if(error) {
+		    	console.log(error);
+		    	res.redirect("/login");
+		    }
+		    else {
+ 				res.render("auctions.ejs", {currentUser:req.user, auctions:foundAuctions});
+		    }
 	});
 });
 
-app.get("/auctions/:id/showBids", isLoggedIn, userIsAuthorised, function(req, res) {
+app.get("/auctions/:id/showBids", isLoggedIn , function(req, res) {
 	Auction.findById({
-		_id: req.params.id
+		 seller: req.user._id,
+		 _id: req.params.id
 	}, function(error, foundAuction) {
 			Bid.find({
 				auction: foundAuction
 			}, function(error, foundBids) {
-				res.render("showBids.ejs", {currentUser:req.user, bids:foundBids});
+			    if(error) {
+			    	console.log(error);
+			    	res.redirect("/login");
+			    }
+			    else {
+			    	res.render("showBids.ejs", {currentUser:req.user, bids:foundBids});
+			    }
 			});
 	});	
 });
 
-app.get("/auctions/:id/new", isLoggedIn, userIsAuthorised, function(req, res) {
+app.get("/auctions/new", isLoggedIn, function(req, res) {
 	User.findById({
-		_id : req.params.id
+		 _id: req.user._id
 	}, function(error, foundUser) {
-		res.render("newAuction.ejs", {currentUser: foundUser});
+		    if(error) {
+		    	console.log(error);
+		    	res.redirect("/login");
+		    }
+		    else {
+		    	res.render("newAuction.ejs", {currentUser: foundUser});
+		    }
 	});
 });
 
-app.post("/auctions/:id", isLoggedIn, userIsAuthorised, function(req, res) {
+app.post("/auctions", isLoggedIn, function(req, res) {
 	Auction.create({
 		name: req.body.name,
 		category: req.body.category,
@@ -153,7 +172,7 @@ app.post("/auctions/:id", isLoggedIn, userIsAuthorised, function(req, res) {
 				});
 			});
 	});
-	res.redirect("/auctions/" + req.params.id);
+	res.redirect("/auctions");
 });
 
 
@@ -352,7 +371,6 @@ function managerIsAuthorised (req, res, next) {
 }
 
 function userIsAuthorised(req, res, next) {
-	console.log("req.user is:" + req.user);
 	User.findById({
 		_id : req.params.id
 	}, function(error, foundUser) {
@@ -361,7 +379,9 @@ function userIsAuthorised(req, res, next) {
 			res.redirect("/login");
 			return;
 		}
-		if(foundUser._id.equals(req.user._id)) {
+		console.log("req.user.id is:" + req.user._id);
+		console.log("foundUser.id is:" + foundUser._id);
+		if(foundUser._id === req.user._id) {
 			return next();
 		}
 		else {
