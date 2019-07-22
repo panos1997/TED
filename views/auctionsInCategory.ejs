@@ -1,0 +1,16 @@
+<% include partials/header.ejs %>
+
+<h3> Here are all the auctions for this category: </h3>
+
+	<%  auctions.forEach( function(auction) {   %>
+			<% if(auction.category === category)  { %>
+				<%= auction %>
+					<a href="/categories/<%= category %>/<%= auction._id %>"> more info </a>	
+					<br>
+			<%	} %>
+	<%   })   %>
+
+
+
+
+<% include partials/footer.ejs %>

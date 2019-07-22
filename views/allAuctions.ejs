@@ -2,16 +2,20 @@
 
 
 	<h1> Here is the bidder home page </h1>
-
-
 	<% if(auctions) { %>
-		<%  auctions.forEach( function(auction) {   %>
-				<%= auction %>
-				<a href="/allAuctions/<%= auction._id %>"> more info </a>	
-				<br>
-		<%   })   %>
-	<% } %>
-
+		<% categories.forEach(function(category) {  %>
+			<%= category %>
+			<br>
+			<%  auctions.forEach( function(auction) {   %>
+					<% if(auction.category === category)  { %>
+						<%= auction %>
+							<a href="/allAuctions/<%= auction._id %>"> more info </a>	
+							<br>
+					<%	} %>
+			<%   })   %>
+			<br>	
+		<% }) %>
+	<% } %>	
 
 
 

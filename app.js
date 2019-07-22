@@ -7,6 +7,7 @@ var Bid = require("./models/bid.js");
 var LocalStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
+var flash = require("connect-flash");
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } ); 
 
@@ -15,6 +16,7 @@ mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(flash());
 
 
 app.use(require("express-session")({
@@ -31,6 +33,14 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function(req, res, next) {
+	res.locals.currentUser = req.user;
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
+	next();
+});
+
+
 //============================================
 app.use(express.static("public"));  // tell express to serve the public dir
 
@@ -41,6 +51,7 @@ app.use(function(req, res, next) {
 });
 
 var roles = ["manager", "seller", "bidder", "visitor"];
+var categories = ["film", "technology", "book","clothes","car"];
 
 // ROUTES
 app.get("/", function(req, res) {
@@ -177,26 +188,39 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 
 
 // BIDDER ROUTES
-app.get("/allAuctions", isLoggedIn, function(req, res) {
+app.get("/categories", function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
 		}
 		console.log(foundAuctions);
-		res.render("allAuctions.ejs", {auctions: foundAuctions});
+		res.render("categories.ejs", {auctions: foundAuctions, categories: categories});
 	});
 });
 
-app.get("/allAuctions/:auctionId", isLoggedIn, function(req, res) {
+app.get("/categories/:category", function(req, res) {
+	Auction.find({
+
+	}, function(error, foundAuctions) {
+		if(error) {
+			console.log(error);
+		}
+		else {
+			res.render("auctionsInCategory.ejs", { category: req.params.category, auctions: foundAuctions});
+		}
+	});
+});
+
+app.get("/categories/:category/:auctionId", function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
-			res.render("auctionInfo.ejs", {auction: foundAuction});
+			res.render("auctionInfo.ejs", {auction: foundAuction, category: req.params.category});
 	})
 });
 
 
-app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
+app.get("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
@@ -204,7 +228,7 @@ app.get("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	});
 });
 
-app.get("/allAuctions/:auctionId/confirmBid", isLoggedIn, function(req, res) {
+app.get("/categories/:category/:auctionId/confirmBid", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
@@ -212,7 +236,7 @@ app.get("/allAuctions/:auctionId/confirmBid", isLoggedIn, function(req, res) {
 	});	
 });
 
-app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
+app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, res) {
 	Bid.create({
 		amount: req.query.amount,
 		time: new Date()
@@ -247,9 +271,7 @@ app.post("/allAuctions/:auctionId/makeBid", isLoggedIn, function(req, res) {
 								console.log(error);
 							}
 						});
-
 				})
-
 		})
 
 	})	
@@ -336,7 +358,10 @@ app.get("/login", function(req, res) {
 	res.render("login.ejs", { currentUser: req.user });
 });
 
-app.post("/login", function(req, res, next) {
+app.post("/login", passport.authenticate("local", {
+	failureRedirect:"/login",
+	failureFlash: true	
+}), function(req, res, next) {
 	User.find({username: req.body.username}, function(error, foundUsers) {
 		if(error) {
 			console.log(error);
@@ -375,6 +400,7 @@ function isLoggedIn(req, res, next) {
 	if(req.isAuthenticated()) {
 		return next();
 	}
+	console.log("he is an" + req.user);
 	res.redirect("/login");
 }
 

@@ -1,0 +1,16 @@
+<% include partials/header.ejs %>
+
+	<h2> Here is the bidder home page </h2>
+
+	<h4> Here are all the categories:</h4>
+
+	<% if(auctions) { %>
+		<% categories.forEach(function(category) {  %>
+			<a href="/categories/<%= category %>"> <%= category %> </a>
+			<br>	
+		<% }) %>
+	<% } %>	
+
+
+
+<% include partials/footer.ejs %>

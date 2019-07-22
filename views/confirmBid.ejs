@@ -3,7 +3,7 @@
 	<h1> Are you sure you want to make this bid? You can not delete it after creation</h1>
 
 
-	<form action="/allAuctions/<%= auction._id %>/makeBid?amount=<%= amount %>"  method="POST">
+	<form action="/categories/<%= category %>/<%= auction._id %>/makeBid?amount=<%= amount %>"  method="POST">
 	    <input type="submit" value="Confirm" />
 	</form>
 

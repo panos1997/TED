@@ -3,7 +3,7 @@
 
 <h1> My bid is: </h1>
 
-<form action = "/allAuctions/<%= auction._id %>/confirmBid" method = "GET">
+<form action = "/categories/<%= category %>/<%= auction._id %>/confirmBid" method = "GET">
 	<input type="text" name="amount" placeholder = "make a bid please">	
 	<button> Submit </button>
 </form>

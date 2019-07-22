@@ -44,3 +44,13 @@
 		</nav>
 <!-- NAVBAR END -->
 	  
+
+
+
+	<% if(error && error.length) { %>
+			<div class="alert alert-danger" role="alert">
+				<div class="container">
+					<%= error %>
+				</div>
+			</div>
+	<% } %>
