@@ -8,7 +8,7 @@
 <div class="container">
 	<h2 style="text-align: center; color: black;">Start new action</h2>
 	<div style="width: 30%; margin: 20px auto;">
-		<form action = "/auctions" method = "POST">
+		<form action = "/auctions/<%= currentUser._id %>" method = "POST">
 		
 		
 		
@@ -21,11 +21,11 @@
 			</div>
 			
 			<div class="form-group">
-					<input class="form-control" type="number" name="Buy_Price:" placeholder = "Buy_Price:">
+					<input class="form-control" type="number" name="Buy_Price" placeholder = "Buy price">
 			</div>
 			
 			<div class="form-group">
-					<input class="form-control" type="number" name="First_Bid" placeholder = "First_Bid">
+					<input class="form-control" type="number" name="First_Bid" placeholder = "First bid">
 			</div>
 		
 			
