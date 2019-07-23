@@ -5,6 +5,7 @@ var User = require("./models/user.js");
 var Auction = require("./models/auction.js");
 var Bid = require("./models/bid.js");
 var LocalStrategy = require("passport-local");
+var methodOverride = require("method-override");	//////////////////////////////
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
 var flash = require("connect-flash");
@@ -17,7 +18,7 @@ mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(flash());
-
+app.use(methodOverride("_method"));			/////////////////////////////
 
 app.use(require("express-session")({
 	secret: "i worth a lot!!!",
@@ -177,10 +178,11 @@ app.put("/auctions/:id", isLoggedIn , function(req, res){
 		 _id: req.params.id
 	}, function(error, updateAuction){
 		if(error){
-			console.log(error);
+			console.log("11111111111111111111111111111111");
 			res.redirect("/auctions");
 		} else {
-			res.render("editAuction.ejs");
+			console.log("22222222222222222222222222");
+			res.redirect("editAuction.ejs");
 		}
 	});
 });
@@ -188,9 +190,17 @@ app.put("/auctions/:id", isLoggedIn , function(req, res){
 
 // remove  auction     /////////////////
 app.delete("/auctions/:id", isLoggedIn, function(req, res){
-	
-	res.send("Try delete");
-	
+	Auction.findByIdAndRemove({
+		seller: req.user._id,
+		 _id: req.params.id
+	},function(error){
+		if(error){
+			console.log("33333333333333333333333333333");
+			res.redirect("/auctions");
+		} else {
+			res.redirect("/auctions");
+		}
+	});
 });
 
 
