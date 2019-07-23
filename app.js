@@ -141,6 +141,59 @@ app.get("/auctions/:id/showBids", isLoggedIn , function(req, res) {
 	});	
 });
 
+
+
+
+
+
+
+/////////
+/////////
+// Edit and update	auction 	/////////////////////////////////////
+
+
+app.get("/auctions/:id/editAuction", isLoggedIn , function(req, res) {
+	Auction.findById({
+		 seller: req.user._id,
+		 _id: req.params.id
+	}, function(error, foundAuction) {
+		if(error){
+			console.log(error);
+			res.redirect("/auctions");
+		} else {
+			res.render("editAuction.ejs", {currentUser:req.user, auctions:foundAuction});
+		}
+	});	
+});
+
+
+
+app.put("/auctions/:id", isLoggedIn , function(req, res){
+	
+	Auction.findByIdAndUpdate({
+		seller: req.user._id,
+		 _id: req.params.id
+	}, function(error, updateAuction){
+		if(error){
+			console.log(error);
+			res.redirect("/auctions");
+		} else {
+			res.redirect("editAuction.ejs");
+		}
+	});
+});
+
+
+////////////////////////////////////////
+
+
+
+
+
+
+
+
+
 app.get("/auctions/new", isLoggedIn, function(req, res) {
 	User.findById({
 		 _id: req.user._id
