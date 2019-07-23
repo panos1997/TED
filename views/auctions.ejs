@@ -17,6 +17,7 @@
 				<th scope="col">Started</th>
 				<th scope="col">Show bids</th>
 				<th scope="col">Edit</th>
+				<th scope="col">Delete</th>
 			</tr>
 		</thead>
 		<tbody style="background-color: #000033;">
@@ -37,6 +38,11 @@
 						<td> </td>
 					<% } %>
 					
+					<% if(auction.Number_of_bids === 0){ %>
+						<td><a href="/auctions/<%= auction._id %>?_method=DELETE"> delete </a></td>
+					<% } else {%>
+						<td> </td>
+					<% } %>
 				</tr>
 			<% })  %>
 		</tbody>
