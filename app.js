@@ -107,6 +107,8 @@ app.get("/managerPage/:userId/disapprove", isLoggedIn, managerIsAuthorised , fun
 	});
 });
 
+
+
 // SELLER ROUTES
 app.get("/auctions", isLoggedIn, function(req, res) {
 	Auction.find({
@@ -149,9 +151,9 @@ app.get("/auctions/:id/showBids", isLoggedIn , function(req, res) {
 
 /////////
 /////////
-// Edit and update	auction 	/////////////////////////////////////
+// Edit , update , delete	auction 	/////////////////////////////////////
 
-
+//edit
 app.get("/auctions/:id/editAuction", isLoggedIn , function(req, res) {
 	Auction.findById({
 		 seller: req.user._id,
@@ -167,7 +169,7 @@ app.get("/auctions/:id/editAuction", isLoggedIn , function(req, res) {
 });
 
 
-
+//update
 app.put("/auctions/:id", isLoggedIn , function(req, res){
 	
 	Auction.findByIdAndUpdate({
@@ -178,13 +180,23 @@ app.put("/auctions/:id", isLoggedIn , function(req, res){
 			console.log(error);
 			res.redirect("/auctions");
 		} else {
-			res.redirect("editAuction.ejs");
+			res.render("editAuction.ejs");
 		}
 	});
 });
 
 
-////////////////////////////////////////
+// remove  auction     /////////////////
+app.delete("/auctions/:id", isLoggedIn, function(req, res){
+	
+	res.send("Try delete");
+	
+});
+
+
+
+////////////////////////////////////////////////////////
+
 
 
 
