@@ -16,6 +16,7 @@
 				<th scope="col">Number of bids</th>
 				<th scope="col">Started</th>
 				<th scope="col">Show bids</th>
+				<th scope="col">Edit</th>
 			</tr>
 		</thead>
 		<tbody style="background-color: #000033;">
@@ -29,6 +30,13 @@
 					<td><%= auction.Number_of_bids %></td>
 					<td><%= auction.Started %></td>
 					<td><a href="/auctions/<%= auction._id %>/showBids"> show bids </a></td>
+					
+					<% if(auction.Number_of_bids === 0){ %>
+						<td><a href="/auctions/<%= auction._id %>/editAuction"> edit </a></td>
+					<% } else {%>
+						<td> </td>
+					<% } %>
+					
 				</tr>
 			<% })  %>
 		</tbody>
