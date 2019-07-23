@@ -164,7 +164,7 @@ app.get("/auctions/:id/editAuction", isLoggedIn , function(req, res) {
 			console.log(error);
 			res.redirect("/auctions");
 		} else {
-			res.render("editAuction.ejs", {currentUser:req.user, auctions:foundAuction});
+			res.render("editAuction.ejs", {currentUser:req.user, auction:foundAuction});
 		}
 	});	
 });
@@ -174,15 +174,14 @@ app.get("/auctions/:id/editAuction", isLoggedIn , function(req, res) {
 app.put("/auctions/:id", isLoggedIn , function(req, res){
 	
 	Auction.findByIdAndUpdate({
-		seller: req.user._id,
+		seller: req.user._id, 
 		 _id: req.params.id
-	}, function(error, updateAuction){
+	}, req.body.auction, function(error, updatedAuction){
 		if(error){
-			console.log("11111111111111111111111111111111");
+			console.log(error);
 			res.redirect("/auctions");
 		} else {
-			console.log("22222222222222222222222222");
-			res.redirect("editAuction.ejs");
+			res.redirect("/auctions");
 		}
 	});
 });
@@ -191,11 +190,11 @@ app.put("/auctions/:id", isLoggedIn , function(req, res){
 // remove  auction     /////////////////
 app.delete("/auctions/:id", isLoggedIn, function(req, res){
 	Auction.findByIdAndRemove({
-		seller: req.user._id,
+		  seller: req.user._id,
 		 _id: req.params.id
 	},function(error){
 		if(error){
-			console.log("33333333333333333333333333333");
+			console.log(error);
 			res.redirect("/auctions");
 		} else {
 			res.redirect("/auctions");

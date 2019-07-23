@@ -40,7 +40,7 @@
 					
 					<% if(auction.Number_of_bids === 0){ %>
 						<td>
-							<form action="/auctions/ <%= auction._id %>?_method=DELETE" method="POST">
+							<form action="/auctions/<%= auction._id %>?_method=DELETE" method="POST">
 								<button class"btn">delete</button>
 							</form>
 						</td>

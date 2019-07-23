@@ -2,26 +2,26 @@
 
 
 <div class="container">
-	<h2 style="text-align: center; color: black;">Edit <%= auctions.name %></h2>
+	<h2 style="text-align: center; color: black;">Edit <%= auction.name %></h2>
 	<div style="width: 30%; margin: 20px auto;">
-		<form action="/auctions/ <%= auctions._id %>?_method=PUT" method="POST">
+		<form action="/auctions/<%= auction._id %>?_method=PUT" method="POST">
 		
 		
 		
 			<div class="form-group">
-					<input class="form-control" type="text" name="auctions[name]" placeholder = "New name">
+					<input class="form-control" type="text" name="auction[name]" placeholder = "New name" value="<%= auction.name %>">
 			</div>
 			
 			<div class="form-group">
-					<input class="form-control" type="text" name="auctions[category]" placeholder = "New category">
+					<input class="form-control" type="text" name="auction[category]" placeholder = "New category" value="<%= auction.category %>">
 			</div>
 			
 			<div class="form-group">
-					<input class="form-control" type="number" name="auctions[Buy_Price]" placeholder = "Buy price">
+					<input class="form-control" type="number" name="auction[Buy_Price]" placeholder = "Buy price" value="<%= auction.Buy_Price %>">
 			</div>
 			
 			<div class="form-group">
-					<input class="form-control" type="number" name="auctions[First_Bid]" placeholder = "First bid">
+					<input class="form-control" type="number" name="auction[First_Bid]" placeholder = "First bid" value="<%= auction.First_Bid %>">
 			</div>
 		
 			
