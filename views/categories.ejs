@@ -4,6 +4,14 @@
 
 	<h4> Here are all the categories:</h4>
 
+<div class="container">
+	<div style="width: 30%; margin: 20px auto;">
+
+<button> <a href="/search"> Search </a> </button>
+
+<br>
+<br>
+
 	<% if(auctions) { %>
 		<% categories.forEach(function(category) {  %>
 			<a href="/categories/<%= category %>"> <%= category %> </a>
@@ -11,6 +19,8 @@
 		<% }) %>
 	<% } %>	
 
+	</div>
+</div>	
 
 
 <% include partials/footer.ejs %>

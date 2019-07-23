@@ -353,6 +353,35 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 });
 
 
+app.get("/search", function(req, res) {
+	res.render("search.ejs");
+});
+
+
+app.post("/search", function(req, res) {
+	var auction = {};
+	if(req.body.auction.name.length !== 0) {
+		auction.name = req.body.auction.name;
+	}
+	if(req.body.auction.category.length !== 0) {
+		auction.category = req.body.auction.category;
+	}
+	console.log(typeof auction);
+	console.log(auction);
+	Auction.find(
+		auction
+	, function(error, foundAuctions) {
+		if(error) {
+			console.log(error);
+		}
+		else {
+			console.log(foundAuctions);
+		}
+	});
+	res.redirect("/search");
+});
+
+
 
 app.get("/register/user_exist", function(req, res){
 	res.render("user_exist.ejs");
