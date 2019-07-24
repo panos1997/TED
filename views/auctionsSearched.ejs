@@ -1,0 +1,13 @@
+<% include partials/header.ejs %>
+
+
+	<h1> The results are: </h1>
+	<% auctions.forEach( function(auction) { %>
+	    <br>
+		<%= auction %>
+		<% if(currentUser !== undefined) { %>
+			<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> make a bid </a>
+		<% } %>
+	<% }) %>
+
+<% include partials/footer.ejs %>

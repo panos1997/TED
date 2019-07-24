@@ -363,24 +363,25 @@ app.post("/search", function(req, res) {
 	if(req.body.auction.name.length !== 0) {
 		auction.name = req.body.auction.name;
 	}
-	if(req.body.auction.category.length !== 0) {
+	if(req.body.auction.category.length !== 0 ) {
 		auction.category = req.body.auction.category;
 	}
-	console.log(typeof auction);
 	console.log(auction);
+	console.log(req.body.auction.name, req.body.auction.name.length);
+	console.log(req.body.auction.category, req.body.auction.category.length);
 	Auction.find(
 		auction
 	, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
+			res.redirect("/search");
 		}
 		else {
 			console.log(foundAuctions);
+			res.render("auctionsSearched.ejs", {auctions: foundAuctions});			
 		}
 	});
-	res.redirect("/search");
 });
-
 
 
 app.get("/register/user_exist", function(req, res){
