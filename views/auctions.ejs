@@ -8,13 +8,14 @@
 	<table class="table">
 		<thead class="thead-dark">
 			<tr>
+				<th scope="col">ItemId</th>
 				<th scope="col">Name</th>
 				<th scope="col">Category</th>
-				<th scope="col">First bid</th>
-				<th scope="col">Currently</th>
 				<th scope="col">Buy price</th>
 				<th scope="col">Number of bids</th>
 				<th scope="col">Started</th>
+				<th scope="col">Ends</th>
+				<th scope="col">Description</th>
 				<th scope="col">Show bids</th>
 				<th scope="col">Edit</th>
 				<th scope="col">Delete</th>
@@ -23,13 +24,14 @@
 		<tbody style="background-color: #000033;">
 			<% auctions.forEach(function(auction) {  %>
 				<tr>
+					<td><%= auction.ItemId %></td>
 					<td><%= auction.name %></td>
 					<td><%= auction.category %></td>
-					<td><%= auction.First_Bid %></td>
-					<td><%= auction.Currently %></td>
 					<td><%= auction.Buy_Price %></td>
 					<td><%= auction.Number_of_bids %></td>
 					<td><%= auction.Started %></td>
+					<td><%= auction.Ends %></td>
+					<td><%= auction.Description %></td>
 					<td><a href="/auctions/<%= auction._id %>/showBids"> show bids </a></td>
 					
 					<% if(auction.Number_of_bids === 0){ %>

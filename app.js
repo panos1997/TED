@@ -9,11 +9,16 @@ var methodOverride = require("method-override");	//////////////////////////////
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
 var flash = require("connect-flash");
+var https = require('https');
+var fs = require('fs');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } ); 
 
 
 // =========================================
+var privateKey  = fs.readFileSync("key.pem", 'utf8');//ssl
+var certificate = fs.readFileSync("cert.pem", 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -229,15 +234,34 @@ app.get("/auctions/new", isLoggedIn, function(req, res) {
 	});
 });
 
+
+
+
+function take_id(){
+	var time =  new Date().getTime();
+	var a = parseInt(time, 10);
+	a = a + 1;
+	return a;
+}
+
 app.post("/auctions", isLoggedIn, function(req, res) {
 	Auction.create({
-		name: req.body.name,
-		category: req.body.category,
-		First_Bid: req.body.First_Bid,
-		Currently: req.body.First_Bid,
-		Buy_Price: req.body.Buy_Price,
+		name: 		req.body.name,
+		category: 	req.body.category,
+		First_Bid: 	req.body.First_Bid,
+		Currently: 	req.body.First_Bid,
+		Buy_Price: 	req.body.Buy_Price,
 		Number_of_bids: 0,
-		Started: new Date()
+		Started:	 new Date(),
+		
+		
+		Ends: 		 req.body.Ends,
+		ItemId:	  	 take_id(),
+		Location: 	 req.body.Location,
+		Country:  	 req.body.Country,
+		Description: req.body.Description
+		
+		
 	}, function(error, newAuction) {
 			if(error) {
 				console.log(error);
@@ -471,8 +495,9 @@ app.post("/login", passport.authenticate("local", {
 			console.log(error);
 		} 
 		if(foundUsers[0].request === "pending") {
-			res.send("your request has not been approved yet,sorry");
-			return;
+			//res.send("your request has not been approved yet,sorry");
+			res.render("request_approved.ejs");				// prosthesa auto
+			//return;
 		}
 	});
 	passport.authenticate("local", function(error, user){
