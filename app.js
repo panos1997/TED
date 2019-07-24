@@ -16,8 +16,8 @@ mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
 
 // =========================================
-var privateKey  = fs.readFileSync("./openssl/key.pem", 'utf8');//ssl
-var certificate = fs.readFileSync("./openssl/cert.pem", 'utf8');
+var privateKey  = fs.readFileSync("key.pem", 'utf8');//ssl
+var certificate = fs.readFileSync("cert.pem", 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 var app = express();
