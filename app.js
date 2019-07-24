@@ -9,11 +9,16 @@ var methodOverride = require("method-override");	//////////////////////////////
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
 var flash = require("connect-flash");
+var https = require('https');
+var fs = require('fs');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } ); 
 
 
 // =========================================
+var privateKey  = fs.readFileSync("./openssl/key.pem", 'utf8');//ssl
+var certificate = fs.readFileSync("./openssl/cert.pem", 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
