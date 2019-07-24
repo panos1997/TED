@@ -229,15 +229,34 @@ app.get("/auctions/new", isLoggedIn, function(req, res) {
 	});
 });
 
+
+
+
+function take_id(){
+	var time =  new Date().getTime();
+	var a = parseInt(time, 10);
+	a = a + 1;
+	return a;
+}
+
 app.post("/auctions", isLoggedIn, function(req, res) {
 	Auction.create({
-		name: req.body.name,
-		category: req.body.category,
-		First_Bid: req.body.First_Bid,
-		Currently: req.body.First_Bid,
-		Buy_Price: req.body.Buy_Price,
+		name: 		req.body.name,
+		category: 	req.body.category,
+		First_Bid: 	req.body.First_Bid,
+		Currently: 	req.body.First_Bid,
+		Buy_Price: 	req.body.Buy_Price,
 		Number_of_bids: 0,
-		Started: new Date()
+		Started:	 new Date(),
+		
+		
+		Ends: 		 req.body.Ends,
+		ItemId:	  	 take_id(),
+		Location: 	 req.body.Location,
+		Country:  	 req.body.Country,
+		Description: req.body.Description
+		
+		
 	}, function(error, newAuction) {
 			if(error) {
 				console.log(error);
