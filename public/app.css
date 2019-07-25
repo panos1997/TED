@@ -41,3 +41,43 @@ div.form-row {
     box-sizing: border-box
 } 
 
+.features-icons {
+	margin-top: 10%;
+	background-color: #a4b1ba;
+	text-align: center;
+	margin-bottom: 3%;
+}
+
+
+#jumbHome {
+	margin-top: 3%;
+}
+
+#search {
+	padding-right: 4.7em;
+}
+
+#categoriesButton {
+	margin-top: 0.4em;
+	padding-right: 0.5em;
+}
+
+#searchDiv {
+	margin-top: -2%;
+}
+
+.sellerPicture {
+  float: left;
+  width: 50%;
+  padding: 5px;
+  margin-top: 7%;
+}
+
+.sellerPictureTitle {
+	margin-left: 6em;
+	color: black;
+}
+
+img {
+	max-height: 20em;
+}

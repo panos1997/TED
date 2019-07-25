@@ -56,8 +56,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-var roles = ["manager", "seller", "bidder", "visitor"];
-var categories = ["film", "technology", "book","clothes","car"];
+var roles = ["manager", "seller", "bidder"];
+var categories = ["Home", "Fashion", "Health","Sports","Books","Movies","Toys","Electronics","Art","Houses"];
+
 
 // ROUTES
 app.get("/index", function(req, res) {
@@ -388,15 +389,12 @@ app.get("/search", function(req, res) {
 
 app.post("/search", function(req, res) {
 	var auction = {};
-	if(req.body.auction.name.length !== 0) {
+	if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
 		auction.name = req.body.auction.name;
 	}
-	if(req.body.auction.category.length !== 0 ) {
+	if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
 		auction.category = req.body.auction.category;
 	}
-	console.log(auction);
-	console.log(req.body.auction.name, req.body.auction.name.length);
-	console.log(req.body.auction.category, req.body.auction.category.length);
 	Auction.find(
 		auction
 	, function(error, foundAuctions) {
