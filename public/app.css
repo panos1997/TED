@@ -3,9 +3,12 @@ body, html {
   width: 100%;
 }
 
-body {
-	font-family: Lato;
 
+body {
+	background: url(https://cdn.wallpapersafari.com/11/38/Qugyhf.jpg);
+	background-size: 1370px 660px;
+	background-repeat: no-repeat;
+	font-family: Lato;
 }
 
 
