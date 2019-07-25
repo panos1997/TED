@@ -60,6 +60,10 @@ var roles = ["manager", "seller", "bidder", "visitor"];
 var categories = ["film", "technology", "book","clothes","car"];
 
 // ROUTES
+app.get("/index", function(req, res) {
+	res.render("index.ejs");
+});
+
 app.get("/", function(req, res) {
 	res.render("home.ejs", {currentUser : req.user});
 });

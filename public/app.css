@@ -1,12 +1,14 @@
 body, html {
   height: 100%;
+  width: 100%;
 }
 
 body {
-	background-size: 1370px 660px;
-	background-repeat: no-repeat;
 	font-family: Lato;
+	background-color: #292f34;
 }
+
+
 
 
 #logged {
@@ -19,4 +21,6 @@ body {
 
 #jumbHome {
 	opacity: 0.7;
+	height: 40vh;
+	text-align: center;
 }
