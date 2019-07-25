@@ -12,12 +12,12 @@ var flash = require("connect-flash");
 var https = require('https');
 var fs = require('fs');
 
-mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } ); 
+mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
 
 // =========================================
-var privateKey  = fs.readFileSync("key.pem", 'utf8');//ssl
-var certificate = fs.readFileSync("cert.pem", 'utf8');
+var privateKey  = fs.readFileSync("./openssl/key.pem", 'utf8');//ssl
+var certificate = fs.readFileSync("./openssl/cert.pem", 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 var app = express();
@@ -81,9 +81,9 @@ app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
 app.get("/managerPage", isLoggedIn, managerIsAuthorised , function(req, res) {
 	console.log(req.user._id);
 	console.log("inside managerPage route");
-	User.find({}, function(error, foundUsers) { 
+	User.find({}, function(error, foundUsers) {
 		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
-	}); 
+	});
 });
 
 app.get("/managerPage/:userId", isLoggedIn, managerIsAuthorised , function(req, res) {
@@ -150,7 +150,7 @@ app.get("/auctions/:id/showBids", isLoggedIn , function(req, res) {
 			    	res.render("showBids.ejs", {currentUser:req.user, bids:foundBids});
 			    }
 			});
-	});	
+	});
 });
 
 
@@ -175,15 +175,15 @@ app.get("/auctions/:id/editAuction", isLoggedIn , function(req, res) {
 		} else {
 			res.render("editAuction.ejs", {currentUser:req.user, auction:foundAuction});
 		}
-	});	
+	});
 });
 
 
 //update
 app.put("/auctions/:id", isLoggedIn , function(req, res){
-	
+
 	Auction.findByIdAndUpdate({
-		seller: req.user._id, 
+		seller: req.user._id,
 		 _id: req.params.id
 	}, req.body.auction, function(error, updatedAuction){
 		if(error){
@@ -257,20 +257,20 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 		Buy_Price: 	req.body.Buy_Price,
 		Number_of_bids: 0,
 		Started:	 new Date(),
-		
-		
+
+
 		Ends: 		 req.body.Ends,
 		ItemId:	  	 take_id(),
 		Location: 	 req.body.Location,
 		Country:  	 req.body.Country,
 		Description: req.body.Description
-		
-		
+
+
 	}, function(error, newAuction) {
 			if(error) {
 				console.log(error);
 			}
-			User.findById({ 
+			User.findById({
 				_id: req.user._id
 			}, function(error, foundUser) {
 				console.log("found user is :" + foundUser);
@@ -335,7 +335,7 @@ app.get("/categories/:category/:auctionId/confirmBid", isLoggedIn, function(req,
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
 			res.render("confirmBid.ejs", {auction: foundAuction, amount: req.query.amount});
-	});	
+	});
 });
 
 app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, res) {
@@ -376,7 +376,7 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 				})
 		})
 
-	})	
+	})
 	res.send("perfect, you made a bid");
 });
 
@@ -428,14 +428,14 @@ app.post("/register", function(req, res) {
 		return res.render("user_exist.ejs");
 	}
 	////////////////////////////////////////
-	
-	
+
+
 	if(req.body.role === "manager") {
-		var newUser = new User({username: req.body.username, 
+		var newUser = new User({username: req.body.username,
 								password_again: req.body.password_again,
 								role: req.body.role,
 								request: "approved",
-								 
+
 								firstname: req.body.firstname,
 								lastname: req.body.lastname,
 								email: req.body.email,
@@ -449,19 +449,19 @@ app.post("/register", function(req, res) {
 				//return res.render("user_exist.ejs");///// mallon auto xreiazetai kai oxi to apo katw
 				res.render("register.ejs");
 			}
-																			// if the registration of the user is done correctly 
+																			// if the registration of the user is done correctly
 			passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
 				return res.redirect('/managerPage/' + req.user._id);												// but there are 300 strategies (px twitter, facebook klp)
 			});
-		});		
+		});
 	}
-	
-	
+
+
 	var newUser = new User({username: req.body.username,
 							password_again: req.body.password_again,
 							role: req.body.role,
 							request: "pending",
-									 
+
 							firstname: req.body.firstname,
 							lastname: req.body.lastname,
 							email: req.body.email,
@@ -469,14 +469,14 @@ app.post("/register", function(req, res) {
 							address: req.body.address,
 							location: req.body.location
 						});
-	
+
 	User.register(newUser, req.body.password, function(err, user) {
 		if(err) {
 			console.log("error is: " + err);
 			return res.render("user_exist.ejs");
 			//res.render("register.ejs");
 		}
-																		// if the registration of the user is done correctly 
+																		// if the registration of the user is done correctly
 		passport.authenticate("local")(req, res , function() { 	// we authenticate the user (here we use the 'local' strategy)
 			res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
 		});
@@ -492,12 +492,12 @@ app.get("/login", function(req, res) {
 
 app.post("/login", passport.authenticate("local", {
 	failureRedirect:"/login",
-	failureFlash: true	
+	failureFlash: true
 }), function(req, res, next) {
 	User.find({username: req.body.username}, function(error, foundUsers) {
 		if(error) {
 			console.log(error);
-		} 
+		}
 		if(foundUsers[0].request === "pending") {
 			//res.send("your request has not been approved yet,sorry");
 			res.render("request_approved.ejs");				// prosthesa auto
@@ -506,14 +506,14 @@ app.post("/login", passport.authenticate("local", {
 	});
 	passport.authenticate("local", function(error, user){
 		req.logIn(user, function(err) {
-      		if (err) { 
-      			return next(err); 
+      		if (err) {
+      			return next(err);
       		}
       		console.log(user);
       		if(user.role == "manager") {
       			return res.redirect('/managerPage');
       		}
-      		else  
+      		else
       			return res.redirect('/');
     	});
 	})(req, res, next);
@@ -574,7 +574,7 @@ function userIsAuthorised(req, res, next) {
 		else {
 			res.redirect("/login");
 		}
-	});	
+	});
 }
 
 
