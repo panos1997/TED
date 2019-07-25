@@ -5,7 +5,7 @@ body, html {
 
 body {
 	font-family: Lato;
-	background-color: #292f34;
+
 }
 
 
@@ -24,3 +24,20 @@ body {
 	height: 40vh;
 	text-align: center;
 }
+
+.form-row {
+	margin-top: -10%;
+}
+
+div.form-row {
+	margin-top: 8%;
+}
+
+.dropdown {
+	display: inline;
+}
+
+* {
+    box-sizing: border-box
+} 
+

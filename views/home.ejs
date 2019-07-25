@@ -3,6 +3,45 @@
 <link rel="stylesheet" type="text/css" href="/index.css">
 
 
+  <!-- Masthead -->
+  <header class="masthead  text-center">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+     
+
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+          <form>
+            <div class="form-row">
+     	            <div class="col-4 col-md-4 ">
+					
+							  <a class="btn btn-primary dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    Dropdown link
+							  </a>
+
+							  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							    <a class="dropdown-item" href="#">Action</a>
+							    <a class="dropdown-item" href="#">Another action</a>
+							    <a class="dropdown-item" href="#">Something else here</a>
+							  </div>
+						
+	               </div>  
+	              <div class="col-6 col-md-6 ">
+	                <input type="email" class="form-control form-control-lg" placeholder="Search for anything here...">
+	              </div>
+
+	              <div class="col-2 col-md-2">
+	                <button type="submit" class="btn btn-block btn-lg btn-primary ">Sign up!</button>
+	              </div>          
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
 <%  if(currentUser !== undefined)  {        %>
 	<%	if(currentUser.role === "seller" && currentUser.request !== "pending") {   %>
 			<div class="container">
@@ -70,6 +109,7 @@
 			<div>
 		</div>
 	</div>
+
 
 
   <!-- Icons Grid -->
