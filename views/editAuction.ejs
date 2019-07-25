@@ -11,8 +11,24 @@
 			</div>
 			
 			<div class="form-group">
-					<input class="form-control" type="text" name="auction[category]" placeholder = "New category" value="<%= auction.category %>">
-			</div>
+					<select class="form-control" type="text" name="auction[category]" value="<%= auction.category %>">
+					
+					option>Home</option>
+  					<option>Fashion</option>
+  					<option>Health</option>
+  					<option>Sports</option>
+					
+					<option>Books</option>
+  					<option>Movies</option>
+  					<option>Toys</option>
+  					<option>Electronics</option>
+					
+					<option>Art</option>
+  					<option>Houses</option>
+					
+					</select>
+			</div>		
+			
 			
 			<div class="form-group">
 					<input class="form-control" type="number" name="auction[Buy_Price]" placeholder = "Buy price" value="<%= auction.Buy_Price %>">
@@ -22,9 +38,22 @@
 					<input class="form-control" type="number" name="auction[First_Bid]" placeholder = "First bid" value="<%= auction.First_Bid %>">
 			</div>
 		
+			<div class="form-group">
+				<input class="form-control" type="text" name="auction[Location]" placeholder = "Location" value="<%= auction.Location %>">
+			</div>
 			
+			<div class="form-group">
+				<input class="form-control" type="date" name="auction[Ends]" placeholder = "Ends Date" value="<%= auction.Ends %>">
+			</div>
 			
+			<div class="form-group">
+				<input class="form-control" type="text" name="auction[Image]" placeholder = "Image" value="<%= auction.Image %>">
+			</div>
 			
+			<div class="form-group">
+				<input class="form-control" type="text" name="auction[Description]" placeholder = "Description" value="<%= auction.Description %>">
+			</div>
+
 			
 			
 			

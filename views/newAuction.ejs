@@ -8,14 +8,28 @@
 		<form action = "/auctions" method = "POST">
 		
 		
-		
 			<div class="form-group" id="testform">
 					<input class="form-control" type="text" name="name" placeholder = "Name">
 			</div>
 			
+			
 			<div class="form-group">
-					<input class="form-control" type="text" name="category" placeholder = "Category">
+				<select class="form-control selectpicker show-tick" name="category">
+  					<option>Home</option>
+  					<option>Fashion</option>
+  					<option>Health</option>
+  					<option>Sports</option>
+					
+					<option>Books</option>
+  					<option>Movies</option>
+  					<option>Toys</option>
+  					<option>Electronics</option>
+					
+					<option>Art</option>
+  					<option>Houses</option>
+				</select>
 			</div>
+			
 			
 			<div class="form-group">
 					<input class="form-control" type="number" name="Buy_Price" placeholder = "Buy price">
@@ -38,11 +52,12 @@
 				<input class="form-control" type="date" name="Ends" placeholder = "Ends Date">
 			</div>
 			
-			
-			
+			<div class="form-group">
+					<input class="form-control" type="text" name="Image" placeholder="Image url">
+			</div>
 			
 			<div class="form-group">
-				<textarea form ="testform" name="Description" rows="3" cols="39" >Description...</textarea>
+					<input class="form-control" type="text" name="Description" placeholder="Description">
 			</div>
 			
 			
