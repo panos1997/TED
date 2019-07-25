@@ -10,7 +10,7 @@ var auctionSchema = new mongoose.Schema({
 	ItemId:	Number,
 	Location: String,
 	Country: String,
-	
+	Image:	String,
 	
 	
 	bids: [
