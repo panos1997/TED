@@ -264,7 +264,8 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 		ItemId:	  	 take_id(),
 		Location: 	 req.body.Location,
 		Country:  	 req.body.Country,
-		Description: req.body.Description
+		Description: req.body.Description,
+		Image:		 req.body.Image
 
 
 	}, function(error, newAuction) {
