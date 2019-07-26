@@ -611,13 +611,6 @@ function userIsAuthorised(req, res, next) {
 	});
 }
 
-// function geocodeAddress(address, callback) {//function gia na paroume latitude longitude
-//     var latlng = new Array(2);
-//     geocoder.geocode( { 'address': address}, function(result,status) {
-//       callback(result); // call the callback function here
-//     });
-// }
-
 app.listen(3000, function() {
 	console.log("auctions app server has started!!!");
 });
