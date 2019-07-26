@@ -5,13 +5,14 @@ var User = require("./models/user.js");
 var Auction = require("./models/auction.js");
 var Bid = require("./models/bid.js");
 var LocalStrategy = require("passport-local");
-var methodOverride = require("method-override");	//////////////////////////////
+var methodOverride = require("method-override");
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
 var flash = require("connect-flash");
 var https = require('https');
 var fs = require('fs');
 var dateFormat = require('dateformat');
+var NodeGeocoder = require('node-geocoder');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
@@ -39,6 +40,12 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+var geocoder = NodeGeocoder({
+  provider: 'opencage',
+  apiKey: '062cb74b3f8b4cf39bb883f570a50543', // for Mapquest, OpenCage, Google Premier
+  //formatter: null         // 'gpx', 'string', ...
+});
 
 app.use(function(req, res, next) {
 	res.locals.currentUser = req.user;
@@ -336,7 +343,18 @@ app.get("/categories/:category/:auctionId", function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
-			res.render("auctionInfo.ejs", {auction: foundAuction, category: req.params.category});
+		if(error){
+			console.log(error);
+		} else {
+			 loc=foundAuction.Location+" "+foundAuction.Country;
+			 console.log(loc);
+			 geocoder.geocode(loc, function(err,result) {
+				 console.log(result);
+					var lat=result[0].latitude;
+					var lng=result[0].longitude;
+					res.render("auctionInfo.ejs", {auction: foundAuction, category: req.params.category,latitude:lat,longitude:lng});
+			});
+		}
 	})
 });
 
@@ -422,7 +440,7 @@ app.post("/search", function(req, res) {
 		}
 		else {
 			console.log(foundAuctions);
-			res.render("auctionsSearched.ejs", {auctions: foundAuctions});			
+			res.render("auctionsSearched.ejs", {auctions: foundAuctions});
 		}
 	});
 });
@@ -593,6 +611,12 @@ function userIsAuthorised(req, res, next) {
 	});
 }
 
+// function geocodeAddress(address, callback) {//function gia na paroume latitude longitude
+//     var latlng = new Array(2);
+//     geocoder.geocode( { 'address': address}, function(result,status) {
+//       callback(result); // call the callback function here
+//     });
+// }
 
 app.listen(3000, function() {
 	console.log("auctions app server has started!!!");

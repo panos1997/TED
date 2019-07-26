@@ -7,7 +7,7 @@
 
 			<h2 align="center"><b> More info about this auction: </b></h2>
 			<br>
-			
+
 			<img src="<%= auction.Image %>" class="img-fluid" alt="Responsive image">
 
 			<br>
@@ -24,8 +24,29 @@
 			<h4><b>Ends:</b> <%= auction.Ends %> </h4>
 			<h4><b>Number_of_bids:</b> <%= auction.Number_of_bids %> </h4>
 			<h4><b>Description:</b> <%= auction.Description %> </h4>
-			
-			
+			<div id="mapdiv" style="height:250px"></div>
+		  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+		  <script>
+		    map = new OpenLayers.Map("mapdiv");
+		    map.addLayer(new OpenLayers.Layer.OSM());
+
+		    var lonLat = new OpenLayers.LonLat( <%= longitude %>,<%= latitude %> ) //-0.1279688 ,51.5077286
+		          .transform(
+		            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+		            map.getProjectionObject() // to Spherical Mercator Projection
+		          );
+
+		    var zoom=16;
+
+		    var markers = new OpenLayers.Layer.Markers( "Markers" );
+		    map.addLayer(markers);
+
+		    markers.addMarker(new OpenLayers.Marker(lonLat));
+
+		    map.setCenter (lonLat, zoom);
+		  </script>
+
+
 			<% if(currentUser !== undefined) { %>
 				<a href="/categories/<%= category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
 			<% } %>
