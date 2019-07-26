@@ -27,12 +27,14 @@
 			
 			
 			<% if(currentUser !== undefined) { %>
-				<a href="/categories/<%= category %>/<%= auction._id %>/makeBid"> make a bid </a>
+				<a href="/categories/<%= category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
 			<% } %>
 
-
+			<div class="container">
+				<br>
+				<a href="/categories/Sports" class="btn btn-primary">Go Back</a>
+			</div>
 		</div>
-		<a href="/categories/Sports" class="btn btn-primary">Go Back</a>
 	</header>
 </div>
 

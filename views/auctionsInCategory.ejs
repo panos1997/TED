@@ -13,14 +13,20 @@
 					<img class="card-img-top" style="height:250px" src="<%= auction.Image %>" alt="Card image">
 					
 					<div class="container">
-					<h4 class="card-title mt-2"><b><%= auction.name %></b></4>
+						<h4 class="card-title mt-2"><b><%= auction.name %></b></4>
+						
+						<h5><b>Buy price:</b> $<%= auction.Buy_Price %></h5>
+						<h5><b>Start:</b> <%= auction.Started %> </h5>
+						<h5><b>Ends:</b> <font color="red"><%= auction.Ends %></font> </h5>
+						<br>
+						
+						<p class="card-text"> <%= auction.Description %> </p>
+						<a href="/categories/<%= category %>/<%= auction._id %>" class="btn btn-primary">More Info</a>
+						
+						<% if(currentUser !== undefined) { %>
+							<a href="/categories/<%= category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
+						<% } %>
 					
-					<h5>Start: <%= auction.Started %> </h5>
-					<h5>Ends: <font color="red"><%= auction.Ends %></font> </h5>
-					<br>
-					
-					<p class="card-text"> <%= auction.Description %> </p>
-					<a href="/categories/<%= category %>/<%= auction._id %>" class="btn btn-primary">More Info</a>
 					</div>
 				</div>
 			<% } %>
