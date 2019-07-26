@@ -23,8 +23,8 @@ var auctionSchema = new mongoose.Schema({
 	],
 	Buy_Price: Number,
 	Number_of_bids: Number,
-	Started: Date,
-	Ends: Date,
+	Started: String,
+	Ends: String,
 	Description: String
 });
 

@@ -11,6 +11,7 @@ var bodyParser = require("body-parser");
 var flash = require("connect-flash");
 var https = require('https');
 var fs = require('fs');
+var dateFormat = require('dateformat');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
@@ -250,6 +251,9 @@ function take_id(){
 }
 
 app.post("/auctions", isLoggedIn, function(req, res) {
+	var now = new Date();
+	var date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+	console.log("GEIAAAAAAAAAAAAA" + typeof date);
 	Auction.create({
 		name: 		req.body.name,
 		category: 	req.body.category,
@@ -257,8 +261,7 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 		Currently: 	req.body.First_Bid,
 		Buy_Price: 	req.body.Buy_Price,
 		Number_of_bids: 0,
-		Started:	 new Date(),
-
+		Started:	 date,
 
 		Ends: 		 req.body.Ends,
 		ItemId:	  	 take_id(),
@@ -292,6 +295,20 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 
 
 // BIDDER ROUTES
+
+app.get("/bids", isLoggedIn, function(req, res) {
+	Bid.find({
+		bidder: req.user._id
+	}, function(error, foundBids) {
+			if(error) {
+				console.log(error);
+			}
+			else {
+				res.render("bids.ejs", {bids:foundBids});
+			}
+	});
+});
+
 app.get("/categories", function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {
 		if(error) {
