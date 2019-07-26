@@ -1,14 +1,34 @@
 <% include partials/header.ejs %>
 
-<h3> Here are all the auctions for this category: </h3>
 
-	<%  auctions.forEach( function(auction) {   %>
-			<% if(auction.category === category)  { %>
-				<%= auction %>
-					<a href="/categories/<%= category %>/<%= auction._id %>"> more info </a>	
+<div class="container">
+	<br>
+	<h2 align="center"> Here are all the auctions for this category: </h2>
+	<br>
+	<div class="card-deck">
+		<%  auctions.forEach( function(auction) {   %>
+				<div class="card body bg-light">
+				
+					<img class="card-img-top" style="height:250px" src="<%= auction.Image %>" alt="Card image">
+					
+					<div class="container">
+					<h4 class="card-title mt-2"><b><%= auction.name %></b></4>
+					
+					<h5>Start: <%= auction.Started %> </h5>
+					<h5>Ends: <font color="red"><%= auction.Ends %></font> </h5>
 					<br>
-			<%	} %>
-	<%   })   %>
+					
+					<p class="card-text"> <%= auction.Description %> </p>
+					<a href="/categories/<%= category %>/<%= auction._id %>" class="btn btn-primary">More Info</a>
+					
+					</div>
+				</div>
+		<% }); %>
+	</div>
+	<br>
+	<a href="/categories" class="btn btn-primary">Go Back</a>
+</div>
+
 
 
 

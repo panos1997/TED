@@ -1,11 +1,41 @@
 <% include partials/header.ejs %>
 
-	<h1> more info about this auction: </h1>
 
-	<%= auction %>
-	<% if(currentUser !== undefined) { %>
-		<a href="/categories/<%= category %>/<%= auction._id %>/makeBid"> make a bid </a>
-	<% } %>
+<div class="container">
+	<header class="jumbotron">
+		<div class="container">
+
+			<h2 align="center"> more info about this auction: </h2>
+			<br>
+			
+			<img src="<%= auction.Image %>" class="img-fluid" alt="Responsive image">
+
+			<br>
+			<br>
+			<h4>Name: <%= auction.name %> </h4>
+			<h4>ItemId: <%= auction.ItemId %> </h4>
+			<h4>Category: <%= auction.category %> </h4>
+			<h4>Buy price: <%= auction.Buy_Price %> </h4>
+			<h4>First bid: <%= auction.First_Bid %> </h4>
+			<h4>Currently: <%= auction.Currently %> </h4>
+			<h4>Location: <%= auction.Location %> </h4>
+			<h4>Country: <%= auction.Country %> </h4>
+			<h4>Started: <%= auction.Started %> </h4>
+			<h4>Ends: <%= auction.Ends %> </h4>
+			<h4>Number_of_bids: <%= auction.Number_of_bids %> </h4>
+			<h4>Description: <%= auction.Description %> </h4>
+			
+			
+			<% if(currentUser !== undefined) { %>
+				<a href="/categories/<%= category %>/<%= auction._id %>/makeBid"> make a bid </a>
+			<% } %>
+
+
+		</div>
+		<a href="/categories/Sports" class="btn btn-primary">Go Back</a>
+	</header>
+</div>
+
 
 
 <% include partials/footer.ejs %>
