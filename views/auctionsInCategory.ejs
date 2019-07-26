@@ -7,6 +7,7 @@
 	<br>
 	<div class="card-deck">
 		<%  auctions.forEach( function(auction) {   %>
+			<% if(auction.category === category)  { %>
 				<div class="card body bg-light">
 				
 					<img class="card-img-top" style="height:250px" src="<%= auction.Image %>" alt="Card image">
@@ -23,6 +24,7 @@
 					
 					</div>
 				</div>
+			<% } %>
 		<% }); %>
 	</div>
 	<br>
