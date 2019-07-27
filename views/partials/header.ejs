@@ -20,9 +20,11 @@
     				<font color="red">E</font><font color="blue">b</font><font color="yellow">i</font><font color="green">d</font> 
     				<font color="white">Team</font>
   				</a>
-  				<a class="nav-link" href="/"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>
-Home</font></a>
-
+  				<% if(currentUser !== undefined && currentUser.role === "manager") {  %>
+  					<a class="nav-link" href="/managerPage"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>Home</font></a>
+  				<% } else {%>
+  					<a class="nav-link" href="/"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>Home</font></a>
+  				<% } %>
 		     	<ul class="navbar-nav">
 
       				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  

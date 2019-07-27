@@ -136,7 +136,6 @@ div.container {
 
 .container.productImageTitle {
 	background-color: #ffe6e6;
-	max-height: 5em;
 }
 
 
@@ -148,4 +147,18 @@ div.container {
 
 	width: 100%;
 		background-color: #00ffcc;
+}
+
+
+#users {
+	margin-left: 40%;
+	margin-top: 4%;
+}
+
+#userHeader {
+	margin-left: 5%;
+}
+
+#userItem {
+	list-style-type:square;
 }

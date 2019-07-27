@@ -1,5 +1,5 @@
 <% include partials/header.ejs %>
-
+<link rel="stylesheet" type="text/css" href="/manager.css">
 
   <!-- Masthead -->
   <header class="masthead  text-center">
@@ -7,21 +7,17 @@
     <div class="container">
       <div class="row">
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto" id="searchDiv">
-          <form action = "/search" method = "POST">
+          <form action = "/managerPage?_method=GET" method = "POST">
             <div class="form-row">
      	            <div class="col-4 col-md-4 ">					
-							  <a class="btn btn-primary dropdown-toggle " id="categoriesButton" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    choose role
-							  </a>
-							  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							  	<input type="radio" name="auction[category]" value = "Home" > seller <br>
-							  	<input type="radio" name="auction[category]" value = "Fashion" > bidder <br>
-							  </div>
+							   <select class="mdb-select md-form" name="role" >
+							   		<option value="" disabled selected >search by role</option>
+							   		<option  value="seller" >only sellers</option>
+							   		<option value="bidder" >only bidders</option>
+							   		<option  value="all">all</option>
+							   </select>
 						
 	               </div>  
-	              <div class="col-6 col-md-6 ">
-	                <input class="form-control form-control-lg" name = "auction[name]" placeholder="Search for a user here...">
-	              </div>
 
 	              <div class="col-2 col-md-2">
 	                <button type="submit" id="search" class="btn btn-block btn-lg btn-primary">Search</button>
@@ -34,14 +30,30 @@
     </div>
   </header>
 
-<ul>
-	<h3> Users </h3>
+
+
+<ul id="users">
+	<h3 id="userHeader"> Users </h3>
 	<%  foundUsers.forEach( function(user) {    %>
 			<% if(user.role !== "manager") {  %>
-				<li> 
-					<%= user.username %>
-					<a href="/managerPage/<%=  user._id  %>"  > show user details </a>
-				</li>
+					<% if(role !== undefined) {  %>
+						<% if(role === "all") { %>
+							<li id="userItem"> 
+								<%= user.username %>
+								<a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a>
+							</li>							
+						<% } else if(user.role === role) { %>
+							<li id="userItem"> 
+								<%= user.username %>
+								<a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a>
+							</li>
+						<% } %>
+					<% } else { %>
+							<li id="userItem"> 
+								<%= user.username %>
+								<a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a>
+							</li>
+					<% } %>
 			<% } %>
 	<%  });  %>
 
