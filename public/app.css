@@ -6,7 +6,7 @@ body, html {
 
 body {
 	background: url(https://cdn.wallpapersafari.com/11/38/Qugyhf.jpg);
-	background-size: 1370px 660px;
+	background-size: 100%;
 	background-repeat: no-repeat;
 	font-family: Lato;
 }
@@ -71,18 +71,21 @@ div.form-row {
 
 .sellerPicture {
   float: left;
-  width: 50%;
-  padding: 5px;
+  width: 20em;
+  height: 20em;
   margin-top: 7%;
+  margin-left: 20%;
+
 }
 
 .sellerPictureTitle {
-	margin-left: 6em;
+	margin-left: 0.5em;
 	color: black;
+	display:inline;
 }
 
-img {
-	max-height: 20em;
+img.zoom.img-thumbnail.rounded-circle{
+	height: 100%;
 }
 
 
