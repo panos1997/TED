@@ -252,6 +252,8 @@ function take_id(){
 app.post("/auctions", isLoggedIn, function(req, res) {
 	var now = new Date();
 	var date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+	
+	
 	Auction.create({
 		name: 		req.body.name,
 		category: 	req.body.category,
@@ -259,9 +261,9 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 		Currently: 	req.body.First_Bid,
 		Buy_Price: 	req.body.Buy_Price,
 		Number_of_bids: 0,
-		Started:	 date,
+		Started:	 new Date(req.body.Started),	//////////
 
-		Ends: 		 req.body.Ends,
+		Ends: 		 new Date(req.body.Ends),
 		ItemId:	  	 take_id(),
 		Location: 	 req.body.Location,
 		Country:  	 req.body.Country,
