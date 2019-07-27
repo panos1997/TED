@@ -1,25 +1,46 @@
 <% include partials/header.ejs %>
 
 
-<div class="container">
-	<h2 style="text-align: center; color: black;"> Here are all the categories</h2>
-	<div style="width: 30%; margin: 20px auto;">
-		<ul class="list-group">
+  <!-- Masthead -->
+  <header class="masthead  text-center">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto" id="searchDiv">
+          <form action = "/search" method = "POST">
+            <div class="form-row">
+     	            <div class="col-4 col-md-4 " >					  
+						 <select class="mdb-select md-form" name="auction[category]" >
+						 	 <option value="" disabled selected>Choose Category</option>
+							  <option value="home" >Home</option>
+							  <option value="Fashion">Fashion</option>
+							  <option value="Health">Health</option>
+							  <option value="Sports">Sports</option>
+							  <option value="Books">Books</option>
+							  <option value="Movies">Movies</option>
+							  <option value="Toys">Toys</option>
+							  <option value="Electronics">Electronics</option>
+							  <option value="Art">Art</option>
+							  <option value="Houses">Houses</option>
+							  <option value="Vehicles">Vehicles</option>
+						  </select>
+					</div>
+						
 
-			<% if(auctions) { %>
-				<% categories.forEach(function(category) {  %>
-				
-					<a class="btn btn-primary" href="/categories/<%= category %>"> <%= category %> </a>
-					<br>
-				<% }) %>
-			<% } %>
-			
-			<a class="btn btn-secondary" href="/search" role="button">Search</a>
-		</ul>
-		<br>
-		<a class="btn btn-info" href="/" role="button">Go Back</a>
-	</div>
-</div>
+	              <div class="col-6 col-md-6 ">
+	                <input class="form-control form-control-lg" name = "auction[name]" placeholder="Search for anything here...">
+	              </div>
+
+	              <div class="col-2 col-md-2">
+	                <button type="submit" id="search" class="btn btn-block btn-lg btn-primary">Search</button>
+	              </div>          
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
 
 
 

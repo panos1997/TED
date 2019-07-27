@@ -1,4 +1,4 @@
-body, html {
+html {
   height: 100%;
   width: 100%;
 }
@@ -36,7 +36,7 @@ div.form-row {
 	margin-top: 8%;
 }
 
-.dropdown {
+select {
 	display: inline;
 }
 
@@ -123,3 +123,19 @@ div.container {
 .productImageTitle {
 	width: 10em;
 }
+
+
+.mdb-select {
+	margin-left: 6em;
+	margin-top: 0.5em;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.column.polaroid.zoom {
+  float: left;
+  margin-left: 200px;
+}
+

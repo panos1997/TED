@@ -1,8 +1,9 @@
 <% include partials/header.ejs %>
 
+	<div class="row">
 	<% auctions.forEach( function(auction) { %>
 		<a href="/categories/<%= auction.category%>/<%= auction._id%>">
-			<div class="polaroid zoom">
+			<div class="column polaroid zoom" style="float: left;  object-fit: cover; overflow: hidden;">
 			  <img src="<%= auction.Image%>" alt="5 Terre" class="productImage" >
 			  <div class="container productImageTitle" style="border: 1px solid black" >
 			  <p><%= auction.name %></p>
@@ -12,7 +13,8 @@
 			  </div>
 			</div>	
 	    </a>	
-	<% }) %>
 
+	<% }) %>
+</div>
 <% include partials/footer.ejs %>
 

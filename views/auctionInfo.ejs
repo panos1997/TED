@@ -48,7 +48,7 @@
 		  </script>   -->
 
 
-			<% if(currentUser !== undefined) { %>
+			<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
 				<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
 			<% } %>
 

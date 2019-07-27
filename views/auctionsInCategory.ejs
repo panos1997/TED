@@ -10,7 +10,7 @@
 				  <img src="<%= auction.Image%>" alt="5 Terre" class="productImage" >
 				  <div class="container productImageTitle" style="border: 1px solid black" >
 				  <p><%= auction.name %></p>
-				  <% if(currentUser !== undefined) { %>
+				  <% if(currentUser !== undefined && currentUser.role === "bidder") { %>
 						<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> make a bid </a>
 				  <% } %>
 				  </div>
