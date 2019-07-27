@@ -1,13 +1,18 @@
 <% include partials/header.ejs %>
 
-
-	<h1> The results are: </h1>
 	<% auctions.forEach( function(auction) { %>
-	    <br>
-		<%= auction %>
-		<% if(currentUser !== undefined) { %>
-			<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> make a bid </a>
-		<% } %>
+		<a href="/categories/<%= auction.category%>/<%= auction._id%>">
+			<div class="polaroid zoom">
+			  <img src="<%= auction.Image%>" alt="5 Terre" class="productImage" >
+			  <div class="container productImageTitle" style="border: 1px solid black" >
+			  <p>Cinque Terre</p>
+			  <% if(currentUser !== undefined) { %>
+					<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> make a bid </a>
+			  <% } %>
+			  </div>
+			</div>	
+	    </a>	
 	<% }) %>
 
 <% include partials/footer.ejs %>
+
