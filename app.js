@@ -304,15 +304,31 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 // BIDDER ROUTES
 
 app.get("/bids", isLoggedIn, function(req, res) {
+
+	bidsAuctions = [];
 	Bid.find({
 		bidder: req.user._id
 	}, function(error, foundBids) {
 			if(error) {
 				console.log(error);
-			}
-			else {
-				res.render("bids.ejs", {bids:foundBids});
-			}
+			}		
+			foundBids.forEach(function(bid) {
+				Auction.findById( {
+					_id: bid.auction[0]._id
+				},function(error, foundAuction) {
+					if(error) {
+						console.log(error);
+					}
+					bidsAuctions.push({
+						bid: bid,
+						auction: foundAuction
+					});
+					console.log(bidsAuctions[0].bid);
+					console.log(foundAuction);
+					console.log(bid.auction[0]._id);
+				});
+			});
+			res.render("bids.ejs", {bidsAuctions:bidsAuctions});
 	});
 });
 
