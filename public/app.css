@@ -91,3 +91,32 @@ img {
 .zoom:hover {
   transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
+
+
+
+div.polaroid {
+  width: 10em;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 0%;
+  margin-left: 5%;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  float: left;
+
+}
+
+div.container {
+  text-align: center;
+  max-width: 100%;
+  margin: 0;
+}
+
+.productImage {
+	width: 10em;
+	height: 10em;
+}
+
+.productImageTitle {
+	width: 10em;
+}
