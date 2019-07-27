@@ -485,6 +485,7 @@ app.post("/register", function(req, res) {
 								email: req.body.email,
 								phone: req.body.phone,
 								address: req.body.address,
+								AFM:	req.body.AFM,
 								location: req.body.location
 							});
 		User.register(newUser , req.body.password, function(err, user) {
@@ -511,6 +512,7 @@ app.post("/register", function(req, res) {
 							email: req.body.email,
 							phone: req.body.phone,
 							address: req.body.address,
+							AFM:	req.body.AFM,
 							location: req.body.location
 						});
 
