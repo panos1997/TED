@@ -18,6 +18,7 @@
 				<th scope="col">Show bids</th>
 				<th scope="col">Edit</th>
 				<th scope="col">Delete</th>
+				
 			</tr>
 		</thead>
 		<tbody style="background-color: #F5F5DC;">
@@ -32,13 +33,13 @@
 					<td><%= auction.Description %></td>
 					<td><a href="/auctions/<%= auction._id %>/showBids"> show bids </a></td>
 					
-					<% if(auction.Number_of_bids === 0){ %>
+					<% if(auction.Number_of_bids === 0 && auction.Started !== new Date()){ %>
 						<td><a href="/auctions/<%= auction._id %>/editAuction"> edit </a></td>
 					<% } else {%>
 						<td> </td>
 					<% } %>
 					
-					<% if(auction.Number_of_bids === 0){ %>
+					<% if(auction.Number_of_bids === 0 && auction.Started !== new Date()){ %>
 						<td>
 							<form action="/auctions/<%= auction._id %>?_method=DELETE" method="POST">
 								<button class"btn">delete</button>
