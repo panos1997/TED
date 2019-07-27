@@ -14,6 +14,7 @@ var userSchema = new mongoose.Schema({
 	email: String,
 	phone: Number,
 	address: String,
+	AFM:	Number,
 	location: String,
 	
 	
