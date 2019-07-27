@@ -12,30 +12,32 @@
 
 
 <!-- NAVBAR    -->
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ccccff;">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #000033;">
 	    	<div class="container">
 
 
 	    		<a class="navbar-brand" href="/">
-    				<font color="red">E</font><font color="blue">b</font><font color="yellow">i</font><font color="green">d</font> Team
+    				<font color="red">E</font><font color="blue">b</font><font color="yellow">i</font><font color="green">d</font> 
+    				<font color="white">Team</font>
   				</a>
-  				<a class="nav-link" href="/"><font color="red">Home</font></a>
+  				<a class="nav-link" href="/"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>
+Home</font></a>
 
 		     	<ul class="navbar-nav">
 
       				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  
 			            <li class="nav-item">
 			            	<div class="row">
-			            		<a class="nav-link" href="#"><font color="black">Signed as </font><font color="blue"><b><%= currentUser.username %></b> </font></a>
+			            		<a class="nav-link" href="#"><font color="white">Signed as </font><font color="white"><b><%= currentUser.username %></b> </font></a>
 			               		<a class="nav-link" href="/logout"><font color="red">Logout</font></a>
 			               </div>			  
 			           	</li>
 		            <% }else{ %>	<!--      -------------------------------------   -->
 		            	<li class="nav-item">
-        					<a class="nav-link" href="/login"><font color="black">Sign in</font></a>
+        					<a class="nav-link" href="/login"><font color="white">Sign in</font></a>
      					</li>
       					<li class="nav-item">
-       						<a class="nav-link" href="/register"><font color="black">Sign up</font></a>
+       						<a class="nav-link" href="/register"><font color="white">Sign up</font></a>
       					</li>
       				<% } %>
 

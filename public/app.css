@@ -1,16 +1,16 @@
-html {
+html,body {
   height: 100%;
   width: 100%;
+  padding:	0;
 }
 
 
 body {
-	background: url(https://cdn.wallpapersafari.com/11/38/Qugyhf.jpg);
+	background-color: #fff2cc;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	font-family: Lato;
 }
-
 
 
 
@@ -20,12 +20,10 @@ body {
 }
 
 
-
-
 #jumbHome {
-	opacity: 0.7;
-	height: 40vh;
+	height: 13em;
 	text-align: center;
+	margin-top: 3%;
 }
 
 .form-row {
@@ -44,16 +42,13 @@ select {
     box-sizing: border-box
 } 
 
+
 .features-icons {
 	margin-top: 10%;
 	background-color: #a4b1ba;
 	text-align: center;
 	margin-bottom: 3%;
-}
-
-
-#jumbHome {
-	margin-top: 3%;
+	background-color: #ff9900;
 }
 
 #search {
@@ -139,3 +134,18 @@ div.container {
   margin-left: 200px;
 }
 
+.container.productImageTitle {
+	background-color: #ffe6e6;
+	max-height: 5em;
+}
+
+
+.homeImage {
+	border: 1px solid black;
+}
+
+.jumbotron-fluid {
+
+	width: 100%;
+		background-color: #00ffcc;
+}
