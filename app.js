@@ -12,7 +12,7 @@ var flash = require("connect-flash");
 var https = require('https');
 var fs = require('fs');
 var dateFormat = require('dateformat');
-var NodeGeocoder = require('node-geocoder');
+var request=require('request');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
@@ -40,12 +40,6 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-var geocoder = NodeGeocoder({
-  provider: 'opencage',
-  apiKey: '062cb74b3f8b4cf39bb883f570a50543', // for Mapquest, OpenCage, Google Premier
-  //formatter: null         // 'gpx', 'string', ...
-});
 
 app.use(function(req, res, next) {
 	res.locals.currentUser = req.user;
@@ -306,7 +300,7 @@ app.get("/bids", isLoggedIn, function(req, res) {
 	}, function(error, foundBids) {
 			if(error) {
 				console.log(error);
-			}		
+			}
 			foundBids.forEach(function(bid) {
 				Auction.findById( {
 					_id: bid.auction[0]._id
@@ -357,15 +351,19 @@ app.get("/categories/:category/:auctionId", function(req, res) {
 		if(error){
 			console.log(error);
 		} else {
-			/* loc=foundAuction.Location+" "+foundAuction.Country;
+			 loc=foundAuction.Location+" "+foundAuction.Country;
 			 console.log(loc);
-			 geocoder.geocode(loc, function(err,result) {
-				 //console.log(result);
-					var lat=result[0].latitude;
-					var lng=result[0].longitude;
-					res.render("auctionInfo.ejs", {auction: foundAuction, category: req.params.category,latitude:lat,longitude:lng});
-			}); */
-			res.render("auctionInfo.ejs", {auction: foundAuction});
+			 request('http://open.mapquestapi.com/nominatim/v1/search.php?key=npTGy9v8vWCuVONwdcPe3qJy27GW18Gt&format=json&q='+loc+'&addressdetails=1&limit=3&viewbox=-1.99%2C52.02%2C0.78%2C50.94&exclude_place_ids=41697'
+			 ,function(err,response,body){ //request sto nominatim api gia ta coordinates
+				 if(error){
+					 console.log(err);
+				 }else{
+						 var parsedData=JSON.parse(body); //parse to string se object
+						 var lat=parsedData[0].lat;
+			 	 		 var lng=parsedData[0].lon;
+						 res.render("auctionInfo.ejs", {auction: foundAuction, category: req.params.category,latitude:lat,longitude:lng});
+				 }
+			 });
 		}
 	})
 });
