@@ -88,8 +88,6 @@ app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
 
 // MANAGER ROUTES
 app.get("/managerPage", isLoggedIn, managerIsAuthorised , function(req, res) {
-	console.log(req.user._id);
-	console.log("inside managerPage route");
 	User.find({}, function(error, foundUsers) {
 		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
 	});
@@ -107,7 +105,6 @@ app.get("/managerPage/:userId/approve", isLoggedIn, managerIsAuthorised , functi
 	User.findById({
 		_id: req.params.userId
 	}, function(error, foundUser) {
-			console.log(foundUser);
 			foundUser.request = "approved";
 			foundUser.save(function(error) {
 				if(error) {
@@ -260,7 +257,6 @@ function take_id(){
 app.post("/auctions", isLoggedIn, function(req, res) {
 	var now = new Date();
 	var date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
-	console.log("GEIAAAAAAAAAAAAA" + typeof date);
 	Auction.create({
 		name: 		req.body.name,
 		category: 	req.body.category,
@@ -285,15 +281,14 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 			User.findById({
 				_id: req.user._id
 			}, function(error, foundUser) {
-				console.log("found user is :" + foundUser);
 				foundUser.auctions.push(newAuction);
 				foundUser.save( function(error, data) {
-									console.log("data is : " + data);
+					console.log("data is : " + data);
 				});
 
 				newAuction.seller.push(foundUser);
 				newAuction.save( function(error, data) {
-									console.log("data is : " + data);
+					console.log("data is : " + data);
 				});
 			});
 	});
@@ -362,14 +357,15 @@ app.get("/categories/:category/:auctionId", function(req, res) {
 		if(error){
 			console.log(error);
 		} else {
-			 loc=foundAuction.Location+" "+foundAuction.Country;
+			/* loc=foundAuction.Location+" "+foundAuction.Country;
 			 console.log(loc);
 			 geocoder.geocode(loc, function(err,result) {
-				 console.log(result);
+				 //console.log(result);
 					var lat=result[0].latitude;
 					var lng=result[0].longitude;
 					res.render("auctionInfo.ejs", {auction: foundAuction, category: req.params.category,latitude:lat,longitude:lng});
-			});
+			}); */
+			res.render("auctionInfo.ejs", {auction: foundAuction});
 		}
 	})
 });
@@ -412,7 +408,6 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 						if(error) {
 							console.log(error)
 						}
-						console.log("found AUCTION IS: " + foundAuction);
 						createdBid.auction.push(foundAuction);
 						createdBid.save( function(error, data) {
 							if(error) {
@@ -474,7 +469,7 @@ app.get("/register", function(req, res) {
 app.post("/register", function(req, res) {
 	/////////////////////// edw prosthes auto to if////// an oi kwdikoi password kai password_again einai diaforetikoi tote se petaei se selida sfalmatos
 	if(req.body.password !== req.body.password_again){
-		console.log("Ta password me to password_again einai diaforetika");
+		//console.log("Ta password me to password_again einai diaforetika");
 		return res.render("user_exist.ejs");
 	}
 	////////////////////////////////////////
@@ -559,7 +554,6 @@ app.post("/login", passport.authenticate("local", {
       		if (err) {
       			return next(err);
       		}
-      		console.log(user);
       		if(user.role == "manager") {
       			return res.redirect('/managerPage');
       		}
@@ -583,13 +577,11 @@ function isLoggedIn(req, res, next) {
 	if(req.isAuthenticated()) {
 		return next();
 	}
-	console.log("he is an" + req.user);
 	res.redirect("/login");
 }
 
 
 function managerIsAuthorised (req, res, next) {
-	console.log("req.user is:" + req.user);
 	User.findById({
 		_id : req.user._id
 	}, function(error, foundUser) {
@@ -616,8 +608,6 @@ function userIsAuthorised(req, res, next) {
 			res.redirect("/login");
 			return;
 		}
-		console.log("req.user.id is:" + req.user._id);
-		console.log("foundUser.id is:" + foundUser._id);
 		if(foundUser._id === req.user._id) {
 			return next();
 		}
