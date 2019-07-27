@@ -89,9 +89,10 @@ app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
 // MANAGER ROUTES
 app.get("/managerPage", isLoggedIn, managerIsAuthorised , function(req, res) {
 	User.find({}, function(error, foundUsers) {
-		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user});
+		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user, role: req.body.role});
 	});
 });
+
 
 app.get("/managerPage/:userId", isLoggedIn, managerIsAuthorised , function(req, res) {
 	User.findById({
