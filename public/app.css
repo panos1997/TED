@@ -83,7 +83,9 @@ img.zoom.img-thumbnail.rounded-circle{
 	height: 100%;
 }
 
-
+img.zoom {
+	border: 5px solid #000033!important;
+}
 
 
 .zoom:hover {
