@@ -426,7 +426,8 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 		})
 
 	})
-	res.send("perfect, you made a bid");
+	//res.send("perfect, you made a bid");
+	res.render("succes_bid.ejs");
 });
 
 
