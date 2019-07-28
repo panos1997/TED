@@ -559,7 +559,7 @@ app.post("/login", passport.authenticate("local", {
 		if(foundUsers[0].request === "pending") {
 			//res.send("your request has not been approved yet,sorry");
 			res.render("request_approved.ejs");				// prosthesa auto
-			//return;
+			return;
 		}
 	});
 	passport.authenticate("local", function(error, user){
