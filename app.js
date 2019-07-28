@@ -13,6 +13,8 @@ var https = require('https');
 var fs = require('fs');
 var dateFormat = require('dateformat');
 var request=require('request');
+var Chat = require("./models/chat.js");
+var findOrCreate = require('mongoose-find-or-create');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
@@ -623,6 +625,115 @@ function userIsAuthorised(req, res, next) {
 		}
 	});
 }
+
+
+/////// CHAT ////////////
+
+app.get("/chat", isLoggedIn, function(req, res) {
+
+	if(req.body.receiver !== undefined) {
+		console.log("receiver is " + req.body.receiver );
+	}
+	User.find({
+
+	}, function(error, foundUsers) {
+		if(error) {
+			console.log(error);
+		}
+		else {
+			res.render("chat2.ejs", { users:foundUsers });
+		}
+	});
+});
+
+app.get("/chat/conversation", function(req, res) {
+	Chat.findOne({
+		messages:  {
+			'$elemMatch': {
+				 sender: req.user._id, receiver: receiver
+			}
+		}
+	}, function(error, foundChat) {
+		if(error) {
+			console.log(error);
+		}
+		else {
+
+		}
+	});
+});
+
+app.post("/chat", isLoggedIn, function(req, res) {
+	console.log("receiver is " + req.body.receiver );
+	User.findOne({
+		username: req.body.username
+	}, function(error, foundReceiver) {
+			if(error) {
+				console.log(error);
+			}
+			 else {
+				Chat.findOne({
+					messages:  {
+						'$elemMatch': {
+							'$or': 	[{ sender: req.user._id, receiver: foundReceiver._id}, { sender: foundReceiver._id, receiver: req.user._id }]
+						}
+					}
+						
+				}, function(error, foundChat) {
+					if(error) {
+						console.log(error);
+					}
+					else {
+						console.log("foundchat is" + foundChat);
+						if(foundChat ===  null) {
+							Chat.create({
+
+							}, function(error,createdChat) {
+									createdChat.messages.push({
+										sender: req.user._id,
+										content: req.body.message.content,
+										date: new Date(),
+										receiver: foundReceiver._id
+									});
+									createdChat.save();
+									req.user.chats.push(createdChat);
+									foundReceiver.chats.push(createdChat);
+									req.user.save();
+									foundReceiver.save();
+									res.redirect("/chat");
+									return;
+							});
+						}
+						else {
+							foundChat.messages.push({
+								sender: req.user._id,
+								content: req.body.message.content,
+								date: new Date(),
+								receiver: foundReceiver._id
+							});
+							foundChat.save();
+							res.redirect("/chat");
+							return;
+						}
+					}
+				});
+			 }
+	});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.listen(3000, function() {
 	console.log("auctions app server has started!!!");

@@ -1,0 +1,31 @@
+<% include partials/header.ejs %>
+
+
+<form method="POST" action = "/chat">
+       <select class="mdb-select md-form" name="username" >
+          <option value="" disabled selected>Send to</option>
+          <% users.forEach(function(user) { %>
+                  <option  name = "receiver" value = "<%= user.username %>"><%= user.username %></option>                 
+          <% }) %>
+      </select>	
+      <input type="text" name="message[content]">
+      <button type = "submit"> Send </button>
+</form>
+
+
+<form action = "/chat/conversation?_method=GET" method="POST" >
+       <select class="mdb-select md-form" name="receiver" >
+          <option value="" disabled selected>user</option>
+
+          <% users.forEach(function(user) { %>
+                  <option  value = "<%= user.username %>"><%= user.username %></option>                 
+          <% }) %>
+      </select>	
+      <button type = "submit"> show conversation </button>
+</form>
+
+
+
+
+
+<% include partials/footer.ejs %>

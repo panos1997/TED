@@ -25,7 +25,10 @@ var userSchema = new mongoose.Schema({
 	Bidder_Rating: Number,
 	Seller_Rating: Number,
 	Location: String,
-	Country: String
+	Country: String,
+    chats :[{
+      chat : {type : mongoose.Schema.Types.ObjectId, ref: "User"}
+    }],
 });
 
 userSchema.plugin(passportLocalMongoose);
