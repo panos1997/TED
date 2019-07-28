@@ -47,9 +47,10 @@
 		    map.setCenter (lonLat, zoom);
 		  </script>
 
-
-			<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
-				<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
+			<% if( (new Date(auction.Started).getTime() / 1000) <= (new Date().getTime() / 1000) && (new Date(auction.Ends).getTime() / 1000) >= (new Date().getTime() / 1000)){ %>
+				<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
+					<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
+				<% } %>
 			<% } %>
 
 			<div class="container">
