@@ -33,12 +33,18 @@
 					<td><%= auction.Description %></td>
 					<td><a href="/auctions/<%= auction._id %>/showBids"> show bids </a></td>
 					
-					<% if(auction.Number_of_bids === 0 && (new Date(auction.Started).getTime() / 1000) > (new Date().getTime() / 1000)){ %>
+					
+					// H apo katw sinthiki xreiazetai kai auto
+					//   && (new Date(auction.Started).getTime() / 1000) > (new Date().getTime() / 1000)
+					<% if(auction.Number_of_bids === 0 ){ %>
 						<td><a href="/auctions/<%= auction._id %>/editAuction"> edit </a></td>
 					<% } else {%>
 						<td> </td>
 					<% } %>
 					
+					
+					// H apo katw sinthiki xreiazetai kai auto
+					//   && (new Date(auction.Started).getTime() / 1000) > (new Date().getTime() / 1000)
 					<% if(auction.Number_of_bids === 0 ){ %>
 						<td>
 							<form action="/auctions/<%= auction._id %>?_method=DELETE" method="POST">
