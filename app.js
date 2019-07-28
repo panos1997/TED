@@ -538,6 +538,11 @@ app.post("/register", function(req, res) {
 
 
 
+app.get("/login/request_approved", function(req, res){
+	res.render("request_approved.ejs");
+});
+
+
 // login routes
 app.get("/login", function(req, res) {
 	res.render("login.ejs", { currentUser: req.user });
