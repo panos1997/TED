@@ -3,12 +3,12 @@
 	<div class="row">
 	<% auctions.forEach( function(auction) { %>
 		<a href="/categories/<%= auction.category%>/<%= auction._id%>">
-			<div class="column polaroid zoom" style="float: left;  object-fit: cover; overflow: hidden;">
+			<div class="column polaroid zoom" style="float: left;">
 			  <img src="<%= auction.Image%>" alt="5 Terre" class="productImage" >
-			  <div class="container productImageTitle" style="border: 1px solid black" >
+			  <div class="container productImageTitle" >
 			  <p><%= auction.name %></p>
-			  <% if(currentUser !== undefined) { %>
-					<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> make a bid </a>
+			  <% if(currentUser !== undefined && currentUser.role === "bidder") { %>
+					<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> <font style="color:green;"> <strong> make a bid </strong> </font> </a>
 			  <% } %>
 			  </div>
 			</div>	

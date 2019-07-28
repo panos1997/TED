@@ -59,7 +59,7 @@ app.use(function(req, res, next) {
 });
 
 var roles = ["manager", "seller", "bidder"];
-var categories = ["Home", "Fashion", "Health","Sports","Books","Movies","Toys","Electronics","Art","Houses"];
+var categories = ["Home & Garden", "Fashion", "Health","Sports","Books","Games & Consoles","Toys","Electronics","Art","Properties"];
 
 
 // ROUTES
@@ -431,24 +431,28 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 
 
 app.get("/search", function(req, res) {
-	res.render("search.ejs");
+	res.redirect("/");
 });
 
 
 app.post("/search", function(req, res) {
 	var auction = {};
-	if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
-		auction.name = req.body.auction.name;
+	if(req.body.auction !== undefined) {
+		if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
+			auction.name = req.body.auction.name;
+		}
+		if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
+			auction.category = req.body.auction.category;
+		}
 	}
-	if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
-		auction.category = req.body.auction.category;
-	}
+
+
 	Auction.find(
 		auction
 	, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
-			res.redirect("/search");
+			res.redirect("/");
 		}
 		else {
 			console.log(foundAuctions);

@@ -39,7 +39,7 @@
 						<td> </td>
 					<% } %>
 					
-					<% if(auction.Number_of_bids === 0 && (new Date(auction.Started).getTime() / 1000) > (new Date().getTime() / 1000)){ %>
+					<% if(auction.Number_of_bids === 0 ){ %>
 						<td>
 							<form action="/auctions/<%= auction._id %>?_method=DELETE" method="POST">
 								<button class"btn">delete</button>
