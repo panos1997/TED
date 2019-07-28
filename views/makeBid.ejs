@@ -1,13 +1,26 @@
 <% include partials/header.ejs %>
 
-
-<h1> My bid is: </h1>
-
-<form action = "/categories/<%= auction.category %>/<%= auction._id %>/confirmBid" method = "GET">
-	<input type="text" name="amount" placeholder = "make a bid please">	
-	<button> Submit </button>
-</form>
-
+<div class="container">
+	<div class="jumbotron">
+		<div class="container">
+			<h2> My bid is: </h2>
+			
+			<div style="width: 20%; margin: 20px auto;">
+				<form action = "/categories/<%= auction.category %>/<%= auction._id %>/confirmBid" method = "GET">
+					<div class="form-group">
+						<input class="form-control" type="text" name="amount" placeholder = "Make a bid please">	
+					</div>
+					
+					<div class="form-group">
+						<button class="btn btn-success">Submit</button>
+					</div>
+					
+				</form>
+			</div>
+			<a class="btn btn-sm btn-primary btn-default" href="/categories/<%= auction.category %>/">Go Back</a>
+		</div>
+	</div>
+</div>
 
 <% include partials/footer.ejs %>
 
