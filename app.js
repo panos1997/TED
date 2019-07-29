@@ -252,8 +252,8 @@ function take_id(){
 app.post("/auctions", isLoggedIn, function(req, res) {
 	var now = new Date();
 	var date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
-	
-	
+
+
 	Auction.create({
 		name: 		req.body.name,
 		category: 	req.body.category,
@@ -296,7 +296,7 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 // BIDDER ROUTES
 
 app.get("/bids", isLoggedIn, function(req, res) {
-
+	var counter=0;
 	bidsAuctions = [];
 	Bid.find({
 		bidder: req.user._id
@@ -315,14 +315,16 @@ app.get("/bids", isLoggedIn, function(req, res) {
 						bid: bid,
 						auction: foundAuction
 					});
-					console.log(bidsAuctions[0].bid);
-					console.log(foundAuction);
-					console.log(bid.auction[0]._id);
+					counter++;
+					if(counter==foundBids.length){ //render afou exei teleiwsei i foreach gia ola ta bids
+						console.log(bidsAuctions);
+						res.render("bids.ejs", {bidsAuctions:bidsAuctions});
+					}
 				});
 			});
-			res.render("bids.ejs", {bidsAuctions:bidsAuctions});
 	});
 });
+
 
 app.get("/categories", function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {

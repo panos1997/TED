@@ -1,2 +1,28 @@
-<h1> Here are my bids: </h1>
+<% include partials/header.ejs %>
 
+<br>
+<div class="container" class="col col-4">
+  <div class="card-deck">
+    <% bidsAuctions.forEach( function(bidauction) { %>
+      <div class="card" >
+        <img class="card-img-top" style="height:300px" src="<%=bidauction.auction.Image%>" alt="Card image cap">
+        <div class="card-body">
+          <h3 class="card-title"><b><%= bidauction.auction.name %></b></h3>
+          <h5><b>My bid:</b> <%= bidauction.bid.amount		 %></h5>
+          <h5><b>Best bid:</b> <%= bidauction.auction.Currently		 %></h5>
+          <h5><b>Started at:</b> <%= bidauction.auction.Started		 %></h5>
+          <h5><b>Ends at:</b>   <%= bidauction.auction.Ends	  		 %></h5>
+          <br>
+          <h5><a href="/categories/<%= bidauction.auction.category %>/<%= bidauction.auction._id %>" class="btn btn-info"> <strong> More info </strong> </a></h5>
+          <% if(bidauction.bid.amount<bidauction.auction.Currently){ %>
+            <h5><a href="/categories/<%= bidauction.auction.category %>/<%= bidauction.auction._id %>/makeBid" class="btn btn-danger"> <strong> Bid again </strong> </a></h5>
+          <% } %>
+        </div>
+      </div>
+
+    <% }) %>
+
+  </div>
+</div>
+
+<% include partials/footer.ejs %>
