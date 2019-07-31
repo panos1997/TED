@@ -5,8 +5,8 @@
 	<header class="jumbotron">
 		<div class="container">
 		
-			<h1><font color="black">User exist or password is defferent from password_again.</font></h1>
-			<p><font color="black">Please return to register page and input a defferent name or check the password and the password_again to be same.</font></p>
+			<h2><font color="black">User exist or password is defferent from password_again.</font></h2>
+			<h3><font color="black">Please return to register page and input a defferent name or check the password and the password_again to be same.</font></h3>
 			
 			<div class="form-group">
 				<a class="btn btn-primary btn-sm" href="/register">Go back to register page</a>
@@ -16,6 +16,11 @@
 				<a class="btn btn-primary btn-sm" href="/">Go back to main page</a>
 			</div>
 			
+			<p> Αutomatic return to main page in 10 second. </p>
+			
+			<script>
+				setTimeout(function(){ window.location.href="/"; }, 10000);
+			</script>
 		<div>
 	</div>
 </div>

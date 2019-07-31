@@ -253,8 +253,8 @@ function take_id(){
 app.post("/auctions", isLoggedIn, function(req, res) {
 	var now = new Date();
 	var date = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
-	
-	
+
+
 	Auction.create({
 		name: 		req.body.name,
 		category: 	req.body.category,
@@ -297,7 +297,7 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 // BIDDER ROUTES
 
 app.get("/bids", isLoggedIn, function(req, res) {
-
+	var counter=0;
 	bidsAuctions = [];
 	Bid.find({
 		bidder: req.user._id
@@ -316,14 +316,16 @@ app.get("/bids", isLoggedIn, function(req, res) {
 						bid: bid,
 						auction: foundAuction
 					});
-					console.log(bidsAuctions[0].bid);
-					console.log(foundAuction);
-					console.log(bid.auction[0]._id);
+					counter++;
+					if(counter==foundBids.length){ //render afou exei teleiwsei i foreach gia ola ta bids
+						console.log(bidsAuctions);
+						res.render("bids.ejs", {bidsAuctions:bidsAuctions});
+					}
 				});
 			});
-			res.render("bids.ejs", {bidsAuctions:bidsAuctions});
 	});
 });
+
 
 app.get("/categories", function(req, res) {
 	Auction.find({}, function(error, foundAuctions) {
@@ -427,7 +429,8 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 		})
 
 	})
-	res.send("perfect, you made a bid");
+	//res.send("perfect, you made a bid");
+	res.render("succes_bid.ejs");
 });
 
 
@@ -538,6 +541,11 @@ app.post("/register", function(req, res) {
 
 
 
+app.get("/login/request_approved", function(req, res){
+	res.render("request_approved.ejs");
+});
+
+
 // login routes
 app.get("/login", function(req, res) {
 	res.render("login.ejs", { currentUser: req.user });
@@ -554,7 +562,7 @@ app.post("/login", passport.authenticate("local", {
 		if(foundUsers[0].request === "pending") {
 			//res.send("your request has not been approved yet,sorry");
 			res.render("request_approved.ejs");				// prosthesa auto
-			//return;
+			return;
 		}
 	});
 	passport.authenticate("local", function(error, user){

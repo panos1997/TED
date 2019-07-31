@@ -1,11 +1,27 @@
 <% include partials/header.ejs %>
 
-	<h1> Are you sure you want to make this bid? You can not delete it after creation</h1>
 
+<div class="container">
+	<div class="jumbotron">
+		<div class="container">
+			<h2> Are you sure you want to make this bid? </h2>
+			<h3><font color="red"> You can not delete it after creation. </font></h3>
+			
+			<br>
+			<form action="/categories/<%= auction.category %>/<%= auction._id %>/makeBid?amount=<%= amount %>"  method="POST">
+				<div class="form-group">
+					<input class="btn btn-danger" type="submit" value="Confirm" />
+				</div>
+			</form>
+			
+			<br>
+			<div class="form-group">
+				<a class="btn btn-sm btn-primary btn-default" href="/categories/<%= auction.category %>/<%= auction._id %>/">Go Back</a>
+			</div>
+		</div>
+	</div>
+</div>
 
-	<form action="/categories/<%= auction.category %>/<%= auction._id %>/makeBid?amount=<%= amount %>"  method="POST">
-	    <input type="submit" value="Confirm" />
-	</form>
 
 
 <% include partials/footer.ejs %>

@@ -5,14 +5,19 @@
 	<header class="jumbotron">
 		<div class="container">
 		
-			<h1><font color="black">Your request has been sent.</font></h1>
-			<p><font color="black">Please try to login later to see if it is approved.</font></p>
+			<h2><font color="black">Your request has been sent.</font></h2>
+			<h3><font color="black">Please try to login later.</font></h3>
 
 			
 			<div class="form-group">
 				<a class="btn btn-primary btn-sm" href="/">Go back to main page</a>
 			</div>
 			
+			<p> Αutomatic return to main page in 10 second. </p>
+			
+			<script>
+				setTimeout(function(){ window.location.href="/"; }, 10000);
+			</script>
 		<div>
 	</div>
 </div>

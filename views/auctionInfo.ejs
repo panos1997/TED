@@ -25,7 +25,7 @@
 			<h4><b>Number_of_bids:</b> <%= auction.Number_of_bids %> </h4>
 			<h4><b>Description:</b> <%= auction.Description %> </h4>
 
-			<div id="mapdiv" style="height:250px"></div>
+			<div id="mapdiv" style="height:200px"></div>
 		  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 		  <script>
 		    map = new OpenLayers.Map("mapdiv");
@@ -46,10 +46,12 @@
 
 		    map.setCenter (lonLat, zoom);
 		  </script>
+			<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
 
-
-			<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
-				<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
+			<% if( (new Date(auction.Started).getTime() / 1000) <= (new Date().getTime() / 1000) && (new Date(auction.Ends).getTime() / 1000) >= (new Date().getTime() / 1000)){ %>
+				<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
+					<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
+				<% } %>
 			<% } %>
 
 			<div class="container">
