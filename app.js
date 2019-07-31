@@ -13,7 +13,6 @@ var https = require('https');
 var fs = require('fs');
 var dateFormat = require('dateformat');
 var request=require('request');
-var Chat = require("./models/chat.js");
 var findOrCreate = require('mongoose-find-or-create');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
@@ -629,7 +628,113 @@ function userIsAuthorised(req, res, next) {
 
 /////// CHAT ////////////
 
-app.get("/chat", isLoggedIn, function(req, res) {
+
+app.get("/chats", function(req, res) {
+	User.find({
+
+	}, function(error, foundUsers) {
+			if(error) {
+				console.log(error);
+				return;
+			}
+			else {
+				return res.render("chat2.ejs", {users: foundUsers});
+			}
+	});
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+app.get("/chats/:senderId/chat/:receiverName" , function(req, res) { 
+	console.log("iiiiiiiiiiiiiii");
+	User.findOne({
+		username: req.params.receiverName
+	}, function(error, foundUser) {
+			if(error) {
+				console.log(error);
+				return;
+			}
+			console.log("foundUser is :" + foundUser);
+			Chat.findOne( {
+				messages:  {
+					'$elemMatch': {
+						 sender: req.params.senderId, receiver: foundUser._id
+					}
+				}
+			}, function(error, foundChat) {
+					if(error) {
+						console.log(error)
+					}
+					else {
+
+						User.find({
+
+						}, function(error, foundUsers) {
+							if(error) {
+								console.log(error);
+							}
+							else {
+								Chat.find({
+									messages: {
+										'$elemMatch': {
+											'$or': 	[{ sender: req.user._id}, {receiver: req.user._id }]
+										}
+									}				
+								}, function(error, foundChats) {
+										if(error) {
+											console.log(error);
+										}
+
+										return res.render("chat2.ejs", { users:foundUsers, chats:foundChats, selectedChat : foundChat });
+								});
+							}
+						});
+					}
+			});
+	});
+});
+
+
+
+
+
+app.get("/chats", isLoggedIn, function(req, res) {
 
 	if(req.body.receiver !== undefined) {
 		console.log("receiver is " + req.body.receiver );
@@ -641,29 +746,26 @@ app.get("/chat", isLoggedIn, function(req, res) {
 			console.log(error);
 		}
 		else {
-			res.render("chat2.ejs", { users:foundUsers });
+			Chat.find({
+				messages: {
+					'$elemMatch': {
+						'$or': 	[{ sender: req.user._id}, {receiver: req.user._id }]
+					}
+				}				
+			}, function(error, foundChats) {
+					if(error) {
+						console.log(error);
+					}
+
+					res.render("chat2.ejs", { users: foundUsers, chats:foundChats, selectedChat : null });
+			});
 		}
 	});
 });
 
-app.get("/chat/conversation", function(req, res) {
-	Chat.findOne({
-		messages:  {
-			'$elemMatch': {
-				 sender: req.user._id, receiver: receiver
-			}
-		}
-	}, function(error, foundChat) {
-		if(error) {
-			console.log(error);
-		}
-		else {
 
-		}
-	});
-});
 
-app.post("/chat", isLoggedIn, function(req, res) {
+app.post("/chats", isLoggedIn, function(req, res) {
 	console.log("receiver is " + req.body.receiver );
 	User.findOne({
 		username: req.body.username
@@ -689,6 +791,8 @@ app.post("/chat", isLoggedIn, function(req, res) {
 							Chat.create({
 
 							}, function(error,createdChat) {
+									createdChat.user1 =  req.user.username;
+									createdChat.user2 = foundReceiver.username;
 									createdChat.messages.push({
 										sender: req.user._id,
 										content: req.body.message.content,
@@ -696,15 +800,21 @@ app.post("/chat", isLoggedIn, function(req, res) {
 										receiver: foundReceiver._id
 									});
 									createdChat.save();
-									req.user.chats.push(createdChat);
-									foundReceiver.chats.push(createdChat);
+									req.user.chats.push({
+										otherUser: foundReceiver._id
+									});
+									foundReceiver.chats.push({
+										otherUser: req.user._id
+									});
 									req.user.save();
 									foundReceiver.save();
-									res.redirect("/chat");
+									res.redirect("/chats");
 									return;
 							});
 						}
 						else {
+							createdChat.user1 = req.user.username;
+							createdChat.user2 = foundReceiver.username;						
 							foundChat.messages.push({
 								sender: req.user._id,
 								content: req.body.message.content,
@@ -712,7 +822,7 @@ app.post("/chat", isLoggedIn, function(req, res) {
 								receiver: foundReceiver._id
 							});
 							foundChat.save();
-							res.redirect("/chat");
+							res.redirect("/chats");
 							return;
 						}
 					}
@@ -721,8 +831,7 @@ app.post("/chat", isLoggedIn, function(req, res) {
 	});
 });
 
-
-
+*/
 
 
 
