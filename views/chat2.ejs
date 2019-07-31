@@ -1,8 +1,6 @@
 <% include partials/header.ejs %>
 
 
-<link href="chat.css" type="text/css" rel="stylesheet">
-
 <div class="container">
 <h3 class=" text-center">Messaging</h3>
 <div class="messaging">
@@ -22,49 +20,60 @@
           </div>
        
           <div class="inbox_chat">
-          	
-	            <div class="chat_list active_chat">
-	              <div class="chat_people">
-	                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-	                <div class="chat_ib">
-						<a href="#">							
-							<li> USER</li>
-						</a>
-	                </div>
-	              </div>
-	            </div>
-	     
+          		<% if(users) { %>
+	          		<% users.forEach( function(user) { %>
+				            <div class="chat_list active_chat">
+				              <div class="chat_people">
+				                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+				                <div class="chat_ib">
+									<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">							
+										<li> <%= user %>  </li>
+									</a>
+				                </div>
+				              </div>
+				            </div>
+		     		<% }) %>
+          		<% } %>
           </div>
 
         </div>
         <div class="mesgs">
           <div class="msg_history">
-                        <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>
+          		<% if(chat !== null) {   %>
 
-                  			
-                  </p>
-              </div>
-          </div>
-          <div class="type_msg">
-            <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Type a message" />
-              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            </div>
-          </div>
-        </div>
+	             	<div class="incoming_msg">
+
+			              <div class="received_msg">
+			              		<div class="received_withd_msg">
+			              	
+			              	        <p> Hi, how are you today? </p>
+		              				<span class="time_date"> <%= new Date() %></span></div>
+			              </div>
+			        </div>
+		        <% } %>
+		        	        		
+				          <div class="type_msg">
+				            <div class="input_msg_write">
+				            	<form action="/chats/<%= currentUser._id %>/send/<%=  selectedUserId %>" method = "POST">	
+					              <input name = "content" type="text" class="write_msg" placeholder="Type a message" />
+					              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+				              </form>
+				            </div>
+				         </div>
+		        	
+		   </div>
       </div>
       
       
-      <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
+      <p class="text-center top_spac"> Design by <a target="_blank" href="/" >Sunil Rajput</a></p>
       
     </div></div>
-    </body>
-    </html>
 
+ <script type="text/javascript">
+    setInterval(function() {
+      $("#reloadContent").load(location.href+" #reloadContent>*","");
+    }, 3000);
+  </script>
 
 
 

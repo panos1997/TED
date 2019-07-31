@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/html" href="<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="/app.css">
+		<link rel="stylesheet" type="text/css" href="/chatPage.css" >
 	</head>
 
 	<body>
@@ -21,10 +22,30 @@
     				<font color="white">Team</font>
   				</a>
   				<% if(currentUser !== undefined && currentUser.role === "manager") {  %>
-  					<a class="nav-link" href="/managerPage"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>Home</font></a>
+  					<a style="margin-left: -15em;" class="nav-link" href="/managerPage"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>Home</font></a>
   				<% } else {%>
-  					<a class="nav-link" href="/"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>Home</font></a>
+  					<a style="margin-left: -15em;" class="nav-link" href="/"><font color="white"> <i class="fa fa-home" aria-hidden="true"></i>Home</font></a>
   				<% } %>
+  						<form action = "/login" method = "POST">
+
+
+			<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
+				<input class="form-control" type="text" name="username" placeholder = "username">
+			</div>
+
+
+			<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
+				<input class="form-control" type="password" name="password" placeholder = "password">
+			</div>
+
+
+			<div class="form-group" style="float:left; width: 6em; margin: 0.7em; margin-top: 0.9em;">
+				<button class="btn btn-sm btn-success btn-default btn-block" >Login</button>
+			</div>
+
+
+		</form>
+
 		     	<ul class="navbar-nav">
 
       				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  

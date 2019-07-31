@@ -1,6 +1,8 @@
 var express = require("express");
 var mongoose = require("mongoose");
 var passport = require("passport");
+var ChatStuff = require("./models/chat.js");
+var Chat = ChatStuff.Chat;
 var User = require("./models/user.js");
 var Auction = require("./models/auction.js");
 var Bid = require("./models/bid.js");
@@ -14,6 +16,7 @@ var fs = require('fs');
 var dateFormat = require('dateformat');
 var request=require('request');
 var findOrCreate = require('mongoose-find-or-create');
+var ObjectId = require('mongodb').ObjectID;
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
@@ -636,22 +639,138 @@ function userIsAuthorised(req, res, next) {
 
 /////// CHAT ////////////
 
-
-app.get("/chats", function(req, res) {
+app.get("/chats", isLoggedIn, function(req, res) {
 	User.find({
 
 	}, function(error, foundUsers) {
 			if(error) {
 				console.log(error);
-				return;
 			}
 			else {
-				return res.render("chat2.ejs", {users: foundUsers});
+				return res.render("chat2.ejs", {users: foundUsers, chat: null, selectedUserId: "5d2f7f4d789c920b0d98b54e" });
 			}
 	});
 	
 });
 
+
+app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, res) {
+	Chat.findOne({
+		messages:  {
+			'$elemMatch': {
+				'$or': 	[{ sender: req.params.currentUserId , receiver: req.params.otherUserId}, { sender: req.params.otherUserId, receiver: req.params.currentUserId }]
+			}
+		}
+	}, function(error, foundChat) {
+		if(error) {
+			console.log(error);
+		}
+		else {
+			console.log(foundChat);
+			if(foundChat == null) {           // if a chat between the 2 users does not already exist, then create one
+				Chat.create({
+
+				}, function(error, createdChat) {
+						if(error) {
+							console.log(error);
+						}
+						else {
+							if(createdChat !== null) {
+								createdChat.messages.push({
+									sender: req.params.currentUserId,
+									receiver: req.params.otherUserId,
+									content: req.body.content,
+									date: new Date()
+								});
+								createdChat.save();
+								console.log("createdChat is " + createdChat);
+								// find users and update their chats array
+								User.findOne({
+									_id: req.params.currentUserId
+								}, function(error, foundSeller) {
+									if(error) {
+										console.log(error)
+									}
+									else {
+										User.findOne({
+											_id: req.params.otherUserId
+										}, function( error, foundReceiver) {
+											if(error) {
+												console.log(error)
+											}
+											else {
+												//console.log("foundSeller is " + foundSeller);
+												//console.log("foundReceiver is " + foundReceiver);
+												req.redirect("/chats");
+											}
+										})
+									}
+								})
+							}
+						}
+				});
+			}	
+			else {					// if the chat already exists
+				//console.log("foundChat is " + foundChat);
+				foundChat.messages.push({
+					sender: req.params.currentUserId,
+					receiver: req.params.otherUserId,
+					content: req.body.content,
+					date: new Date()
+				});
+				foundChat.save();
+				console.log("foundChat is " + foundChat);
+				res.redirect("/chats");
+			}
+
+
+		}
+	})
+	
+});
+
+app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res) {
+
+/*	User.find({
+
+	}, function(error, foundUsers) {
+			//console.log(req.params);
+			if(error) {
+				console.log(error);
+			}
+			else {
+				Chat.findOne({
+					messages: {
+						'$elemMatch': {
+							 receiver: req.params.otherUserId
+						}
+					}
+
+				}).populate('messages').exec( function(err, populatedChat) { 
+						console.log("populatedChat is " + populatedChat);
+						return res.render("chat2.ejs", {users: foundUsers , chat: populatedChat, selectedUserId: "5d2f7f4d789c920b0d98b54e" });	
+				})
+
+			}
+				
+	});	*/
+
+	Chat.findOne({
+					messages: {
+						'$elemMatch': {
+							 receiver: req.params.otherUserId
+						}
+					}
+
+				}).populate('messages').exec( function(err, populatedChat) { 
+						console.log("populatedChat is " + populatedChat);
+						console.log(req.params);
+						res.render("chat2.ejs", {users: null , chat: populatedChat, selectedUserId: "5d2f7f4d789c920b0d98b54e" });	
+						return;
+				});
+
+		return;
+});
 
 
 
