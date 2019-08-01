@@ -386,11 +386,27 @@ app.get("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, re
 	});
 });
 
+app.get("/categories/:category/:auctionId/buyNow",isLoggedIn, function(req,res){
+	Auction.findById({
+		_id: req.params.auctionId
+	}, function(error, foundAuction){
+		res.render("buyNow.ejs",{auction: foundAuction});
+	});
+});
+
 app.get("/categories/:category/:auctionId/confirmBid", isLoggedIn, function(req, res) {
 	Auction.findById({
 		_id: req.params.auctionId
 	}, function(error, foundAuction) {
 			res.render("confirmBid.ejs", {auction: foundAuction, amount: req.query.amount});
+	});
+});
+
+app.get("/categories/:category/:auctionId/confirmBuy", isLoggedIn, function(req, res) {
+	Auction.findById({
+		_id: req.params.auctionId
+	}, function(error, foundAuction) {
+			res.render("confirmBuy.ejs", {auction: foundAuction});
 	});
 });
 
@@ -435,7 +451,9 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 	//res.send("perfect, you made a bid");
 	res.render("succes_bid.ejs");
 });
-
+app.post("/categories/:category/:auctionId/makeBuy", isLoggedIn, function(req, res) {
+	res.send("hi");
+});
 
 app.get("/search", function(req, res) {
 	res.redirect("/");
