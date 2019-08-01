@@ -5,7 +5,7 @@
 	<header class="jumbotron">
 		<div class="container">
 
-			<h2 align="center"><b> More info about this auction: </b></h2>
+			<h2 align="center"><b> More info about this auction </b></h2>
 			<br>
 
 			<img src="<%= auction.Image %>" class="img-fluid" alt="Responsive image">
@@ -46,6 +46,7 @@
 
 		    map.setCenter (lonLat, zoom);
 		  </script>
+		  <div style = "margin-top: 2%;">
 			<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
 			<% if(auction.Buy_Price!== null) {%>
 				<a href="/categories/<%= auction.category %>/<%= auction._id %>/buyNow" class="btn btn-success"> Buy now </a>
@@ -58,6 +59,7 @@
 					<% } %>
 				<% } %>
 			<% } %>
+		</div>
 
 			<div class="container">
 				<br>

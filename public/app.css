@@ -178,6 +178,8 @@ img {
 .d-block.w-100 {
 	margin-top: 3%;
 	height: 25em!important;
+	width: 80%!important;
+	margin-left: 10%;
 }
 
 
@@ -185,4 +187,13 @@ footer {
 	margin-top: 25%;
 	background-color: #000033!important;
 	color: white;
+}
+
+
+i {
+	font-size: 1.5em!important;
+}
+
+.card {
+	float: left;
 }
