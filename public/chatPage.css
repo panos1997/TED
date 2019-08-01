@@ -1,3 +1,8 @@
+body {
+  font-size: 120%;
+}
+
+
 .container{max-width:1170px; margin:auto;}
 
 img{ max-width:100%;}
@@ -83,6 +88,7 @@ img{ max-width:100%;}
   margin: 0;
   padding: 5px 10px 5px 12px;
   width: 100%;
+  font-size: 1em;
 }
 .time_date {
   color: #747474;
@@ -104,8 +110,10 @@ img{ max-width:100%;}
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
+  font-size: 1em;
 }
-.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.outgoing_msg{ overflow:hidden; margin:26px 0 26px; }
+
 .sent_msg {
   float: right;
   width: 46%;
@@ -114,12 +122,16 @@ img{ max-width:100%;}
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
   color: #4c4c4c;
-  font-size: 15px;
   min-height: 48px;
   width: 100%;
 }
 
-.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+.type_msg {
+  border-top: 1px solid #c4c4c4;position: relative;
+  padding-top: 50px;
+  font-weight: 600;
+}
+
 .msg_send_btn {
   background: #05728f none repeat scroll 0 0;
   border: medium none;
