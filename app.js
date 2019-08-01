@@ -702,7 +702,7 @@ function userIsAuthorised(req, res, next) {
 
 app.get("/chats", isLoggedIn, function(req, res) {
 	User.find({
-
+		_id: { $ne: req.user._id} 
 	}, function(error, foundUsers) {
 			if(error) {
 				console.log(error);
@@ -792,6 +792,7 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res) {
 
 	User.find({
+		_id: { $ne: req.user._id} 
 
 	}, function(error, foundUsers) {
 			if(error) {
@@ -825,7 +826,9 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 
 
 
-
+app.get("/chats2", function(req, res) {
+	res.render("chat.ejs");
+});
 
 
 
