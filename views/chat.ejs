@@ -1,30 +1,4 @@
 
-<form method="POST" action = "/chats">
-       <select class="mdb-select md-form" name="username" >
-          <option value="" disabled selected>Send to</option>
-          <% users.forEach(function(user) { %>
-                  <option  name = "receiver" value = "<%= user.username %>"><%= user.username %></option>                 
-          <% }) %>
-      </select> 
-      <input type="text" name="message[content]">
-      <button type = "submit"> Send </button>
-</form>
-
-
-
-<% currentUser.chats.forEach( function(chat) {  %>
-  <a href="/chats/<%= currentUser._id %>/chat/<%= chat.otherUser %>">
-    
-    <li> <%= chat.otherUser %> </li>
-  </a>
-  
-  <br>
-<% }) %>
-
-
-
-<br><br><br><br>
-
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -66,6 +66,9 @@ img{ max-width:100%;}
   display: inline-block;
   width: 6%;
 }
+
+
+
 .received_msg {
   display: inline-block;
   padding: 0 0 0 10px;
@@ -131,7 +134,9 @@ img{ max-width:100%;}
   width: 33px;
 }
 .messaging { padding: 0 0 50px 0;}
+
+
 .msg_history {
-  height: 516px;
+  height: 10em;
   overflow-y: auto;
 }

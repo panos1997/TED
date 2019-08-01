@@ -666,7 +666,7 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 			console.log(error);
 		}
 		else {
-			console.log(foundChat);
+			console.log("CHAT FOUND IS " + foundChat);
 			if(foundChat == null) {           // if a chat between the 2 users does not already exist, then create one
 				Chat.create({
 
@@ -699,9 +699,7 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 												console.log(error)
 											}
 											else {
-												//console.log("foundSeller is " + foundSeller);
-												//console.log("foundReceiver is " + foundReceiver);
-												req.redirect("/chats");
+												res.redirect("/chats/" + req.params.currentUserId + "/chat/" + req.params.otherUserId);
 											}
 										})
 									}
@@ -719,8 +717,9 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 					date: new Date()
 				});
 				foundChat.save();
-				console.log("foundChat is " + foundChat);
-				res.redirect("/chats");
+				console.log(typeof req.params.currentUserId);
+				console.log(typeof req.params.otherUserId);
+				res.redirect("/chats/" + req.params.currentUserId + "/chat/" + req.params.otherUserId);
 			}
 
 
@@ -731,10 +730,9 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 
 app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res) {
 
-/*	User.find({
+	User.find({
 
 	}, function(error, foundUsers) {
-			//console.log(req.params);
 			if(error) {
 				console.log(error);
 			}
@@ -742,223 +740,27 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 				Chat.findOne({
 					messages: {
 						'$elemMatch': {
-							 receiver: req.params.otherUserId
+							 '$or': [{receiver: req.params.otherUserId, sender: req.params.currentUserId}, {receiver: req.params.currentUserId, sender: req.params.otherUserId }    ]
 						}
 					}
 
-				}).populate('messages').exec( function(err, populatedChat) { 
-						console.log("populatedChat is " + populatedChat);
-						return res.render("chat2.ejs", {users: foundUsers , chat: populatedChat, selectedUserId: "5d2f7f4d789c920b0d98b54e" });	
-				})
+				}, function(error, foundChat) {
+						if(error) {
+							console.log(error);
+						}
+						else {
+							//console.log("foundChat isss " + foundChat)
+							return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId });	
+						}
+				});
 
 			}
 				
-	});	*/
+	});	
 
-	Chat.findOne({
-					messages: {
-						'$elemMatch': {
-							 receiver: req.params.otherUserId
-						}
-					}
-
-				}).populate('messages').exec( function(err, populatedChat) { 
-						console.log("populatedChat is " + populatedChat);
-						console.log(req.params);
-						res.render("chat2.ejs", {users: null , chat: populatedChat, selectedUserId: "5d2f7f4d789c920b0d98b54e" });	
-						return;
-				});
-
-		return;
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-app.get("/chats/:senderId/chat/:receiverName" , function(req, res) { 
-	console.log("iiiiiiiiiiiiiii");
-	User.findOne({
-		username: req.params.receiverName
-	}, function(error, foundUser) {
-			if(error) {
-				console.log(error);
-				return;
-			}
-			console.log("foundUser is :" + foundUser);
-			Chat.findOne( {
-				messages:  {
-					'$elemMatch': {
-						 sender: req.params.senderId, receiver: foundUser._id
-					}
-				}
-			}, function(error, foundChat) {
-					if(error) {
-						console.log(error)
-					}
-					else {
-
-						User.find({
-
-						}, function(error, foundUsers) {
-							if(error) {
-								console.log(error);
-							}
-							else {
-								Chat.find({
-									messages: {
-										'$elemMatch': {
-											'$or': 	[{ sender: req.user._id}, {receiver: req.user._id }]
-										}
-									}				
-								}, function(error, foundChats) {
-										if(error) {
-											console.log(error);
-										}
-
-										return res.render("chat2.ejs", { users:foundUsers, chats:foundChats, selectedChat : foundChat });
-								});
-							}
-						});
-					}
-			});
-	});
-});
-
-
-
-
-
-app.get("/chats", isLoggedIn, function(req, res) {
-
-	if(req.body.receiver !== undefined) {
-		console.log("receiver is " + req.body.receiver );
-	}
-	User.find({
-
-	}, function(error, foundUsers) {
-		if(error) {
-			console.log(error);
-		}
-		else {
-			Chat.find({
-				messages: {
-					'$elemMatch': {
-						'$or': 	[{ sender: req.user._id}, {receiver: req.user._id }]
-					}
-				}				
-			}, function(error, foundChats) {
-					if(error) {
-						console.log(error);
-					}
-
-					res.render("chat2.ejs", { users: foundUsers, chats:foundChats, selectedChat : null });
-			});
-		}
-	});
-});
-
-
-
-app.post("/chats", isLoggedIn, function(req, res) {
-	console.log("receiver is " + req.body.receiver );
-	User.findOne({
-		username: req.body.username
-	}, function(error, foundReceiver) {
-			if(error) {
-				console.log(error);
-			}
-			 else {
-				Chat.findOne({
-					messages:  {
-						'$elemMatch': {
-							'$or': 	[{ sender: req.user._id, receiver: foundReceiver._id}, { sender: foundReceiver._id, receiver: req.user._id }]
-						}
-					}
-						
-				}, function(error, foundChat) {
-					if(error) {
-						console.log(error);
-					}
-					else {
-						console.log("foundchat is" + foundChat);
-						if(foundChat ===  null) {
-							Chat.create({
-
-							}, function(error,createdChat) {
-									createdChat.user1 =  req.user.username;
-									createdChat.user2 = foundReceiver.username;
-									createdChat.messages.push({
-										sender: req.user._id,
-										content: req.body.message.content,
-										date: new Date(),
-										receiver: foundReceiver._id
-									});
-									createdChat.save();
-									req.user.chats.push({
-										otherUser: foundReceiver._id
-									});
-									foundReceiver.chats.push({
-										otherUser: req.user._id
-									});
-									req.user.save();
-									foundReceiver.save();
-									res.redirect("/chats");
-									return;
-							});
-						}
-						else {
-							createdChat.user1 = req.user.username;
-							createdChat.user2 = foundReceiver.username;						
-							foundChat.messages.push({
-								sender: req.user._id,
-								content: req.body.message.content,
-								date: new Date(),
-								receiver: foundReceiver._id
-							});
-							foundChat.save();
-							res.redirect("/chats");
-							return;
-						}
-					}
-				});
-			 }
-	});
-});
-
-*/
 
 
 
