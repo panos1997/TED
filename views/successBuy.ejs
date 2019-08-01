@@ -1,0 +1,24 @@
+<% include partials/header.ejs %>
+
+<div class="container">
+	<div class="jumbotron">
+		<div class="container">
+
+			<h2> Perfect, you bought this item.</h2>
+			<br>
+			<div class="form-group">
+				<a class="btn btn-sm btn-primary btn-default" href="/">Go Back to main page</a>
+			</div>
+
+			<p>Αutomatic return to main page in 10 second.
+			</p>
+
+
+			<script>
+				setTimeout(function(){ window.location.href="/"; }, 10000);
+			</script>
+		</div>
+	</div>
+</div>
+
+<% include partials/footer.ejs %>

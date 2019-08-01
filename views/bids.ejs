@@ -4,6 +4,7 @@
 <div class="container" class="col col-4">
   <div class="card-deck">
     <% bidsAuctions.forEach( function(bidauction) { %>
+      <% if(bidauction.auction!=null){ %>
       <div class="card" >
         <img class="card-img-top" style="height:300px" src="<%=bidauction.auction.Image%>" alt="Card image cap">
         <div class="card-body">
@@ -14,12 +15,12 @@
           <h5><b>Ends at:</b>   <%= bidauction.auction.Ends	  		 %></h5>
           <br>
           <h5><a href="/categories/<%= bidauction.auction.category %>/<%= bidauction.auction._id %>" class="btn btn-info"> <strong> More info </strong> </a></h5>
-          <% if(bidauction.bid.amount<bidauction.auction.Currently){ %>
+          <% if(bidauction.bid.amount<bidauction.auction.Currently && bidauction.auction.Ends > Date.now()){ %>
             <h5><a href="/categories/<%= bidauction.auction.category %>/<%= bidauction.auction._id %>/makeBid" class="btn btn-danger"> <strong> Bid again </strong> </a></h5>
           <% } %>
         </div>
       </div>
-
+      <% } %>
     <% }) %>
 
   </div>

@@ -1,11 +1,53 @@
 <% include partials/header.ejs %>
 
 
-<h3>USER INFO</h3>
-<%=    user    %>
-<% if(user.request === "pending") {  %>
-		<a href="/managerPage/<%=  user._id  %>/approve"> approve</a>
-		<a href="/managerPage/<%=  user._id  %>/disapprove"> disapprove</a>
-<% } %>
+<div class="container">
+	<div class="jumbotron">
+		<div class="container">
+
+			<h2><b>User info:</b>  <%= user.username %> </h2>
+		
+			<br>
+			<br>
+		
+			<h4><b>UserName:</b> <%= user.username %> </h4>
+			<h4><b>Role:</b> <%= user.role %> </h4>
+			<h4><b>FirstName:</b> <%= user.firstName %> </h4>
+			<h4><b>LastName:</b> <%= user.lastName %> </h4>
+			<h4><b>Email:</b> <%= user.email %> </h4>
+			<h4><b>Phone:</b> <%= user.phone %> </h4>
+			<h4><b>Afm:</b> <%= user.AFM %> </h4>
+			<h4><b>Address:</b> <%= user.address %> </h4>
+			<h4><b>Location:</b> <%= user.Location %> </h4>
+			
+			
+			<% if(user.request === "pending") {  %>
+				<br>
+				<br>
+				<div class="form-group">
+					<a class="btn btn-success" href="/managerPage/<%=  user._id  %>/approve"> Approve</a>
+				</div>
+				
+				<div class="form-group">
+					<a class="btn btn-danger" href="/managerPage/<%=  user._id  %>/disapprove"> Disapprove</a>
+				</div>
+				
+			<% } %>
+			<br>
+			<br>
+			<div class="form-group">
+					<a class="btn btn-primary btn-default" href="/managerPage/">Go Back</a>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
 
 <% include partials/footer.ejs %>
