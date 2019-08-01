@@ -8,7 +8,7 @@
 			<h3><font color="red"> You can not undo this action later. </font></h3>
 
 			<br>
-			<form action="/categories/<%= auction.category %>/<%= auction._id %>/makeBuy"  method="POST">
+			<form action="/categories/<%= auction.category %>/<%= auction._id %>/makeBuy?amount=<%= auction.Buy_Price %>"  method="POST">
 				<div class="form-group">
 					<input class="btn btn-danger" type="submit" value="Confirm" />
 				</div>

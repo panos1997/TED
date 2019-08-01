@@ -308,24 +308,28 @@ app.get("/bids", isLoggedIn, function(req, res) {
 			if(error) {
 				console.log(error);
 			}
-			foundBids.forEach(function(bid) {
-				Auction.findById( {
-					_id: bid.auction[0]._id
-				},function(error, foundAuction) {
-					if(error) {
-						console.log(error);
-					}
-					bidsAuctions.push({
-						bid: bid,
-						auction: foundAuction
+			if(foundBids.length>0){
+				foundBids.forEach(function(bid) {
+					Auction.findById( {
+						_id: bid.auction[0]._id
+					},function(error, foundAuction) {
+						if(error) {
+							console.log(error);
+						}
+						bidsAuctions.push({
+							bid: bid,
+							auction: foundAuction
+						});
+						counter++;
+						if(counter==foundBids.length){ //render afou exei teleiwsei i foreach gia ola ta bids
+							console.log(bidsAuctions);
+							res.render("bids.ejs", {bidsAuctions:bidsAuctions});
+						}
 					});
-					counter++;
-					if(counter==foundBids.length){ //render afou exei teleiwsei i foreach gia ola ta bids
-						console.log(bidsAuctions);
-						res.render("bids.ejs", {bidsAuctions:bidsAuctions});
-					}
 				});
-			});
+	  	}else{
+				res.send("you don't have any bids yet");
+			}
 	});
 });
 
@@ -448,11 +452,50 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 		})
 
 	})
-	//res.send("perfect, you made a bid");
 	res.render("succes_bid.ejs");
 });
 app.post("/categories/:category/:auctionId/makeBuy", isLoggedIn, function(req, res) {
-	res.send("hi");
+	Bid.create({
+		amount: req.query.amount,
+		time: new Date()
+	}, function(error, createdBid) {
+		if(error) {
+			console.log(error);
+		}
+		User.findById({
+			_id: req.user._id
+		}, function(error, foundUser) {
+				if(error) {
+					console.log(error);
+				}
+				createdBid.bidder.push(foundUser);
+				Auction.findById({
+					_id: req.params.auctionId
+				}, function( error, foundAuction) {
+						if(error) {
+							console.log(error)
+						}
+						foundAuction.Currently=req.query.amount; //currently = buy price
+						foundAuction.Ends=new Date(); //telos to auction timer
+						foundAuction.bids.push(createdBid);
+						foundAuction.Number_of_bids = foundAuction.Number_of_bids + 1;
+						foundAuction.save( function(error, data) {
+							if(error) {
+								console.log(error);
+							}
+						});
+						createdBid.auction.push(foundAuction);
+						createdBid.save( function(error, data) {
+							if(error) {
+								console.log(error);
+							}
+						});
+
+				})
+		})
+
+	})
+	res.render("successBuy.ejs");
 });
 
 app.get("/search", function(req, res) {
@@ -668,7 +711,7 @@ app.get("/chats", isLoggedIn, function(req, res) {
 				return res.render("chat2.ejs", {users: foundUsers, chat: null, selectedUserId: "5d2f7f4d789c920b0d98b54e" });
 			}
 	});
-	
+
 });
 
 
@@ -725,7 +768,7 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 							}
 						}
 				});
-			}	
+			}
 			else {					// if the chat already exists
 				//console.log("foundChat is " + foundChat);
 				foundChat.messages.push({
@@ -743,7 +786,7 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 
 		}
 	})
-	
+
 });
 
 app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res) {
@@ -768,13 +811,13 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 						}
 						else {
 							//console.log("foundChat isss " + foundChat)
-							return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId });	
+							return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId });
 						}
 				});
 
 			}
-				
-	});	
+
+	});
 
 });
 
