@@ -1,7 +1,7 @@
 <% include partials/header.ejs %>
 <link rel="stylesheet" type="text/css" href="/chatPage.css" >
 
-<div class="container">
+<div class="container" style="margin-top: 4%">
 
 <div class="messaging">
       <div class="inbox_msg">
@@ -22,7 +22,7 @@
           <div class="inbox_chat">
           		<% if(users) { %>
 	          		<% users.forEach( function(user) { %>
-				            <div class="chat_list active_chat">
+				            <div class="chat_list ">
 				              <div class="chat_people">
 				                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
 				                <div class="chat_ib">
@@ -37,35 +37,37 @@
           </div>
 
         </div>
+
         <div class="mesgs">
 
-          		<% if(chat !== null) {   %>
-          			<% chat.messages.forEach( function(message) {   %>
+    
  
 
-          <div class="msg_history">
-          	<% if(String(message.receiver) === String(currentUser._id) ) {   %>
-		            <div class="incoming_msg">
-		              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-		              <div class="received_msg">
-		                <div class="received_withd_msg">
-		                  <p>  <%= message.content %>  </p>
-		                  <span class="time_date"> <%= message.date %></span></div>
-		              </div>
-		            </div>
-	         <% } else if(String(message.receiver) === selectedUserId ) { %>
-		            <div class="outgoing_msg">
-		              <div class="sent_msg">
-		                <p>  <%= message.content %>  </p>
-		                <span class="time_date"> <%= message.date %></span></div>
-		            </div>
-		  	<% } %>      	        	
-		        	
+          <div class="msg_history" style="padding-bottom: 30em;">
+  	      		<% if(chat !== null) {   %>
+	  					<% chat.messages.forEach( function(message) {   %>
+				          		<% if(String(message.receiver) === String(currentUser._id) ) {   %>
+							            <div class="incoming_msg">
+							              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+							              <div class="received_msg">
+							                <div class="received_withd_msg">
+							                  <p>  <%= message.content %>  </p>
+							                  <span class="time_date"> <%= message.date %></span></div>
+							              </div>
+							            </div>
+						         <% } else if(String(message.receiver) === selectedUserId ) { %>
+							            <div class="outgoing_msg">
+							              <div class="sent_msg">
+							                <p>  <%= message.content %>  </p>
+							                <span class="time_date"> <%= message.date %></span></div>
+							            </div>
+							  	<% } %>      	        	
+	      				<% }) %>
+		        <% } %>		        	
 		   </div>
-		      <% }) %>
-		        <% } %>
+		
 
-			<div class="type_msg">
+			<div class="type_msg" >
 	            <div class="input_msg_write">
 	            	<form action="/chats/<%= currentUser._id %>/send/<%=  selectedUserId %>" method = "POST">	
 		              <input name = "content" type="text" class="write_msg" placeholder="Type a message" />
@@ -79,7 +81,7 @@
 </div>
 
 
-
+  
 
 
 
