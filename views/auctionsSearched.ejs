@@ -1,38 +1,41 @@
 <% include partials/header.ejs %>
 
+
+
 <br>
-<div class="container">
-<div class="card-deck">
-	
-	<% auctions.forEach( function(auction) { %>
-		<div class="card">
-			<img class="card-img-top" style="height:300px" src="<%= auction.Image%>" alt="Card image cap">
-			<div class="card-body">
-				<h3 class="card-title"><b><%= auction.name %></b></h3>
-				
-				<h5><b>Price:</b> <%= auction.Buy_Price		 %></h5>
-				<h5><b>Start:</b> <%= auction.Started		 %></h5>
-				<h5><b>End:</b>   <%= auction.Ends	  		 %></h5>
-				
-				<br>
-				<h5><a href="/categories/<%= auction.category%>/<%= auction._id%>">More info</a></h5>
-				
-				<% if( (new Date(auction.Started).getTime() / 1000) <= (new Date().getTime() / 1000) && (new Date(auction.Ends).getTime() / 1000) >= (new Date().getTime() / 1000)){ %>
-					<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
-						<h5><a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> <font style="color:green;"> <strong> Make a bid </strong> </font> </a></h5>
+<div class="container-fluid">
+	<div class="row">
+		<% auctions.forEach( function(auction) { %>
+			<div class="card" style="width: 18rem">
+				<img class="card-img-top" style="height:300px" src="<%= auction.Image%>" alt="Card image cap">
+				<div class="card-body">
+					<h3 class="card-title"><b><%= auction.name %></b></h3>
+					
+					<h5><b>Price:</b> <%= auction.Buy_Price		 %></h5>
+					<h5><b>Start:</b> <%= auction.Started		 %></h5>
+					<h5><b>End:</b>   <%= auction.Ends	  		 %></h5>
+					
+					<br>
+					<h5><a href="/categories/<%= auction.category%>/<%= auction._id%>">More info</a></h5>
+					
+					<% if( (new Date(auction.Started).getTime() / 1000) <= (new Date().getTime() / 1000) && (new Date(auction.Ends).getTime() / 1000) >= (new Date().getTime() / 1000)){ %>
+						<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
+							<h5><a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid"> <font style="color:green;"> <strong> Make a bid </strong> </font> </a></h5>
+						<% } %>
 					<% } %>
-				<% } %>
+				</div>
 			</div>
-		</div>
 
-	<% }) %>
-	
-</div>
-<br>
-<br>
-<a class="btn btn-sm btn-primary btn-default" href="/categories">Go Back</a>
+		<% }) %>
+	</div>
+
+	<br>
+	<br>
+	<a class="btn btn-sm btn-primary btn-default" href="/categories">Go Back</a>
 
 </div>
+
+
 
 
 <% include partials/footer.ejs %>
