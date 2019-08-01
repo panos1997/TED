@@ -1,4 +1,9 @@
 <% include partials/header.ejs %>
+
+<div class="container">
+<br>
+<h2> Manageρ HomePage </h2>
+
 <link rel="stylesheet" type="text/css" href="/manager.css">
 
   <!-- Masthead -->
@@ -29,35 +34,53 @@
       </div>
     </div>
   </header>
+</div>
 
 
 
-<ul id="users">
-	<h3 id="userHeader"> Users </h3>
+
+
+<br>
+<div class="container">
+
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+		
+		<th scope="col">Username</th>
+		<th scope="col">Details</th>
+		
+		</tr>
+	</thead>
+	<tbody style="background-color: #F5F5DC;">
+	
 	<%  foundUsers.forEach( function(user) {    %>
+		<tr>
 			<% if(user.role !== "manager") {  %>
 					<% if(role !== undefined) {  %>
 						<% if(role === "all") { %>
-							<li id="userItem"> 
-								<%= user.username %>
-								<a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a>
-							</li>							
+							
+								<td><%= user.username %></td>
+								<td><a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a></td>
+													
 						<% } else if(user.role === role) { %>
-							<li id="userItem"> 
-								<%= user.username %>
-								<a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a>
-							</li>
+							
+								<td><%= user.username %></td>
+								<td><a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a></td>
+							
 						<% } %>
 					<% } else { %>
-							<li id="userItem"> 
-								<%= user.username %>
-								<a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a>
-							</li>
+							 
+								<td><%= user.username %></td>
+								<td><a class="nav-link" href="/managerPage/<%=  user._id  %>" style="display: inline;"  > show user details </a></td>
+							
 					<% } %>
 			<% } %>
+		</tr>
 	<%  });  %>
-
-</ul>
+	</tbody>
+</table>
+</div>
 
 
 <% include partials/footer.ejs %>
