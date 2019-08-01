@@ -3,11 +3,11 @@
 
 
 <br>
-<div class="container-fluid">
+<div class="container-fluid" style = "margin-left: 3%;">
 	<div class="row">
 		<% auctions.forEach( function(auction) { %>
-			<div class="card" style="width: 18rem">
-				<img class="card-img-top" style="height:300px" src="<%= auction.Image%>" alt="Card image cap">
+			<div class="card" style="width: 18rem; margin: 2%;">
+				<img class="card-img-top" style="height:20em" src="<%= auction.Image%>" alt="Card image cap">
 				<div class="card-body">
 					<h3 class="card-title"><b><%= auction.name %></b></h3>
 					

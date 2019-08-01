@@ -823,11 +823,8 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 });
 
 
-
-
-
-app.get("/chats2", function(req, res) {
-	res.render("chat.ejs");
+app.get("/account", function(req, res) {
+	res.render("account.ejs");
 });
 
 

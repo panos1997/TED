@@ -27,27 +27,35 @@
   				<% } %>
 
   				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  
-  			<a style="margin-left: -18em;" class="nav-link" href="/chats"><font color="white"> <i class="fa fa-comment" ></i> Messages </font></a>
+  						<a style="margin-left: -18em;" class="nav-link" href="/chats"><font color="white"> <i class="fa fa-comment" ></i> Messages </font></a>
   			<% } %>
+
+		
 			<a style="margin-left: -18em;" class="nav-link" href="/chats"><font color="white"> <i class="fa fa-question" ></i> Help </font></a>
-  			<form action = "/login" method = "POST">
+  				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  
+  						<a style="margin-left: -18em;" class="nav-link" href="/account"><font color="white"> <i class="fa fa-cog" aria-hidden="true"></i>
+ My Acoount </font></a>
+  			<% } %> 	
+  			<% if(typeof currentUser === "undefined" ) {   %> 
+	  			<form action = "/login" method = "POST">
 
 
-				<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
-					<input class="form-control" type="text" name="username" placeholder = "username">
-				</div>
+					<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
+						<input class="form-control" type="text" name="username" placeholder = "username">
+					</div>
 
 
-				<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
-					<input class="form-control" type="password" name="password" placeholder = "password">
-				</div>
+					<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
+						<input class="form-control" type="password" name="password" placeholder = "password">
+					</div>
 
 
-				<div class="form-group" style="float:left; width: 6em; margin: 0.7em; margin-top: 0.9em;">
-					<button class="btn btn-sm btn-success btn-default btn-block" >Login</button>
-				</div>
+					<div class="form-group" style="float:left; width: 6em; margin: 0.7em; margin-top: 0.9em;">
+						<button class="btn btn-sm btn-success btn-default btn-block" >Login</button>
+					</div>
 
-			</form>
+				</form>
+			<% } %>
 
 		     	<ul class="navbar-nav">
 
