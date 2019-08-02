@@ -30,6 +30,7 @@
   						<a style="margin-left: -18em;" class="nav-link" href="/chats"><font color="white"> <i class="fa fa-comment" ></i> Messages </font></a>
   			<% } %>
 
+<<<<<<< HEAD
 		
 			<a style="margin-left: -18em;" class="nav-link" href="/chats"><font color="white"> <i class="fa fa-question" ></i> Help </font></a>
   				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  
@@ -43,16 +44,36 @@
 					<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
 						<input class="form-control" type="text" name="username" placeholder = "username">
 					</div>
+=======
+				
+				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>
+				<% }else{ %>
+				
+					<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
+						<input class="form-control" type="text" name="username" placeholder = "username">
+					</div>
 
+>>>>>>> 33d9243e588d0332b4a316bdff6f01fabf6360d2
 
 					<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
 						<input class="form-control" type="password" name="password" placeholder = "password">
 					</div>
 
+<<<<<<< HEAD
+					<div class="form-group" style="float:left; width: 10em; margin: 0.7em;">
+						<input class="form-control" type="password" name="password" placeholder = "password">
+					</div>
+
+=======
+>>>>>>> 33d9243e588d0332b4a316bdff6f01fabf6360d2
 
 					<div class="form-group" style="float:left; width: 6em; margin: 0.7em; margin-top: 0.9em;">
 						<button class="btn btn-sm btn-success btn-default btn-block" >Login</button>
 					</div>
+<<<<<<< HEAD
+=======
+				<% } %>
+>>>>>>> 33d9243e588d0332b4a316bdff6f01fabf6360d2
 
 				</form>
 			<% } %>
