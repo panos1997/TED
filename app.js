@@ -507,16 +507,18 @@ app.post("/search", function(req, res) {
 	var auction = {};
 	if(req.body.auction !== undefined) {
 		if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
-			auction.name = req.body.auction.name;
+			var searchKey = new RegExp(req.body.auction.name, 'i')
+			auction.name = searchKey; 
 		}
 		if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
 			auction.category = req.body.auction.category;
+
 		}
 	}
 
 
 	Auction.find(
-		auction
+		auction 
 	, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
@@ -554,8 +556,8 @@ app.post("/register", function(req, res) {
 								role: req.body.role,
 								request: "approved",
 
-								firstname: req.body.firstname,
-								lastname: req.body.lastname,
+								firstName: req.body.firstName,
+								lastName: req.body.lastName,
 								email: req.body.email,
 								phone: req.body.phone,
 								address: req.body.address,
@@ -581,8 +583,8 @@ app.post("/register", function(req, res) {
 							role: req.body.role,
 							request: "pending",
 
-							firstname: req.body.firstname,
-							lastname: req.body.lastname,
+							firstName: req.body.firstName,
+							lastName: req.body.lastName,
 							email: req.body.email,
 							phone: req.body.phone,
 							address: req.body.address,
@@ -823,11 +825,28 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 });
 
 
-app.get("/account", function(req, res) {
+app.get("/account", isLoggedIn, function(req, res) {
 	res.render("account.ejs");
 });
 
-
+app.post("/account", isLoggedIn, function(req, res) {
+	console.log(req.body);
+	User.findByIdAndUpdate({
+		_id: req.user._id
+	}, {
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		username: req.body.username,
+		AFM: req.body.AFM,
+		email: req.body.email,
+		phone: req.body.phone,
+		location: req.body.location,
+		address: req.body.address
+	} ,function(error, updatedUser) {
+		res.redirect("/");
+	});
+	
+});
 
 
 
