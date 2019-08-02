@@ -118,7 +118,7 @@ app.get("/managerPage/:userId/disapprove", isLoggedIn, managerIsAuthorised , fun
 	User.findOneAndRemove({
 		_id: req.params.userId
 	}, function(error, foundUser) {
-			res.redirect("back");
+			res.redirect("/managerPage");
 	});
 });
 
@@ -702,13 +702,27 @@ function userIsAuthorised(req, res, next) {
 
 app.get("/chats", isLoggedIn, function(req, res) {
 	User.find({
-		_id: { $ne: req.user._id} 
+		_id: { $ne: req.user._id},
+		 request : { $ne: "pending"  }
 	}, function(error, foundUsers) {
 			if(error) {
 				console.log(error);
 			}
 			else {
-				return res.render("chat2.ejs", {users: foundUsers, chat: null, selectedUserId: String(foundUsers[0]._id) });
+				Chat.findOne({
+					messages:  {
+						'$elemMatch': {
+							'$or': 	[{ sender: req.user._id , receiver: String(foundUsers[0]._id)}, { sender: String(foundUsers[0]._id), receiver: req.user._id }]
+						}
+					}
+				}, function(error, foundChat) {
+						if(error) {
+							console.log(error)
+						}
+						else {
+							return res.render("chat2.ejs", {users: foundUsers, chat: foundChat, selectedUserId: String(foundUsers[0]._id) });
+						}
+				});
 			}
 	});
 
@@ -792,8 +806,8 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res) {
 
 	User.find({
-		_id: { $ne: req.user._id} 
-
+		_id: { $ne: req.user._id},
+		 request : { $ne: "pending"  }
 	}, function(error, foundUsers) {
 			if(error) {
 				console.log(error);
