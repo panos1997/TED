@@ -532,9 +532,7 @@ app.post("/search", function(req, res) {
 });
 
 
-app.get("/register/user_exist", function(req, res){
-	res.render("user_exist.ejs");
-});
+/*ss*/
 
 // sign up routes
 app.get("/register", function(req, res) {
@@ -545,7 +543,7 @@ app.post("/register", function(req, res) {
 	/////////////////////// edw prosthes auto to if////// an oi kwdikoi password kai password_again einai diaforetikoi tote se petaei se selida sfalmatos
 	if(req.body.password !== req.body.password_again){
 		//console.log("Ta password me to password_again einai diaforetika");
-		return res.render("user_exist.ejs");
+		return res.render("user_exists.ejs");
 	}
 	////////////////////////////////////////
 
@@ -595,7 +593,7 @@ app.post("/register", function(req, res) {
 	User.register(newUser, req.body.password, function(err, user) {
 		if(err) {
 			console.log("error is: " + err);
-			return res.render("user_exist.ejs");
+			return res.render("user_exists.ejs");
 			//res.render("register.ejs");
 		}
 																		// if the registration of the user is done correctly
@@ -710,7 +708,7 @@ app.get("/chats", isLoggedIn, function(req, res) {
 				console.log(error);
 			}
 			else {
-				return res.render("chat2.ejs", {users: foundUsers, chat: null, selectedUserId: "5d2f7f4d789c920b0d98b54e" });
+				return res.render("chat2.ejs", {users: foundUsers, chat: null, selectedUserId: String(foundUsers[0]._id) });
 			}
 	});
 

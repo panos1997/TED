@@ -1,3 +1,9 @@
 body {
-	background-image: url("innovation-manager_1024x497.jpg");
+	background-color: #bbecf0;
+}
+
+
+table {
+	width: 60%!important;
+	margin-left: 20%;
 }
