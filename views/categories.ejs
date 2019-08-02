@@ -10,7 +10,7 @@
           <form action = "/search" method = "POST">
             <div class="form-row">
      	            <div class="col-4 col-md-4 " >					  
-						 <select class="mdb-select md-form" name="auction[category]" >
+						 <select class="mdb-select md-form" name="auction[category]" style="height:35px; width:150px">
 							 <option value="" disabled selected>Choose Category</option>
 							  <option value="home" >Home & Garden</option>
 							  <option value="Fashion">Fashion & Jewlery</option>
@@ -28,17 +28,19 @@
 						
 
 	              <div class="col-6 col-md-6 ">
-	                <input class="form-control form-control-lg" name = "auction[name]" placeholder="Search for anything here...">
+	                <input style="margin: 6px 8px 20px 10px" class="form-control form-control-md" name = "auction[name]" placeholder="Search for anything here...">
 	              </div>
 
 	              <div class="col-2 col-md-2">
-	                <button type="submit" id="search" class="btn btn-block btn-lg btn-primary">Search</button>
+	                <button style="margin: 6px 10px 20px 20px" type="submit" id="search" class="btn btn-block btn-md btn-primary">Search</button>
 	              </div>          
               </div>
             </div>
           </form>
         </div>
       </div>
+	  <br> <br> <br>
+	  <a class="btn btn-sm btn-primary btn-default" href="/">Go Back</a>
     </div>
   </header>
 
