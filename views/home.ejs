@@ -60,31 +60,31 @@
 	        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto" id="searchDiv">
 	          <form action = "/search" method = "POST">
 	            <div class="form-row">
-	      <div class="col-4 col-md-4 " >					  
-							 <select class="mdb-select md-form" name="auction[category]" >
-								 <option value="" disabled selected>Choose Category</option>
-								  <option value="home" >Home & Garden</option>
-								  <option value="Fashion">Fashion & Jewlery</option>
-								  <option value="Health">Health</option>
-								  <option value="Sports">Sports</option>
-								  <option value="Books">Books</option>
-								  <option value="Movies">Games & Consoles</option>
-								  <option value="Toys">Toys</option>
-								  <option value="Electronics">Electronics</option>
-								  <option value="Art">Art</option>
-								  <option value="Houses">Properties</option>
-								  <option value="Vehicles">Vehicles</option>
-							  </select>
-						</div>
+							<div class="col-4 col-md-4 " >					  
+								<select class="mdb-select md-form" name="auction[category]" style="height:35px; width:150px">
+									 <option value="" disabled selected>Choose Category</option>
+									  <option value="home" >Home & Garden</option>
+									  <option value="Fashion">Fashion & Jewlery</option>
+									  <option value="Health">Health</option>
+									  <option value="Sports">Sports</option>
+									  <option value="Books">Books</option>
+									  <option value="Movies">Games & Consoles</option>
+									  <option value="Toys">Toys</option>
+									  <option value="Electronics">Electronics</option>
+									  <option value="Art">Art</option>
+									  <option value="Houses">Properties</option>
+									  <option value="Vehicles">Vehicles</option>
+								</select>
+							</div>
 							 
-		              <div class="col-6 col-md-6 ">
-		                <input class="form-control form-control-lg" name = "auction[name]" placeholder="Search for anything here...">
-		              </div>
+						<div class="col-6 col-md-6 ">
+							<input style="margin: 6px 8px 20px 10px" class="form-control form-control-md" name = "auction[name]" placeholder="Search for anything here...">
+						</div>
 
-		              <div class="col-2 col-md-2">
-		                <button type="submit" id="search" class="btn btn-block btn-lg btn-primary">Search</button>
-		              </div>          
-	              </div>
+						<div class="col-2 col-md-2">
+							<button style="margin: 6px 10px 20px 20px" type="submit" id="search" class="btn btn-block btn-md btn-primary">Search</button>
+						</div>          
+					</div>
 	            </div>
 	          </form>
 	        </div>
