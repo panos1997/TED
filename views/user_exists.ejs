@@ -1,0 +1,26 @@
+<% include partials/header.ejs %>
+
+
+<div class="container">
+	<header class="jumbotron">
+		<div class="container">
+		
+			<h2><font color="black">User already exists or password is different from password_again.</font></h2>
+			<h3><font color="black">Please return to register page and put a different username or check the <strong> password </strong> and the <strong>  password_again  </strong> fields.</font></h3>
+			
+			<div class="form-group">
+				<a class="btn btn-primary btn-sm" href="/register">Go back to register page</a>
+			</div>
+			
+			<p> Αutomatic return to main page in 10 second. </p>
+			
+			<script>
+				setTimeout(function(){ window.location.href="/"; }, 10000);
+			</script>
+		<div>
+	</div>
+</div>
+
+
+
+<% include partials/footer.ejs %>

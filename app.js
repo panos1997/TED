@@ -118,7 +118,7 @@ app.get("/managerPage/:userId/disapprove", isLoggedIn, managerIsAuthorised , fun
 	User.findOneAndRemove({
 		_id: req.params.userId
 	}, function(error, foundUser) {
-			res.redirect("back");
+			res.redirect("/managerPage");
 	});
 });
 
@@ -507,16 +507,18 @@ app.post("/search", function(req, res) {
 	var auction = {};
 	if(req.body.auction !== undefined) {
 		if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
-			auction.name = req.body.auction.name;
+			var searchKey = new RegExp(req.body.auction.name, 'i')
+			auction.name = searchKey; 
 		}
 		if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
 			auction.category = req.body.auction.category;
+
 		}
 	}
 
 
 	Auction.find(
-		auction
+		auction 
 	, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
@@ -530,9 +532,7 @@ app.post("/search", function(req, res) {
 });
 
 
-app.get("/register/user_exist", function(req, res){
-	res.render("user_exist.ejs");
-});
+/*ss*/
 
 // sign up routes
 app.get("/register", function(req, res) {
@@ -543,7 +543,7 @@ app.post("/register", function(req, res) {
 	/////////////////////// edw prosthes auto to if////// an oi kwdikoi password kai password_again einai diaforetikoi tote se petaei se selida sfalmatos
 	if(req.body.password !== req.body.password_again){
 		//console.log("Ta password me to password_again einai diaforetika");
-		return res.render("user_exist.ejs");
+		return res.render("user_exists.ejs");
 	}
 	////////////////////////////////////////
 
@@ -554,8 +554,8 @@ app.post("/register", function(req, res) {
 								role: req.body.role,
 								request: "approved",
 
-								firstname: req.body.firstname,
-								lastname: req.body.lastname,
+								firstName: req.body.firstName,
+								lastName: req.body.lastName,
 								email: req.body.email,
 								phone: req.body.phone,
 								address: req.body.address,
@@ -581,8 +581,8 @@ app.post("/register", function(req, res) {
 							role: req.body.role,
 							request: "pending",
 
-							firstname: req.body.firstname,
-							lastname: req.body.lastname,
+							firstName: req.body.firstName,
+							lastName: req.body.lastName,
 							email: req.body.email,
 							phone: req.body.phone,
 							address: req.body.address,
@@ -593,7 +593,7 @@ app.post("/register", function(req, res) {
 	User.register(newUser, req.body.password, function(err, user) {
 		if(err) {
 			console.log("error is: " + err);
-			return res.render("user_exist.ejs");
+			return res.render("user_exists.ejs");
 			//res.render("register.ejs");
 		}
 																		// if the registration of the user is done correctly
@@ -702,13 +702,27 @@ function userIsAuthorised(req, res, next) {
 
 app.get("/chats", isLoggedIn, function(req, res) {
 	User.find({
-		_id: { $ne: req.user._id} 
+		_id: { $ne: req.user._id},
+		 request : { $ne: "pending"  }
 	}, function(error, foundUsers) {
 			if(error) {
 				console.log(error);
 			}
 			else {
-				return res.render("chat2.ejs", {users: foundUsers, chat: null, selectedUserId: "5d2f7f4d789c920b0d98b54e" });
+				Chat.findOne({
+					messages:  {
+						'$elemMatch': {
+							'$or': 	[{ sender: req.user._id , receiver: String(foundUsers[0]._id)}, { sender: String(foundUsers[0]._id), receiver: req.user._id }]
+						}
+					}
+				}, function(error, foundChat) {
+						if(error) {
+							console.log(error)
+						}
+						else {
+							return res.render("chat2.ejs", {users: foundUsers, chat: foundChat, selectedUserId: String(foundUsers[0]._id) });
+						}
+				});
 			}
 	});
 
@@ -792,8 +806,8 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res) {
 
 	User.find({
-		_id: { $ne: req.user._id} 
-
+		_id: { $ne: req.user._id},
+		 request : { $ne: "pending"  }
 	}, function(error, foundUsers) {
 			if(error) {
 				console.log(error);
@@ -823,11 +837,28 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 });
 
 
-app.get("/account", function(req, res) {
+app.get("/account", isLoggedIn, function(req, res) {
 	res.render("account.ejs");
 });
 
-
+app.post("/account", isLoggedIn, function(req, res) {
+	console.log(req.body);
+	User.findByIdAndUpdate({
+		_id: req.user._id
+	}, {
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		username: req.body.username,
+		AFM: req.body.AFM,
+		email: req.body.email,
+		phone: req.body.phone,
+		location: req.body.location,
+		address: req.body.address
+	} ,function(error, updatedUser) {
+		res.redirect("/");
+	});
+	
+});
 
 
 

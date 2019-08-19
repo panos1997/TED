@@ -11,21 +11,19 @@
 			</div>
 			
 			<div class="form-group">
-					<select class="form-control" type="text" name="auction[category]" value="<%= auction.category %>">
-					
-					option>Home</option>
-  					<option>Fashion</option>
-  					<option>Health</option>
-  					<option>Sports</option>
-					
-					<option>Books</option>
-  					<option>Movies</option>
-  					<option>Toys</option>
-  					<option>Electronics</option>
-					
-					<option>Art</option>
-  					<option>Houses</option>
-					
+					<select class="form-control" type="text" name="auction[category]" value="<%= auction.category %>">					
+						<option value="" disabled selected>Choose Category</option>
+						  <option value="home" >Home & Garden</option>
+						  <option value="Fashion">Fashion & Jewlery</option>
+						  <option value="Health">Health</option>
+						  <option value="Sports">Sports</option>
+						  <option value="Books">Books</option>
+						  <option value="Movies">Games & Consoles</option>
+						  <option value="Toys">Toys</option>
+						  <option value="Electronics">Electronics</option>
+						  <option value="Art">Art</option>
+						  <option value="Houses">Properties</option>
+						  <option value="Vehicles">Vehicles</option>
 					</select>
 			</div>		
 			

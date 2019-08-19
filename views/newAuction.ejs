@@ -4,18 +4,18 @@
 
 
 <div class="container">
-	<h2 style="text-align: center; color: black; margin-top: 3%;"><strong> Start new action </strong></h2>
+	<h1 style="text-align: center; color: white; margin-top: 3%;"><strong> Start new action </strong></h1>
 	<div style="width: 30%; margin: 20px auto;">
 		<form action = "/auctions" method = "POST">
 		
 		
 			<div class="form-group" id="testform">
-					<input class="form-control" type="text" name="name" placeholder = "Product Name">
+					<input class="form-control" type="text" name="name" placeholder = "Product Name" required>
 			</div>
 			
 			
-			<div class="form-group">
-				<select class="form-control selectpicker show-tick" name="category">
+			<div class="form-group" required>
+				<select class="form-control selectpicker show-tick" name="category" required>
 					<option disabled selected>Choose Category</option>
   					<option>Home & Garden</option>
   					<option>Fashion</option>
@@ -44,19 +44,19 @@
 		
 			
 			<div class="form-group">
-				<input class="form-control" type="text" name="Location" placeholder = "Location">
+				<input class="form-control" type="text" name="Location" placeholder = "Location" required>
 			</div>
 			
 			<div class="form-group">
-				<input class="form-control" type="text" name="Country" placeholder = "Country">
+				<input class="form-control" type="text" name="Country" placeholder = "Country" required>
 			</div>
 			
 			<div class="form-group">
-				<input class="form-control" type="datetime-local" name="Started" placeholder = "Start date">
+				<input class="form-control" type="datetime-local" name="Started" placeholder = "Start date" required>
 			</div>
 			
 			<div class="form-group">
-				<input class="form-control" type="datetime-local" name="Ends" placeholder = "Ends Date">
+				<input class="form-control" type="datetime-local" name="Ends" placeholder = "End Date" required>
 			</div>
 			
 			<div class="form-group">
@@ -71,10 +71,10 @@
 			
 			
 			<div class="form-group">
-				<button class="btn btn-sm btn-success btn-default btn-block" >Start</button>
+				<button class="btn btn-lg btn-success btn-default btn-block" >Start</button>
 			</div>
 		</form>
-		<a class="btn btn-sm btn-primary btn-default" href="/">Go Back</a>
+		<a class="btn btn-md btn-primary btn-default" href="/">Go Back</a>
 	</div>
 </div>	
 

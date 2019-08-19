@@ -46,20 +46,22 @@
 
 		    map.setCenter (lonLat, zoom);
 		  </script>
-		  <div style = "margin-top: 2%;">
-			<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
-			<% if(auction.Buy_Price!== null) {%>
-				<a href="/categories/<%= auction.category %>/<%= auction._id %>/buyNow" class="btn btn-success"> Buy now </a>
-			<% } %>
-			<% if( (new Date(auction.Started).getTime() / 1000) <= (new Date().getTime() / 1000) && (new Date(auction.Ends).getTime() / 1000) >= (new Date().getTime() / 1000)){ %>
-				<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
-					<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
-					<% if(auction.Buy_Price!== null) {%>
-						<a href="/categories/<%= auction.category %>/<%= auction._id %>/buyNow" class="btn btn-success"> Buy now </a>
+		  <% if(currentUser && currentUser.role === "bidder") { %>
+			  <div style = "margin-top: 2%;">
+				<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
+				<% if(auction.Buy_Price!== null) {%>
+					<a href="/categories/<%= auction.category %>/<%= auction._id %>/buyNow" class="btn btn-success"> Buy now </a>
+				<% } %>
+				<% if( (new Date(auction.Started).getTime() / 1000) <= (new Date().getTime() / 1000) && (new Date(auction.Ends).getTime() / 1000) >= (new Date().getTime() / 1000)){ %>
+					<% if(currentUser !== undefined && currentUser.role === "bidder") { %>
+						<a href="/categories/<%= auction.category %>/<%= auction._id %>/makeBid" class="btn btn-danger"> Make a bid </a>
+						<% if(auction.Buy_Price!== null) {%>
+							<a href="/categories/<%= auction.category %>/<%= auction._id %>/buyNow" class="btn btn-success"> Buy now </a>
+						<% } %>
 					<% } %>
 				<% } %>
-			<% } %>
-		</div>
+			</div>
+		<% } %>
 
 			<div class="container">
 				<br>

@@ -2,34 +2,37 @@
 
 <div class="container">
 <br>
-<h2> Manageρ HomePage </h2>
+<br>
 
 <link rel="stylesheet" type="text/css" href="/manager.css">
 
   <!-- Masthead -->
-  <header class="masthead  text-center">
+  <header class="masthead  text-center" style="margin-left: 20em;">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto" id="searchDiv">
+		
+		
           <form action = "/managerPage?_method=GET" method = "POST">
-            <div class="form-row">
-     	            <div class="col-4 col-md-4 ">					
-							   <select class="mdb-select md-form" name="role" >
-							   		<option value="" disabled selected >search by role</option>
-							   		<option  value="seller" >only sellers</option>
-							   		<option value="bidder" >only bidders</option>
-							   		<option  value="all">all</option>
-							   </select>
-						
+            <div class="form-row" style="margin: 60px 0px 40px 130px">
+     	            <div class="col-2 col-md-5">	
+						<select class="mdb-select md-form" name="role" style="height:30px; width:130px">
+							<option value="" disabled selected >search by role</option>
+							<option  value="seller" >only sellers</option>
+							<option value="bidder" >only bidders</option>
+							<option  value="all">all</option>
+						</select>
 	               </div>  
 
 	              <div class="col-2 col-md-2">
-	                <button type="submit" id="search" class="btn btn-block btn-lg btn-primary">Search</button>
+
+	                <button type="submit" id="search" class="btn btn-block btn-lg btn-primary"> Search </button>
 	              </div>          
               </div>
             </div>
           </form>
+		
         </div>
       </div>
     </div>
@@ -41,7 +44,7 @@
 
 
 <br>
-<div class="container">
+<div class="container" style="margin-top: 5em;">
 
 <table class="table">
 	<thead class="thead-dark">

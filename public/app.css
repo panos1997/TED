@@ -51,9 +51,6 @@ select {
 	color: white;
 }
 
-#search {
-	padding-right: 4.7em;
-}
 
 #categoriesButton {
 	margin-top: 0.4em;
@@ -63,6 +60,7 @@ select {
 #searchDiv {
 	margin-top: -2%;
 }
+
 
 .sellerPicture {
   float: left;
@@ -197,3 +195,4 @@ i {
 .card {
 	float: left;
 }
+

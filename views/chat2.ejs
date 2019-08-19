@@ -6,32 +6,48 @@
 <div class="messaging">
       <div class="inbox_msg">
         <div class="inbox_people">
-          <div class="headind_srch">
-            <div class="recent_heading">
-              <h4>Recent</h4>
-            </div>
-            <div class="srch_bar">
-              <div class="stylish-input-group">
-                <input type="text" class="search-bar"  placeholder="Search" >
-                <span class="input-group-addon">
-                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
-                </span> </div>
-            </div>
-          </div>
        
           <div class="inbox_chat">
           		<% if(users) { %>
 	          		<% users.forEach( function(user) { %>
-				            <div class="chat_list ">
-				              <div class="chat_people">
-				                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-				                <div class="chat_ib">
-									<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">							
-										<h4> <%= user.username %>  </h4>
-									</a>
-				                </div>
-				              </div>
-				            </div>
+	          				<% if(selectedUserId !== undefined) { %>  
+		          					<% if(selectedUserId === String(user._id)) { %>       				
+							            <div class="chat_list active_chat">
+							              <div class="chat_people">
+							                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+							                <div class="chat_ib">
+												<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">			<% console.log(selectedUserId) %>
+														<% console.log(user._id)			%>	
+													<h4> <%= user.username %>  </h4>
+												</a>
+							                </div>
+							              </div>
+							            </div>
+						            <% }  else {%>
+								             <div class="chat_list  ">
+									              <div class="chat_people">
+									                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+									                <div class="chat_ib">
+														<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">							
+															<h4> <%= user.username %>  </h4>
+														</a>
+									                </div>
+									              </div>
+								             </div>	
+						            	<% } %>
+				            <% }  else { %>
+								     <div class="chat_list ">
+							              <div class="chat_people">
+							                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+							                <div class="chat_ib">
+												<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">							
+													<h4> <%= user.username %>  </h4>
+												</a>
+							                </div>
+							              </div>
+						             </div>			            	
+
+				            <% } %>
 		     		<% }) %>
           		<% } %>
           </div>
