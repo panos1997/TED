@@ -196,3 +196,9 @@ i {
 	float: left;
 }
 
+button.msg_send_btn {
+	margin-top: 2.5em;
+	width: 3em;
+	height: 2.5em;
+}
+

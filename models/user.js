@@ -26,8 +26,15 @@ var userSchema = new mongoose.Schema({
 	Seller_Rating: Number,
 	Location: String,
 	Country: String,
-    chats : [ ChatStuff.ChatSchema ]
-    
+    //chats : [ { chat: ChatStuff.ChatSchema, unread: Number } ]   
+    chats: [   	
+    	{
+    		chat: {
+    			type : mongoose.Schema.Types.ObjectId, ref : "Chat"
+    		},
+    		unread: Number	 
+    	}
+    ]
 });
 
 userSchema.plugin(passportLocalMongoose);

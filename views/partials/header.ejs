@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <!DOCTYPE html>
 <html>
 	<head>
@@ -36,7 +34,12 @@
   				<% } %>
 
   				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  
-  						<a  class="nav-link" href="/chats"><font color="white"> <i class="fa fa-comment" ></i> Messages </font></a>
+  						<a  class="nav-link" href="/chats"><font color="white"> <i class="fa fa-comment" ></i> Messages
+								<% if(typeof unreadMessages !== "undefined" ) { %>
+	  								<font font color="red"> (unread messages)  </font>
+								<% } %>
+  						 </font></a>
+
 				<% } %>
 
 		
@@ -100,4 +103,3 @@
 	<% } %>
 
 
->>>>>>> de3b28d36ebdfb278d5a369e3c5d3213028c60a4

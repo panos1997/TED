@@ -720,7 +720,8 @@ app.get("/chats", isLoggedIn, function(req, res) {
 							console.log(error)
 						}
 						else {
-							return res.render("chat2.ejs", {users: foundUsers, chat: foundChat, selectedUserId: String(foundUsers[0]._id) });
+
+							return res.render("chat2.ejs", {users: foundUsers, chat: foundChat, selectedUserId: String(foundUsers[0]._id), unreadMessages: 0 });
 						}
 				});
 			}
@@ -774,6 +775,18 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 												console.log(error)
 											}
 											else {
+												var x = {
+													chat: createdChat,
+													unread: 0
+												};
+												foundSeller.chats.push(x);
+												var y = {
+													chat: createdChat,
+													unread: 0
+												};
+												foundReceiver.chats.push(y);												
+												foundSeller.save();
+												foundReceiver.save();
 												res.redirect("/chats/" + req.params.currentUserId + "/chat/" + req.params.otherUserId);
 											}
 										})
@@ -784,7 +797,6 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 				});
 			}
 			else {					// if the chat already exists
-				//console.log("foundChat is " + foundChat);
 				foundChat.messages.push({
 					sender: req.params.currentUserId,
 					receiver: req.params.otherUserId,
@@ -792,9 +804,23 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 					date: new Date()
 				});
 				foundChat.save();
-				console.log(typeof req.params.currentUserId);
-				console.log(typeof req.params.otherUserId);
-				res.redirect("/chats/" + req.params.currentUserId + "/chat/" + req.params.otherUserId);
+				/////////////////////////
+				User.findOne({_id: req.params.otherUserId}).populate('chats.chat').exec(function(err, populatedUser) {
+					populatedUser.save();
+					console.log("results are: " + populatedUser.chats);
+					 for (var i = 0; i < populatedUser.chats.length; i++){
+					 		//console.log(populatedUser.chats[i]);
+					 		//console.log("1: " + typeof foundChat._id);
+					 		//console.log("2: " + typeof populatedUser.chats[i].chat._id);
+					 		if(String(populatedUser.chats[i].chat._id) === String(foundChat._id) ) {
+					 			populatedUser.chats[i].unread++;
+					 			console.log("result isssssssssssss" + populatedUser.chats[i]);
+					 		}
+					}
+					res.redirect("/chats/" + req.params.currentUserId + "/chat/" + req.params.otherUserId);
+  				}) 
+  				//////////
+				
 			}
 
 
@@ -825,8 +851,22 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 							console.log(error);
 						}
 						else {
-							//console.log("foundChat isss " + foundChat)
-							return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId });
+							/////////////
+							User.findOne({_id: req.params.currentUserId}).populate('chats.chat').exec(function(err, populatedUser) {
+								populatedUser.save();
+								var unreadMessages = 0;
+								 for (var i = 0; i < populatedUser.chats.length; i++){
+								 		if(populatedUser.chats[i].chat !== null && foundChat !== null) {
+									 		if(String(populatedUser.chats[i].chat._id) === String(foundChat._id) ) {
+									 			console.log("UNREAD ARE " + populatedUser.chats[i].unread);
+									 			unreadMessages = populatedUser.chats[i].unread;
+									 		}
+								 		}
+								}
+								return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId, unreadMessages:unreadMessages });
+			  				}) 
+			  				/////////////
+							//return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId });
 						}
 				});
 

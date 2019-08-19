@@ -8,7 +8,7 @@ var ChatSchema = new mongoose.Schema({
     sender: {type: mongoose.Schema.Types.ObjectId, ref: "User" },
     receiver: {type: mongoose.Schema.Types.ObjectId, ref: "User" },
     content: String,
-    date: Date
+    date: Date,
   }]
 });
 
