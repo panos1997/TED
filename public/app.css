@@ -202,3 +202,7 @@ button.msg_send_btn {
 	height: 2.5em;
 }
 
+
+.deleteChat {
+	margin-left: 80%;
+}

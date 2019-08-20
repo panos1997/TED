@@ -19,10 +19,13 @@
 							              <div class="chat_people">
 							                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
 							                <div class="chat_ib">
+												<a class = "deleteChat" href="/chats/<%= currentUser._id %>/chat/<%= user._id %>/delete">
+													<font color = "red"> <strong> Delete Chat </strong> </font>
+												</a>
 												<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">
 													<h4> <%= user.username %>
 														<% if(typeof "unreadMessages" !== undefined && unreadMessages !== 0 ) { %>
-	  														(<%=  unreadMessages %> unread messages)
+	  														(<%=  unreadMessages%> unread messages)
 														<% } %>
 														
 													</h4>
@@ -35,7 +38,10 @@
 									              <div class="chat_people">
 									                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
 									                <div class="chat_ib">
-														<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">							
+														<a class = "deleteChat" href="/chats/<%= currentUser._id %>/chat/<%= user._id %>/delete">
+															<font color = "red"> <strong> Delete Chat </strong> </font>
+														</a>
+														<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">						
 															<h4> <%= user.username %>  </h4>
 														</a>
 									                </div>
