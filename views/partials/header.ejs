@@ -35,8 +35,8 @@
 
   				<% if(typeof currentUser !== "undefined" && currentUser.request !== "pending") {   %>  
   						<a  class="nav-link" href="/chats"><font color="white"> <i class="fa fa-comment" ></i> Messages
-								<% if(typeof unreadMessages !== "undefined" ) { %>
-	  								<font font color="red"> (unread messages)  </font>
+								<% if(typeof totalUnread !== "undefined" && totalUnread !== 0) { %>
+	  								<font font color="red"> (<%= totalUnread %> unread messages)  </font>
 								<% } %>
   						 </font></a>
 

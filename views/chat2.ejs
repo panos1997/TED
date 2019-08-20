@@ -19,10 +19,9 @@
 							              <div class="chat_people">
 							                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
 							                <div class="chat_ib">
-												<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">			<% console.log(selectedUserId) %>
-														<% console.log(user._id)			%>	
+												<a href="/chats/<%= currentUser._id %>/chat/<%= user._id %>">
 													<h4> <%= user.username %>
-														<% if(typeof "unreadMessages" !== undefined ) { %>
+														<% if(typeof "unreadMessages" !== undefined && unreadMessages !== 0 ) { %>
 	  														(<%=  unreadMessages %> unread messages)
 														<% } %>
 														

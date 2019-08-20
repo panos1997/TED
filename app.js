@@ -52,6 +52,17 @@ app.use(function(req, res, next) {
 	next();
 });
 
+app.use( function(req, res, next) {
+	if(req.user !== undefined) {
+		var totalUnread = 0;
+		for (var i = 0; i < req.user.chats.length; i++) {
+		 	totalUnread = totalUnread + req.user.chats[i].unread;
+		}
+		console.log("totalUnread are: " + totalUnread);
+		res.locals.totalUnread = totalUnread;
+	}
+	next();
+});
 
 //============================================
 app.use(express.static("public"));  // tell express to serve the public dir
@@ -720,8 +731,8 @@ app.get("/chats", isLoggedIn, function(req, res) {
 							console.log(error)
 						}
 						else {
-
-							return res.render("chat2.ejs", {users: foundUsers, chat: foundChat, selectedUserId: String(foundUsers[0]._id), unreadMessages: 0 });
+							res.redirect( "/chats/" + String(req.user._id) +  "/chat/" + String(foundUsers[0]._id) );
+							//return res.render("chat2.ejs", {users: foundUsers, chat: foundChat, selectedUserId: String(foundUsers[0]._id), unreadMessages: 0 });
 						}
 				});
 			}
@@ -855,11 +866,13 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 							User.findOne({_id: req.params.currentUserId}).populate('chats.chat').exec(function(err, populatedUser) {
 								populatedUser.save();
 								var unreadMessages = 0;
-								 for (var i = 0; i < populatedUser.chats.length; i++){
+								 for (var i = 0; i < populatedUser.chats.length; i++) {
 								 		if(populatedUser.chats[i].chat !== null && foundChat !== null) {
 									 		if(String(populatedUser.chats[i].chat._id) === String(foundChat._id) ) {
 									 			console.log("UNREAD ARE " + populatedUser.chats[i].unread);
 									 			unreadMessages = populatedUser.chats[i].unread;
+									 			populatedUser.chats[i].unread = 0;
+									 			populatedUser.chats[i].save();
 									 		}
 								 		}
 								}
