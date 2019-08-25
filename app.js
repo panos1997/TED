@@ -426,6 +426,10 @@ app.get("/categories/:category/:auctionId/confirmBuy", isLoggedIn, function(req,
 });
 
 app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, res) {
+	Bid.remove({ $and: [ { bidder: req.user._id }, { auction:  req.params.auctionId  } ] },function(err,removedbid){
+		if(err) //diagrafoume proigoumeno bid tou xristi sto auction,an upirxe
+			console.log("failed to remove the previous bid,or there was none\n");
+
 	Bid.create({
 		amount: req.query.amount,
 		time: new Date()
@@ -446,15 +450,18 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 						if(error) {
 							console.log(error)
 						}
-						createdBid.auction.push(foundAuction);
-						createdBid.save( function(error, data) {
+
+						foundAuction.bids.push(createdBid);
+						foundAuction.Number_of_bids = foundAuction.Number_of_bids + 1;
+						if(req.query.amount > foundAuction.Currently){
+							foundAuction.Currently = req.query.amount;}
+						foundAuction.save( function(error, data) {
 							if(error) {
 								console.log(error);
 							}
 						});
-						foundAuction.bids.push(createdBid);
-						foundAuction.Number_of_bids = foundAuction.Number_of_bids + 1;
-						foundAuction.save( function(error, data) {
+						createdBid.auction.push(foundAuction);
+						createdBid.save( function(error, data) {
 							if(error) {
 								console.log(error);
 							}
@@ -463,9 +470,13 @@ app.post("/categories/:category/:auctionId/makeBid", isLoggedIn, function(req, r
 		})
 
 	})
+	})
 	res.render("succes_bid.ejs");
 });
 app.post("/categories/:category/:auctionId/makeBuy", isLoggedIn, function(req, res) {
+	Bid.remove({ $and: [ { bidder: req.user._id }, { auction:  req.params.auctionId  } ] },function(err,removedbid){
+		if(err) //diagrafoume proigoumeno bid tou xristi sto auction,an upirxe
+			console.log("failed to remove the previous bid,or there was none\n");
 	Bid.create({
 		amount: req.query.amount,
 		time: new Date()
@@ -506,6 +517,7 @@ app.post("/categories/:category/:auctionId/makeBuy", isLoggedIn, function(req, r
 		})
 
 	})
+	})
 	res.render("successBuy.ejs");
 });
 
@@ -519,7 +531,7 @@ app.post("/search", function(req, res) {
 	if(req.body.auction !== undefined) {
 		if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
 			var searchKey = new RegExp(req.body.auction.name, 'i')
-			auction.name = searchKey; 
+			auction.name = searchKey;
 		}
 		if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
 			auction.category = req.body.auction.category;
@@ -529,7 +541,7 @@ app.post("/search", function(req, res) {
 
 
 	Auction.find(
-		auction 
+		auction
 	, function(error, foundAuctions) {
 		if(error) {
 			console.log(error);
@@ -796,7 +808,7 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 													chat: createdChat,
 													unread: 0
 												};
-												foundReceiver.chats.push(y);												
+												foundReceiver.chats.push(y);
 												foundSeller.save();
 												foundReceiver.save();
 												res.redirect("/chats/" + req.params.currentUserId + "/chat/" + req.params.otherUserId);
@@ -830,9 +842,9 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 					 		}
 					}
 					res.redirect("/chats/" + req.params.currentUserId + "/chat/" + req.params.otherUserId);
-  				}) 
+  				})
   				//////////
-				
+
 			}
 
 
@@ -878,7 +890,7 @@ app.get("/chats/:currentUserId/chat/:otherUserId", isLoggedIn, function(req, res
 								 		}
 								}
 								return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId, unreadMessages:unreadMessages });
-			  				}) 
+			  				})
 			  				/////////////
 							//return res.render("chat2.ejs", {users: foundUsers , chat: foundChat, selectedUserId: req.params.otherUserId });
 						}
@@ -937,24 +949,24 @@ app.get("/chats/:currentUserId/chat/:otherUserId/delete", function(req, res) {
 																 			console.log("H2222222222222222");
 																 			foundUser2.chats.splice(i,1);
 																 			foundUser2.save();
-																 			
+
 																 			res.redirect("/chats");
 																 		}
 															 		}
-															}								
+															}
 														}
 												})
 									 		}
 								 		}
-								}								
+								}
 							}
 					})
-				
-					
+
+
 				}
 			});
 		}
-	});	
+	});
 });
 
 
@@ -978,7 +990,7 @@ app.post("/account", isLoggedIn, function(req, res) {
 	} ,function(error, updatedUser) {
 		res.redirect("/");
 	});
-	
+
 });
 
 
