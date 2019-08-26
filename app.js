@@ -902,59 +902,63 @@ app.get("/chats/:currentUserId/chat/:otherUserId/delete", function(req, res) {
 			console.log(error);
 		}
 		else {
-			Chat.findOneAndDelete({_id : foundChat._id}, {useFindAndModify: false }, function(error, deletedChat) {
-				if(error) {
-					console.log(error);
-				}
-				else {
-					User.findOne({								 // delete chat from first user
-						_id: req.params.currentUserId
-					}, function(error, foundUser) {
-							if(error) {
-								console.log(error)
-							}
-							else {
-								 for (var i = 0; i < foundUser.chats.length; i++) {
-								 		console.log("H00000000000000");
-								 		if(foundUser.chats[i].chat !== null && deletedChat !== null) {
-								 			console.log("HIIIIIIIIIIIIIIIIIIIi");
-									 		if(String(foundUser.chats[i].chat._id) === String(deletedChat._id) ) {
-									 			console.log("H2222222222222222");
-									 			foundUser.chats.splice(i,1);
-									 			foundUser.save();
-												User.findOne({                     // delete chat from second user
-													_id: req.params.otherUserId
-												}, function(error, foundUser2) {
-														if(error) {
-															console.log(error)
-														}
-														else {
-															 for (var i = 0; i < foundUser2.chats.length; i++) {
-															 		console.log("H00000000000000");
-															 		if(foundUser2.chats[i].chat !== null && deletedChat !== null) {
-															 			console.log("HIIIIIIIIIIIIIIIIIIIi");
-																 		if(String(foundUser2.chats[i].chat._id) === String(deletedChat._id) ) {
-																 			console.log("H2222222222222222");
-																 			foundUser2.chats.splice(i,1);
-																 			foundUser2.save();
-																 			
-																 			res.redirect("/chats");
+			if(foundChat !== null) {
+				Chat.findOneAndDelete({_id : foundChat._id}, {useFindAndModify: false }, function(error, deletedChat) {
+					if(error) {
+						console.log(error);
+					}
+					else {
+						User.findOne({								 // delete chat from first user
+							_id: req.params.currentUserId
+						}, function(error, foundUser) {
+								if(error) {
+									console.log(error)
+								}
+								else {
+									 for (var i = 0; i < foundUser.chats.length; i++) {
+									 		console.log("H00000000000000");
+									 		if(foundUser.chats[i].chat !== null && deletedChat !== null) {
+									 			console.log("HIIIIIIIIIIIIIIIIIIIi");
+										 		if(String(foundUser.chats[i].chat._id) === String(deletedChat._id) ) {
+										 			console.log("H2222222222222222");
+										 			foundUser.chats.splice(i,1);
+										 			foundUser.save();
+													User.findOne({                     // delete chat from second user
+														_id: req.params.otherUserId
+													}, function(error, foundUser2) {
+															if(error) {
+																console.log(error)
+															}
+															else {
+																 for (var i = 0; i < foundUser2.chats.length; i++) {
+																 		console.log("H00000000000000");
+																 		if(foundUser2.chats[i].chat !== null && deletedChat !== null) {
+																 			console.log("HIIIIIIIIIIIIIIIIIIIi");
+																	 		if(String(foundUser2.chats[i].chat._id) === String(deletedChat._id) ) {
+																	 			console.log("H2222222222222222");
+																	 			foundUser2.chats.splice(i,1);
+																	 			foundUser2.save();
+																	 			
+																	 			res.redirect("/chats");
+																	 		}
 																 		}
-															 		}
-															}								
-														}
-												})
+																}								
+															}
+													})
+										 		}
 									 		}
-								 		}
-								}								
-							}
-					})
-				
-					
-				}
-			});
+									}								
+								}
+						})
+						
+					}
+				});
+			}
+			else {
+				res.redirect("/chats");
+			}
 		}
-	});	
+				});	
 });
 
 
