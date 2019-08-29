@@ -9,21 +9,21 @@
 	<table class="table">
 		<thead class="thead-dark">
 			<tr>
-			
+
 				<th scope="col">Name Bidder</th>
 				<th scope="col">Amount</th>
 				<th scope="col">Time</th>
-				
+
 			</tr>
 		</thead>
 		<tbody style="background-color: #F5F5DC;">
-			<% bids.forEach(function(bid) {  %>
+			<% bidsUsers.forEach(function(bidsUsers) {  %>
 				<tr>
-				
-					<td><%= bid.bidder.username %></td>
-					<td><%= bid.amount %></td>
-					<td><%= bid.time %></td>
-					
+
+					<td><%= bidsUsers.user.username %></td>
+					<td><%= bidsUsers.bid.amount %></td>
+					<td><%= bidsUsers.bid.time %></td>
+
 				</tr>
 			<% })  %>
 		</tbody>
