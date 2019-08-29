@@ -57,8 +57,12 @@ select {
 	padding-right: 0.5em;
 }
 
+#searchDiv2 {
+	margin-top: 10%;
+	width: 300px;
+}
 #searchDiv {
-	margin-top: -2%;
+	margin-top: -2%;	
 }
 
 
@@ -205,4 +209,11 @@ button.msg_send_btn {
 
 .deleteChat {
 	margin-left: 80%;
+}
+
+
+.back {
+	position: absolute;
+    bottom: 10%;
+    left: 10%;
 }

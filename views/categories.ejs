@@ -1,12 +1,12 @@
 <% include partials/header.ejs %>
-
+<link rel="stylesheet" type="text/css" href="/login.css">
 
   <!-- Masthead -->
   <header class="masthead  text-center">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
-        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto" id="searchDiv">
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto" id="searchDiv2">
           <form action = "/search" method = "POST">
             <div class="form-row">
      	            <div class="col-4 col-md-4 " >					  
@@ -25,7 +25,7 @@
 							  <option value="Vehicles">Vehicles</option>
 						  </select>
 					</div>
-						
+
 
 	              <div class="col-6 col-md-6 ">
 	                <input style="margin: 6px 8px 20px 10px" class="form-control form-control-md" name = "auction[name]" placeholder="Search for anything here...">
@@ -40,7 +40,7 @@
         </div>
       </div>
 	  <br> <br> <br>
-	  <a class="btn btn-sm btn-primary btn-default" href="/">Go Back</a>
+	  <a href="javascript:history.back()" class="btn btn-lg btn-primary btn-default back" href="/">Go Back</a>
     </div>
   </header>
 

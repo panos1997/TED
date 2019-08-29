@@ -6,7 +6,7 @@
 			<h2> The buy price for <%= auction.name %> is:<%= auction.Buy_Price %></h2>
       <a class="btn btn-success" href="/categories/<%= auction.category %>/<%= auction._id %>/confirmBuy">Buy now</a>
 	
-			<a class="btn btn-sm btn-primary btn-default" href="/categories/<%= auction.category %>/">Go Back</a>
+			<a href="javascript:history.back()" class="btn btn-lg btn-primary btn-default back" href="/categories/<%= auction.category %>/">Go Back</a>
 		</div>
 	</div>
 </div>
