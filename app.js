@@ -546,11 +546,10 @@ app.get("/search", function(req, res) {
 
 app.post("/search", function(req, res) {
 	var auction = {};
-	var Description = req.body.auction.name;
 	if(req.body.auction !== undefined) {
 		if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
 			var searchKey = new RegExp(req.body.auction.name, 'i');
-			auction.name = searchKey;
+			auction.name = searchKey;	
 		}
 		if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
 			auction.category = req.body.auction.category;
@@ -559,7 +558,7 @@ app.post("/search", function(req, res) {
 	}
 
 
-	Auction.find(
+	Auction.find( 
 		auction
 	, function(error, foundAuctions) {
 		if(error) {
@@ -1016,12 +1015,13 @@ app.post("/account", isLoggedIn, function(req, res) {
 
 ////////////
 
-//const json2xml = require('json2xml').parse;
+
 app.get('/exportJSON', function(req, res) {
 	Auction.find().lean().exec(function (err, auctions) {
 			const filePath = path.join(__dirname, "auctions" + ".json")
 	        fs.writeFile(filePath, JSON.stringify(auctions), function (err) {
 	        if (err) {
+	        	console.log(err);
 	          return res.json(err).status(500);
 	        }
 	        else {
@@ -1034,19 +1034,19 @@ app.get('/exportJSON', function(req, res) {
 	});
 });
 
-
+var json2xml = require('json2xml');
 app.get('/exportXML', function(req, res) {
 	Auction.find().lean().exec(function (err, auctions) {
-			const filePath = path.join(__dirname, "auctions" + ".json")
-	        fs.writeFile(filePath, JSON.stringify(auctions), function (err) {
+			const filePath = path.join(__dirname, "auctions" + ".xml")
+	        fs.writeFile(filePath, json2xml(auctions), function (err) {
 	        if (err) {
-	          return res.json(err).status(500);
+	          console.log(err);
 	        }
 	        else {
 	          setTimeout(function () {
 	            fs.unlinkSync(filePath); // delete this file after 30 seconds
 	          }, 30000)
-	          return res.download('auctions.json');
+	          return res.download('auctions.xml');
 	        }
 	      });			
 	});
