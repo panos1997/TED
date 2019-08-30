@@ -528,9 +528,10 @@ app.get("/search", function(req, res) {
 
 app.post("/search", function(req, res) {
 	var auction = {};
+	var Description = req.body.auction.name;
 	if(req.body.auction !== undefined) {
 		if(req.body.auction.name !== undefined && req.body.auction.name.length !== 0) {
-			var searchKey = new RegExp(req.body.auction.name, 'i')
+			var searchKey = new RegExp(req.body.auction.name, 'i');
 			auction.name = searchKey;
 		}
 		if(req.body.auction.category !== undefined && req.body.auction.category.length !== 0 ) {
@@ -943,11 +944,8 @@ app.get("/chats/:currentUserId/chat/:otherUserId/delete", function(req, res) {
 														}
 														else {
 															 for (var i = 0; i < foundUser2.chats.length; i++) {
-															 		console.log("H00000000000000");
 															 		if(foundUser2.chats[i].chat !== null && deletedChat !== null) {
-															 			console.log("HIIIIIIIIIIIIIIIIIIIi");
 																 		if(String(foundUser2.chats[i].chat._id) === String(deletedChat._id) ) {
-																 			console.log("H2222222222222222");
 																 			foundUser2.chats.splice(i,1);
 																 			foundUser2.save();
 																 			
