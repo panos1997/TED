@@ -3,5 +3,5 @@
   # This is an tag
   
 
-![GitHub Logo](/images/logo.png)
+![GitHub Logo](/images/Capture.PNG)
 Format: ![Alt Text](url)
