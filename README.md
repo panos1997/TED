@@ -1,5 +1,4 @@
 
-###### This is an  tag
   # Auctions web application developed with Node.js, Express and MongoDB
   
   ##                                       summary
@@ -16,6 +15,10 @@
 ![GitHub Logo](/images/home.PNG)
 
 
+##### Example of search results
+![GitHub Logo](/images/search.PNG)
+
+
 ##### Example of the Messaging interface
 ![GitHub Logo](/images/chat.PNG)
 
@@ -24,9 +27,11 @@
 ##### Example of the Manager's page
 ![GitHub Logo](/images/Capture.PNG)
 
+##### A manager can see the info of every user and accept his/her request or not at this page
+![GitHub Logo](/images/Capture2.PNG)
 
 
-##### A seller can create an auction using the form above
+##### A seller can create an auction using the following form
 ![GitHub Logo](/images/startAuction.PNG)
 
 ##### He can also review his auctions from this table
@@ -36,9 +41,9 @@
 ##### A bidder's page
 ![GitHub Logo](/images/bidderHome.PNG)
 
-##### Example of search results
-![GitHub Logo](/images/search.PNG)
 
+##### Example of profile settings page
+![GitHub Logo](/images/changeProfile.PNG)
 
 
 
