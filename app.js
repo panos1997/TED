@@ -17,6 +17,7 @@ var dateFormat = require('dateformat');
 var request=require('request');
 var findOrCreate = require('mongoose-find-or-create');
 var ObjectId = require('mongodb').ObjectID;
+var path = require('path');
 
 mongoose.connect("mongodb://localhost/auctions_db", { useNewUrlParser: true } );
 
@@ -824,7 +825,7 @@ app.post("/chats/:currentUserId/send/:otherUserId", isLoggedIn, function(req, re
 												foundSeller.chats.push(x);
 												var y = {
 													chat: createdChat,
-													unread: 0
+													unread: 1
 												};
 												foundReceiver.chats.push(y);
 												foundSeller.save();
@@ -1013,8 +1014,43 @@ app.post("/account", isLoggedIn, function(req, res) {
 });
 
 
+////////////
+
+//const json2xml = require('json2xml').parse;
+app.get('/exportJSON', function(req, res) {
+	Auction.find().lean().exec(function (err, auctions) {
+			const filePath = path.join(__dirname, "auctions" + ".json")
+	        fs.writeFile(filePath, JSON.stringify(auctions), function (err) {
+	        if (err) {
+	          return res.json(err).status(500);
+	        }
+	        else {
+	          setTimeout(function () {
+	            fs.unlinkSync(filePath); // delete this file after 30 seconds
+	          }, 30000)
+	          return res.download('auctions.json');
+	        }
+	      });			
+	});
+});
 
 
+app.get('/exportXML', function(req, res) {
+	Auction.find().lean().exec(function (err, auctions) {
+			const filePath = path.join(__dirname, "auctions" + ".json")
+	        fs.writeFile(filePath, JSON.stringify(auctions), function (err) {
+	        if (err) {
+	          return res.json(err).status(500);
+	        }
+	        else {
+	          setTimeout(function () {
+	            fs.unlinkSync(filePath); // delete this file after 30 seconds
+	          }, 30000)
+	          return res.download('auctions.json');
+	        }
+	      });			
+	});
+});
 
 
 app.listen(3000, function() {

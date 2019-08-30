@@ -2,13 +2,15 @@ html,body {
   height: 100%;
   width: 100%;
   padding:	0;
+	margin: 0;
 }
 
 
 body {
-	background-size: 100%;
+	background-size: 120%;
 	background-repeat: no-repeat;
 	font-family: Lato;
+	background-color: #e8effa;
 }
 
 
@@ -214,6 +216,11 @@ button.msg_send_btn {
 
 .back {
 	position: absolute;
+    bottom: 10%;
+    left: 10%;
+}
+
+.back2 {
     bottom: 10%;
     left: 10%;
 }
