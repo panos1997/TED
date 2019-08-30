@@ -19,6 +19,10 @@
 ![GitHub Logo](/images/search.PNG)
 
 
+##### Example of auction's info page
+![GitHub Logo](/images/auctionsInfo.PNG)
+
+
 ##### Example of the Messaging interface
 ![GitHub Logo](/images/chat.PNG)
 
