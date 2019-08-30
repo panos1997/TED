@@ -10,7 +10,7 @@ var LocalStrategy = require("passport-local");
 var methodOverride = require("method-override");
 var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require("body-parser");
-var flash = require("connect-flash"); 
+var flash = require("connect-flash");
 var https = require('https');
 var fs = require('fs');
 var dateFormat = require('dateformat');
@@ -151,6 +151,8 @@ app.get("/auctions", isLoggedIn, function(req, res) {
 });
 
 app.get("/auctions/:id/showBids", isLoggedIn , function(req, res) {
+	bidsUsers=[];
+	counter=0;
 	Auction.findById({
 		 seller: req.user._id,
 		 _id: req.params.id
@@ -162,14 +164,29 @@ app.get("/auctions/:id/showBids", isLoggedIn , function(req, res) {
 			    	console.log(error);
 			    	res.redirect("/login");
 			    }
-			    else {
-			    	res.render("showBids.ejs", {currentUser:req.user, bids:foundBids});
-			    }
-			});
+			    //	res.render("showBids.ejs", {currentUser:req.user, bids:foundBids});
+						//console.log(foundBids[0].bidder);
+							foundBids.forEach(function(bid) {
+								User.findById( {
+									_id: bid.bidder[0]._id
+								},function(error, foundUser) {
+									if(error) {
+										console.log(error);
+									}
+									bidsUsers.push({
+										bid: bid,
+										user: foundUser
+									});
+									counter++;
+									if(counter==foundBids.length){ //render afou exei teleiwsei i foreach gia ola ta bids
+										console.log(bidsUsers);
+										res.render("showBids.ejs", {currentUser:req.user, bidsUsers:bidsUsers});
+									}
+								});
+							});
 	});
 });
-
-
+});
 
 
 
@@ -948,27 +965,27 @@ app.get("/chats/:currentUserId/chat/:otherUserId/delete", function(req, res) {
 																 		if(String(foundUser2.chats[i].chat._id) === String(deletedChat._id) ) {
 																 			foundUser2.chats.splice(i,1);
 																 			foundUser2.save();
-																 			
+
 																 			res.redirect("/chats");
 																 		}
 															 		}
-															}								
+															}
 														}
 												})
 									 		}
 								 		}
-								}								
+								}
 							}
 					})
-				
-					
+
+
 				}
 			});
-		}	
-		else 
+		}
+		else
 			res.redirect("/chats");
 		}
-	});	
+	});
 });
 
 
