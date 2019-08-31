@@ -78,25 +78,30 @@ var roles = ["manager", "seller", "bidder"];
 var categories = ["Home & Garden", "Fashion", "Health","Sports","Books","Games & Consoles","Toys","Electronics","Art","Properties"];
 
 
-// ROUTES
-app.get("/index", function(req, res) {
-	res.render("index.ejs");
-});
 
-app.get("/", function(req, res) {
-	res.render("home.ejs", {currentUser : req.user});
-});
+// controllers definitions
+var managerController = require("./controllers/managerController.js");
+var sellerController  = require("./controllers/sellerController.js");
+var bidderController  = require("./controllers/bidderController.js");
+var registerController = require("./controllers/registerController.js");
+var loginLogoutController = require("./controllers/loginLogoutController.js");
+var chatController = require("./controllers/chatController.js");
+var accountController = require("./controllers/accountController.js");
+var searchController = require("./controllers/searchController.js");
+var homeController = require("./controllers/homeController.js");
+// use controllers
+app.use(managerController);
+app.use(sellerController);
+app.use(bidderController);
+app.use(registerController);
+app.use(loginLogoutController);
+app.use(chatController);
+app.use(accountController);
+app.use(searchController);
+app.use(homeController);
 
-app.get("/back", function(req, res) {
-	res.redirect("back");
-});
 
-app.get("/pendingRequestMessage", isLoggedIn, function(req ,res) {
-	res.render("pendingRequestMessage.ejs", {currentUser:req.user} );
-});
-
-
-// MANAGER ROUTES
+/*// MANAGER ROUTES
 app.get("/managerPage", isLoggedIn, managerIsAuthorised , function(req, res) {
 	User.find({}, function(error, foundUsers) {
 		res.render("managerPage.ejs", {foundUsers:foundUsers, currentUser:req.user, role: req.body.role});
@@ -132,11 +137,11 @@ app.get("/managerPage/:userId/disapprove", isLoggedIn, managerIsAuthorised , fun
 	}, function(error, foundUser) {
 			res.redirect("/managerPage");
 	});
-});
+});*/
 
 
 
-// SELLER ROUTES
+/*// SELLER ROUTES
 app.get("/auctions", isLoggedIn, function(req, res) {
 	Auction.find({
 		seller: req.user._id,
@@ -323,10 +328,10 @@ app.post("/auctions", isLoggedIn, function(req, res) {
 			});
 	});
 	res.redirect("/auctions");
-});
+});*/
 
 
-// BIDDER ROUTES
+/*// BIDDER ROUTES
 
 app.get("/bids", isLoggedIn, function(req, res) {
 	var counter=0;
@@ -537,9 +542,9 @@ app.post("/categories/:category/:auctionId/makeBuy", isLoggedIn, function(req, r
 	})
 	})
 	res.render("successBuy.ejs");
-});
+});*/
 
-app.get("/search", function(req, res) {
+/*app.get("/search", function(req, res) {
 	res.redirect("/");
 });
 
@@ -570,12 +575,10 @@ app.post("/search", function(req, res) {
 			res.render("auctionsSearched.ejs", {auctions: foundAuctions});
 		}
 	});
-});
+});*/
 
 
-/*ss*/
-
-// sign up routes
+/*// sign up routes
 app.get("/register", function(req, res) {
 	res.render("register.ejs");
 });
@@ -642,16 +645,15 @@ app.post("/register", function(req, res) {
 			res.redirect("/pendingRequestMessage");												// but there are 300 strategies (px twitter, facebook klp)
 		});
 	});
-});
+});*/
 
 
-
+/*// login routes
 app.get("/login/request_approved", function(req, res){
 	res.render("request_approved.ejs");
 });
 
 
-// login routes
 app.get("/login", function(req, res) {
 	res.render("login.ejs", { currentUser: req.user });
 });
@@ -689,10 +691,10 @@ app.post("/login", passport.authenticate("local", {
 app.get("/logout", function(req ,res) {
 	req.logout();
 	res.redirect("/");
-});
+});*/
 
 
-
+/*
 //MIDDLEWARES
 function isLoggedIn(req, res, next) {
 	if(req.isAuthenticated()) {
@@ -736,10 +738,10 @@ function userIsAuthorised(req, res, next) {
 			res.redirect("/login");
 		}
 	});
-}
+}*/
 
 
-/////// CHAT ////////////
+/*/////// CHAT ////////////
 
 app.get("/chats", isLoggedIn, function(req, res) {
 	User.find({
@@ -986,9 +988,10 @@ app.get("/chats/:currentUserId/chat/:otherUserId/delete", function(req, res) {
 			res.redirect("/chats");
 		}
 	});
-});
+});*/
 
 
+/*// account routes
 app.get("/account", isLoggedIn, function(req, res) {
 	res.render("account.ejs");
 });
@@ -1010,13 +1013,13 @@ app.post("/account", isLoggedIn, function(req, res) {
 		res.redirect("/");
 	});
 
-});
+});*/
 
 
 ////////////
 
 
-app.get('/exportJSON', function(req, res) {
+/*app.get('/exportJSON', function(req, res) {
 	Auction.find().lean().exec(function (err, auctions) {
 			const filePath = path.join(__dirname, "auctions" + ".json")
 	        fs.writeFile(filePath, JSON.stringify(auctions), function (err) {
@@ -1050,7 +1053,7 @@ app.get('/exportXML', function(req, res) {
 	        }
 	      });			
 	});
-});
+});*/
 
 
 app.listen(3000, function() {
