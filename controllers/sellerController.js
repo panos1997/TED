@@ -63,6 +63,8 @@ router.get("/auctions/:id/showBids", authenticationMiddlewares.isLoggedIn , func
 			    }
 			    //	res.render("showBids.ejs", {currentUser:req.user, bids:foundBids});
 						//console.log(foundBids[0].bidder);
+						if(foundBids.length==0) //an den uparxoun bids gurname apeu8eias keno array
+						 res.render("showBids.ejs", {currentUser:req.user, bidsUsers:bidsUsers});
 							foundBids.forEach(function(bid) {
 								User.findById( {
 									_id: bid.bidder[0]._id

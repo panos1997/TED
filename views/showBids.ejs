@@ -1,9 +1,11 @@
 <% include partials/header.ejs %>
 
 
-
 <br>
 <div class="container">
+	<% if(bidsUsers.length==0){%>
+	<h2> <center><font color="black"><strong> There are no bids yet. </strong></font></center> </h2>
+	<% }else{ %>
 	<h2> <center><font color="black"><strong> Here are all the bids for the auction: </strong></font></center> </h2>
 	<br>
 	<table class="table">
@@ -25,7 +27,8 @@
 					<td><%= bidsUsers.bid.time %></td>
 
 				</tr>
-			<% })  %>
+			 <% })  %>
+			<% }  %>
 		</tbody>
 	</table>
 	<a class="btn btn-lg btn-primary btn-default back" href="javascript:history.back()">Go Back</a>
